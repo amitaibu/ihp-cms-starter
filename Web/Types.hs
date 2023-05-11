@@ -40,13 +40,13 @@ data ParagraphFeaturedArticlesController
     deriving (Eq, Show, Data)
 
 data ParagraphCtasController
-    = ParagraphCtasAction
-    | NewParagraphCtasAction { landingPageId :: !(Id LandingPage) }
-    | ShowParagraphCtasAction { paragraphCtaId :: !(Id ParagraphCta) }
-    | CreateParagraphCtasAction
-    | EditParagraphCtasAction { paragraphCtaId :: !(Id ParagraphCta) }
-    | UpdateParagraphCtasAction { paragraphCtaId :: !(Id ParagraphCta) }
-    | DeleteParagraphCtasAction { paragraphCtaId :: !(Id ParagraphCta) }
+    = ParagraphCtaAction
+    | NewParagraphCtaAction { landingPageId :: !(Id LandingPage) }
+    | ShowParagraphCtaAction { paragraphCtaId :: !(Id ParagraphCta) }
+    | CreateParagraphCtaAction
+    | EditParagraphCtaAction { paragraphCtaId :: !(Id ParagraphCta) }
+    | UpdateParagraphCtaAction { paragraphCtaId :: !(Id ParagraphCta) }
+    | DeleteParagraphCtaAction { paragraphCtaId :: !(Id ParagraphCta) }
     deriving (Eq, Show, Data)
 
 data LandingPagesController

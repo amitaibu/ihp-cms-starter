@@ -22,7 +22,7 @@ renderForm landingPage = formFor landingPage [hsx|
     {(textField #slug)}
 
     <ul class="flex flex-col gap-y-2">
-        <li><a href={pathTo $ NewParagraphCtasAction landingPage.id } class="inline-block btn btn-primary mb-4">+ CTA</a></li>
+        <li><a href={pathTo $ NewParagraphCtaAction landingPage.id } class="inline-block btn btn-primary mb-4">+ CTA</a></li>
     </ul>
 
     {submitButton}

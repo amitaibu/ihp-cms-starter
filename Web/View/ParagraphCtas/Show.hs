@@ -12,6 +12,6 @@ instance View ShowView where
     |]
         where
             breadcrumb = renderBreadcrumb
-                            [ breadcrumbLink "ParagraphCta" ParagraphCtasAction
+                            [ breadcrumbLink "ParagraphCta" ParagraphCtaAction
                             , breadcrumbText "Show ParagraphCta"
                             ]

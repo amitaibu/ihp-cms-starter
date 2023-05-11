@@ -7,23 +7,23 @@ import Web.View.ParagraphCtas.Edit
 import Web.View.ParagraphCtas.Show
 
 instance Controller ParagraphCtasController where
-    action ParagraphCtasAction = do
+    action ParagraphCtaAction = do
         paragraphCtas <- query @ParagraphCta |> fetch
         render IndexView { .. }
 
-    action NewParagraphCtasAction { landingPageId } = do
+    action NewParagraphCtaAction { landingPageId } = do
         let paragraphCta = newRecord |> set #landingPageId landingPageId
         render NewView { .. }
 
-    action ShowParagraphCtasAction { paragraphCtaId } = do
+    action ShowParagraphCtaAction { paragraphCtaId } = do
         paragraphCta <- fetch paragraphCtaId
         render ShowView { .. }
 
-    action EditParagraphCtasAction { paragraphCtaId } = do
+    action EditParagraphCtaAction { paragraphCtaId } = do
         paragraphCta <- fetch paragraphCtaId
         render EditView { .. }
 
-    action UpdateParagraphCtasAction { paragraphCtaId } = do
+    action UpdateParagraphCtaAction { paragraphCtaId } = do
         paragraphCta <- fetch paragraphCtaId
         paragraphCta
             |> buildParagraphCta
@@ -32,9 +32,9 @@ instance Controller ParagraphCtasController where
                 Right paragraphCta -> do
                     paragraphCta <- paragraphCta |> updateRecord
                     setSuccessMessage "ParagraphCta updated"
-                    redirectTo EditParagraphCtasAction { .. }
+                    redirectTo EditParagraphCtaAction { .. }
 
-    action CreateParagraphCtasAction = do
+    action CreateParagraphCtaAction = do
         let paragraphCta = newRecord @ParagraphCta
         paragraphCta
             |> buildParagraphCta
@@ -43,13 +43,13 @@ instance Controller ParagraphCtasController where
                 Right paragraphCta -> do
                     paragraphCta <- paragraphCta |> createRecord
                     setSuccessMessage "ParagraphCta created"
-                    redirectTo ParagraphCtasAction
+                    redirectTo ParagraphCtaAction
 
-    action DeleteParagraphCtasAction { paragraphCtaId } = do
+    action DeleteParagraphCtaAction { paragraphCtaId } = do
         paragraphCta <- fetch paragraphCtaId
         deleteRecord paragraphCta
         setSuccessMessage "ParagraphCta deleted"
-        redirectTo ParagraphCtasAction
+        redirectTo ParagraphCtaAction
 
 buildParagraphCta paragraphCta = paragraphCta
-    |> fill @'["title"]
+    |> fill @'["title", "landingPageId", "weight"]

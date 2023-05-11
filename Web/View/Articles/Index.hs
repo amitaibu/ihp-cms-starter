@@ -33,7 +33,7 @@ renderArticle article = [hsx|
     <tr>
         <td>
             <div class="flex flex-row gap-2">
-                <img src={article.imageUrl} alt="Article Image" class="w-16 h-16" />
+                <img src={article.imageUrl} class="w-16 h-16 rounded-full" />
                 {article.title}
             </div>
         </td>

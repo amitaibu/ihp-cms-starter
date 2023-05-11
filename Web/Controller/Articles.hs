@@ -25,7 +25,7 @@ instance Controller ArticlesController where
 
     action UpdateArticleAction { articleId } = do
         let uploadImage = uploadToStorageWithOptions $ def
-                 { preprocess = applyImageMagick "jpg" ["-resize '1024x1024^' -gravity north -extent 1024x1024 -quality 85% -strip"] }
+                 { preprocess = applyImageMagick "jpg" ["-resize", "1024x1024^", "-gravity", "north", "-extent", "1024x1024", "-quality", "85%", "-strip"] }
 
         article <- fetch articleId
         article
@@ -40,7 +40,7 @@ instance Controller ArticlesController where
 
     action CreateArticleAction = do
         let uploadImage = uploadToStorageWithOptions $ def
-                 { preprocess = applyImageMagick "jpg" ["-resize '1024x1024^' -gravity north -extent 1024x1024 -quality 85% -strip"] }
+                 { preprocess = applyImageMagick "jpg" ["-resize", "1024x1024^", "-gravity", "north", "-extent", "1024x1024", "-quality", "85%", "-strip"] }
 
         let article = newRecord @Article
         article
