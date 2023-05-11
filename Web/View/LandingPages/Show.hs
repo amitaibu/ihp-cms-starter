@@ -3,8 +3,7 @@ import Web.View.Prelude
 import Text.Blaze.Html
 
 data ShowView = ShowView
-    {   landingPage :: LandingPage
-    -- ,   allParagraphsRendered :: [Text.Blaze.Html.Html]
+    {   landingPage :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage
     }
 
 instance View ShowView where
@@ -14,7 +13,7 @@ instance View ShowView where
             <h1 class="text-3xl">{landingPage.title}</h1>
             <a href={EditLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline hover:text-blue-600">(Edit)</a>
         </div>
-        <!-- {allParagraphsRendered} -->
+
 
     |]
         where
