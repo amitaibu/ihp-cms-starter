@@ -28,9 +28,14 @@ instance View ShowView where
 
 -- orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> Text.Blaze.Html.Html
 orderAndRenderParagraphs ctas quotes =
-    [hsx|{forEach sorted (\tuple -> snd tuple)}|]
+    [hsx|{forEach allSorted (\rendered -> rendered)}|]
     where
-        ctas' = fmap (\paragraph -> (paragraph.weight, ParagraphCtas.renderParagraph paragraph.title)) ctas
-        quotes' = fmap (\paragraph -> (paragraph.weight, ParagraphQuotes.renderParagraph paragraph.title)) quotes
-        all = ctas' ++ quotes'
-        sorted = sortOn fst all
+        ctas' = ctas
+            |> fmap (\paragraph -> (paragraph.weight, ParagraphCtas.renderParagraph paragraph.title))
+
+        quotes' = quotes
+            |> fmap (\paragraph -> (paragraph.weight, ParagraphQuotes.renderParagraph paragraph.title))
+
+        allSorted = ctas' ++ quotes'
+            |> sortOn fst
+            |> fmap snd
