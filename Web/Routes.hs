@@ -7,3 +7,15 @@ import Web.Types
 instance AutoRoute StaticController
 instance AutoRoute ArticlesController
 
+
+instance AutoRoute ParagraphQuotesController
+
+
+instance AutoRoute ParagraphFeaturedArticlesController
+
+
+instance AutoRoute ParagraphCtasController
+
+
+instance AutoRoute LandingPagesController
+

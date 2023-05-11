@@ -20,7 +20,7 @@ instance View IndexView where
                 </thead>
                 <tbody>{forEach articles renderArticle}</tbody>
             </table>
-            
+
         </div>
     |]
         where
@@ -31,7 +31,12 @@ instance View IndexView where
 renderArticle :: Article -> Html
 renderArticle article = [hsx|
     <tr>
-        <td>{article}</td>
+        <td>
+            <div class="flex flex-row gap-2">
+                <img src={article.imageUrl} class="w-16 h-16 rounded-full" />
+                {article.title}
+            </div>
+        </td>
         <td><a href={ShowArticleAction article.id}>Show</a></td>
         <td><a href={EditArticleAction article.id} class="text-muted">Edit</a></td>
         <td><a href={DeleteArticleAction article.id} class="js-delete text-muted">Delete</a></td>
