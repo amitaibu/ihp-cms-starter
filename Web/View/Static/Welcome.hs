@@ -7,6 +7,7 @@ instance View WelcomeView where
     html WelcomeView = [hsx|
         <ol class="list-decimal">
             <li><a href={ArticlesAction}>Articles</a></li>
+            <li><a href={ParagraphCtasAction}>Paragraph CTAs</a></li>
             <li><a href={ParagraphQuotesAction}>Paragraph quotes</a></li>
             <li><a href={ParagraphFeaturedArticlesAction}>Paragraph featured articles</a></li>
          </ol>

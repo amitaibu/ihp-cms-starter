@@ -13,3 +13,6 @@ instance AutoRoute ParagraphQuotesController
 
 instance AutoRoute ParagraphFeaturedArticlesController
 
+
+instance AutoRoute ParagraphCtasController
+

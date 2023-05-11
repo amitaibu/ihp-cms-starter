@@ -38,3 +38,13 @@ data ParagraphFeaturedArticlesController
     | UpdateParagraphFeaturedArticleAction { paragraphFeaturedArticleId :: !(Id ParagraphFeaturedArticle) }
     | DeleteParagraphFeaturedArticleAction { paragraphFeaturedArticleId :: !(Id ParagraphFeaturedArticle) }
     deriving (Eq, Show, Data)
+
+data ParagraphCtasController
+    = ParagraphCtasAction
+    | NewParagraphCtasAction
+    | ShowParagraphCtasAction { paragraphCtaId :: !(Id ParagraphCta) }
+    | CreateParagraphCtasAction
+    | EditParagraphCtasAction { paragraphCtaId :: !(Id ParagraphCta) }
+    | UpdateParagraphCtasAction { paragraphCtaId :: !(Id ParagraphCta) }
+    | DeleteParagraphCtasAction { paragraphCtaId :: !(Id ParagraphCta) }
+    deriving (Eq, Show, Data)
