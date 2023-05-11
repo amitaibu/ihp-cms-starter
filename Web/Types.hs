@@ -48,3 +48,13 @@ data ParagraphCtasController
     | UpdateParagraphCtasAction { paragraphCtaId :: !(Id ParagraphCta) }
     | DeleteParagraphCtasAction { paragraphCtaId :: !(Id ParagraphCta) }
     deriving (Eq, Show, Data)
+
+data LandingPagesController
+    = LandingPagesAction
+    | NewLandingPageAction
+    | ShowLandingPageAction { landingPageId :: !(Id LandingPage) }
+    | CreateLandingPageAction
+    | EditLandingPageAction { landingPageId :: !(Id LandingPage) }
+    | UpdateLandingPageAction { landingPageId :: !(Id LandingPage) }
+    | DeleteLandingPageAction { landingPageId :: !(Id LandingPage) }
+    deriving (Eq, Show, Data)

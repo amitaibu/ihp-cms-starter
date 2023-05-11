@@ -5,6 +5,7 @@ import Web.Controller.Prelude
 import Web.View.Layout (defaultLayout)
 
 -- Controller Imports
+import Web.Controller.LandingPages
 import Web.Controller.ParagraphCtas
 import Web.Controller.ParagraphFeaturedArticles
 import Web.Controller.ParagraphQuotes
@@ -15,6 +16,7 @@ instance FrontController WebApplication where
     controllers = 
         [ startPage WelcomeAction
         -- Generator Marker
+        , parseRoute @LandingPagesController
         , parseRoute @ParagraphCtasController
         , parseRoute @ParagraphFeaturedArticlesController
         , parseRoute @ParagraphQuotesController

@@ -16,3 +16,6 @@ instance AutoRoute ParagraphFeaturedArticlesController
 
 instance AutoRoute ParagraphCtasController
 
+
+instance AutoRoute LandingPagesController
+
