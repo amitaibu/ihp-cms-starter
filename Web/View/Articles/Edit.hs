@@ -18,6 +18,17 @@ instance View EditView where
 renderForm :: Article -> Html
 renderForm article = formFor article [hsx|
     {(textField #title)}
+
+    <input
+        type="file"
+        name="imageUrl"
+        class="form-control-file"
+        accept="image/*"
+        data-preview="#imageUrlPreview"
+    />
+
+    <img id="imageUrlPreview" src={article.imageUrl}/>
+
     {submitButton}
 
 |]

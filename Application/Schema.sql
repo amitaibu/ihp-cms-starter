@@ -29,7 +29,8 @@ CREATE TABLE paragraph_featured_articles (
 );
 CREATE TABLE articles (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
-    Title TEXT NOT NULL
+    title TEXT NOT NULL,
+    image_url TEXT DEFAULT NULL
 );
 CREATE INDEX paragraph_quotes_landing_page_id_index ON paragraph_quotes (landing_page_id);
 CREATE INDEX paragraph_ctas_landing_page_id_index ON paragraph_ctas (landing_page_id);

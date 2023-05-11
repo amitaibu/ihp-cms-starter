@@ -24,22 +24,30 @@ instance Controller ArticlesController where
         render EditView { .. }
 
     action UpdateArticleAction { articleId } = do
+        let uploadImage = uploadToStorageWithOptions $ def
+                 { preprocess = applyImageMagick "jpg" ["-resize '1024x1024^' -gravity north -extent 1024x1024 -quality 85% -strip"] }
+
         article <- fetch articleId
         article
             |> buildArticle
-            |> ifValid \case
+            |> uploadImage #imageUrl
+            >>= ifValid \case
                 Left article -> render EditView { .. }
                 Right article -> do
                     article <- article |> updateRecord
                     setSuccessMessage "Article updated"
-                    redirectTo EditArticleAction { .. }
+                    redirectTo ShowArticleAction { .. }
 
     action CreateArticleAction = do
+        let uploadImage = uploadToStorageWithOptions $ def
+                 { preprocess = applyImageMagick "jpg" ["-resize '1024x1024^' -gravity north -extent 1024x1024 -quality 85% -strip"] }
+
         let article = newRecord @Article
         article
             |> buildArticle
-            |> ifValid \case
-                Left article -> render NewView { .. } 
+            |> uploadImage #imageUrl
+            >>= ifValid \case
+                Left article -> render NewView { .. }
                 Right article -> do
                     article <- article |> createRecord
                     setSuccessMessage "Article created"
