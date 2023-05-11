@@ -17,8 +17,9 @@ instance View NewView where
 
 renderForm :: ParagraphQuote -> Html
 renderForm paragraphQuote = formFor paragraphQuote [hsx|
-    {(textField #landingPageId)}
-    {(textField #weight)}
+    {(hiddenField #landingPageId)}
+    {(hiddenField #weight)}
+    {(textField #title)}
     {submitButton}
 
 |]

@@ -19,7 +19,6 @@ renderForm :: ParagraphCta -> Html
 renderForm paragraphCta = formFor paragraphCta [hsx|
     {(hiddenField #landingPageId)}
     {(hiddenField #weight)}
-
     {(textField #title)}
     {submitButton}
 

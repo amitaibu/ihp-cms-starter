@@ -15,3 +15,13 @@ instance View ShowView where
                             [ breadcrumbLink "ParagraphCta" ParagraphCtaAction
                             , breadcrumbText "Show ParagraphCta"
                             ]
+
+
+
+renderParagraph :: Text -> Html
+renderParagraph title =
+    [hsx|
+    <div>
+        <h1 class="text-3xl font-bold">CTA: {title}</h1>
+    </div>
+    |]

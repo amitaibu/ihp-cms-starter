@@ -17,6 +17,11 @@ instance Controller LandingPagesController where
 
     action ShowLandingPageAction { landingPageId } = do
         landingPage <- fetch landingPageId
+            >>= pure . modify #paragraphCtas (orderByDesc #weight)
+            >>= pure . modify #paragraphQuotes (orderByDesc #weight)
+            >>= fetchRelated #paragraphCtas
+            >>= fetchRelated #paragraphQuotes
+
         render ShowView { .. }
 
     action EditLandingPageAction { landingPageId } = do

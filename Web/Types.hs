@@ -21,7 +21,7 @@ data ArticlesController
 
 data ParagraphQuotesController
     = ParagraphQuotesAction
-    | NewParagraphQuoteAction
+    | NewParagraphQuoteAction { landingPageId :: !(Id LandingPage) }
     | ShowParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
     | CreateParagraphQuoteAction
     | EditParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }

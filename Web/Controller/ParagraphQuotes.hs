@@ -11,8 +11,8 @@ instance Controller ParagraphQuotesController where
         paragraphQuotes <- query @ParagraphQuote |> fetch
         render IndexView { .. }
 
-    action NewParagraphQuoteAction = do
-        let paragraphQuote = newRecord
+    action NewParagraphQuoteAction { landingPageId } = do
+        let paragraphQuote = newRecord |> set #landingPageId landingPageId
         render NewView { .. }
 
     action ShowParagraphQuoteAction { paragraphQuoteId } = do
@@ -39,7 +39,7 @@ instance Controller ParagraphQuotesController where
         paragraphQuote
             |> buildParagraphQuote
             |> ifValid \case
-                Left paragraphQuote -> render NewView { .. } 
+                Left paragraphQuote -> render NewView { .. }
                 Right paragraphQuote -> do
                     paragraphQuote <- paragraphQuote |> createRecord
                     setSuccessMessage "ParagraphQuote created"
@@ -52,4 +52,4 @@ instance Controller ParagraphQuotesController where
         redirectTo ParagraphQuotesAction
 
 buildParagraphQuote paragraphQuote = paragraphQuote
-    |> fill @["landingPageId", "weight"]
+    |> fill @["title", "landingPageId", "weight"]
