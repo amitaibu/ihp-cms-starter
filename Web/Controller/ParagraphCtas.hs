@@ -11,7 +11,7 @@ instance Controller ParagraphCtasController where
         paragraphCtas <- query @ParagraphCta |> fetch
         render IndexView { .. }
 
-    action NewParagraphCtasAction = do
+    action NewParagraphCtasAction { landingPageId } = do
         let paragraphCta = newRecord
         render NewView { .. }
 

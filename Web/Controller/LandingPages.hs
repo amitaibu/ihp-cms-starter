@@ -39,11 +39,12 @@ instance Controller LandingPagesController where
         landingPage
             |> buildLandingPage
             |> ifValid \case
-                Left landingPage -> render NewView { .. } 
+                Left landingPage -> render NewView { .. }
                 Right landingPage -> do
                     landingPage <- landingPage |> createRecord
                     setSuccessMessage "LandingPage created"
-                    redirectTo LandingPagesAction
+                    -- After we create the Landing page, we can start adding Paragraphs to it.
+                    redirectTo EditLandingPageAction { landingPageId = landingPage.id }
 
     action DeleteLandingPageAction { landingPageId } = do
         landingPage <- fetch landingPageId
@@ -52,4 +53,4 @@ instance Controller LandingPagesController where
         redirectTo LandingPagesAction
 
 buildLandingPage landingPage = landingPage
-    |> fill @'[]
+    |> fill @'["title", "slug"]

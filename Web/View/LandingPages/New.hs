@@ -17,7 +17,10 @@ instance View NewView where
 
 renderForm :: LandingPage -> Html
 renderForm landingPage = formFor landingPage [hsx|
-    
+
+    {(textField #title)}
+    {(textField #slug)}
+
     {submitButton}
 
 |]

@@ -17,7 +17,14 @@ instance View EditView where
 
 renderForm :: LandingPage -> Html
 renderForm landingPage = formFor landingPage [hsx|
-    
+
+    {(textField #title)}
+    {(textField #slug)}
+
+    <ul class="flex flex-col gap-y-2">
+        <li><a href={pathTo $ NewParagraphCtasAction landingPage.id } class="inline-block btn btn-primary mb-4">+ CTA</a></li>
+    </ul>
+
     {submitButton}
 
 |]

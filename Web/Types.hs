@@ -41,7 +41,7 @@ data ParagraphFeaturedArticlesController
 
 data ParagraphCtasController
     = ParagraphCtasAction
-    | NewParagraphCtasAction
+    | NewParagraphCtasAction { landingPageId :: !(Id LandingPage) }
     | ShowParagraphCtasAction { paragraphCtaId :: !(Id ParagraphCta) }
     | CreateParagraphCtasAction
     | EditParagraphCtasAction { paragraphCtaId :: !(Id ParagraphCta) }

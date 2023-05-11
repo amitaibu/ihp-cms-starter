@@ -8,7 +8,9 @@ $$ language plpgsql;
 CREATE TABLE landing_pages (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
+    title TEXT NOT NULL,
+    slug TEXT NOT NULL UNIQUE
 );
 CREATE INDEX landing_pages_created_at_index ON landing_pages (created_at);
 CREATE TRIGGER update_landing_pages_updated_at BEFORE UPDATE ON landing_pages FOR EACH ROW EXECUTE FUNCTION set_updated_at_to_now();
