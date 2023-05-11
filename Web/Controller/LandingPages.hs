@@ -5,8 +5,6 @@ import Web.View.LandingPages.Index
 import Web.View.LandingPages.New
 import Web.View.LandingPages.Edit
 import Web.View.LandingPages.Show
-import qualified Web.View.ParagraphCtas.Show as ParagraphCtas
-import qualified Web.View.ParagraphQuotes.Show as ParagraphQuotes
 
 instance Controller LandingPagesController where
     action LandingPagesAction = do
