@@ -17,8 +17,10 @@ instance View NewView where
 
 renderForm :: ParagraphCta -> Html
 renderForm paragraphCta = formFor paragraphCta [hsx|
-    {(textField #landingPageId)}
-    {(textField #weight)}
+    {(hiddenField #landingPageId)}
+    {(hiddenField #weight)}
+
+    {(textField #title)}
     {submitButton}
 
 |]

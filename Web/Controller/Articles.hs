@@ -51,7 +51,7 @@ instance Controller ArticlesController where
                 Right article -> do
                     article <- article |> createRecord
                     setSuccessMessage "Article created"
-                    redirectTo ArticlesAction
+                    redirectTo ShowArticleAction { articleId = article.id }
 
     action DeleteArticleAction { articleId } = do
         article <- fetch articleId

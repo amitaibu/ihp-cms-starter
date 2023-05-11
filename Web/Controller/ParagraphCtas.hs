@@ -12,7 +12,7 @@ instance Controller ParagraphCtasController where
         render IndexView { .. }
 
     action NewParagraphCtasAction { landingPageId } = do
-        let paragraphCta = newRecord
+        let paragraphCta = newRecord |> set #landingPageId landingPageId
         render NewView { .. }
 
     action ShowParagraphCtasAction { paragraphCtaId } = do
@@ -52,4 +52,4 @@ instance Controller ParagraphCtasController where
         redirectTo ParagraphCtasAction
 
 buildParagraphCta paragraphCta = paragraphCta
-    |> fill @'[]
+    |> fill @'["title"]

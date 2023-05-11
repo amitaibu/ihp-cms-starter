@@ -22,7 +22,8 @@ CREATE TABLE paragraph_quotes (
 CREATE TABLE paragraph_ctas (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
     landing_page_id UUID NOT NULL,
-    weight INT DEFAULT 0 NOT NULL
+    weight INT DEFAULT 0 NOT NULL,
+    title TEXT NOT NULL
 );
 CREATE TABLE paragraph_featured_articles (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
