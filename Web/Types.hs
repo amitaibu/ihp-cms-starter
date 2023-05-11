@@ -28,3 +28,13 @@ data ParagraphQuotesController
     | UpdateParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
     | DeleteParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
     deriving (Eq, Show, Data)
+
+data ParagraphFeaturedArticlesController
+    = ParagraphFeaturedArticlesAction
+    | NewParagraphFeaturedArticleAction
+    | ShowParagraphFeaturedArticleAction { paragraphFeaturedArticleId :: !(Id ParagraphFeaturedArticle) }
+    | CreateParagraphFeaturedArticleAction
+    | EditParagraphFeaturedArticleAction { paragraphFeaturedArticleId :: !(Id ParagraphFeaturedArticle) }
+    | UpdateParagraphFeaturedArticleAction { paragraphFeaturedArticleId :: !(Id ParagraphFeaturedArticle) }
+    | DeleteParagraphFeaturedArticleAction { paragraphFeaturedArticleId :: !(Id ParagraphFeaturedArticle) }
+    deriving (Eq, Show, Data)
