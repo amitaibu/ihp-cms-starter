@@ -47,7 +47,7 @@ instance Controller LandingPagesController where
             -- @todo: Is there a better way, so render happens inside the Show instead of here.
             -- Currently without rendering, we can't place all in a single List, as they have different
             -- types.
-            allParagraphsRendered = merge paragraphCtas' paragraphQuotes'
+            allParagraphsRendered = paragraphCtas' ++ paragraphQuotes'
                 -- Sort the paragraphs by weight.
                 -- |> sort
                 -- Get the `hsx` result.
@@ -88,9 +88,3 @@ instance Controller LandingPagesController where
 
 buildLandingPage landingPage = landingPage
     |> fill @'["title", "slug"]
-
--- https://stackoverflow.com/a/70335119/750039
-merge :: [a] -> [a] -> [a]
-merge xs     []     = xs
-merge []     ys     = ys
-merge (x:xs) (y:ys) = x : y : merge xs ys
