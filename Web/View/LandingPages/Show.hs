@@ -16,9 +16,7 @@ instance View ShowView where
             <a href={EditLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline hover:text-blue-600">(Edit)</a>
         </div>
 
-        {forEach landingPage.paragraphCtas (\paragraph -> ParagraphCtas.renderParagraph paragraph.title)}
-        {forEach landingPage.paragraphQuotes (\paragraph -> ParagraphQuotes.renderParagraph paragraph.title)}
-
+        {orderAndRenderParagraphs landingPage.paragraphCtas landingPage.paragraphQuotes}
 
     |]
         where
@@ -26,3 +24,13 @@ instance View ShowView where
                             [ breadcrumbLink "LandingPages" LandingPagesAction
                             , breadcrumbText "Show LandingPage"
                             ]
+
+
+-- orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuotes] -> Html
+orderAndRenderParagraphs ctas quotes =
+    [hsx|{forEach sorted (\tuple -> snd tuple)}|]
+    where
+        ctas' = fmap (\paragraph -> (paragraph.weight, ParagraphCtas.renderParagraph paragraph.title)) ctas
+        quotes' = fmap (\paragraph -> (paragraph.weight, ParagraphQuotes.renderParagraph paragraph.title)) quotes
+        all = ctas' ++ quotes'
+        sorted = sortOn fst all
