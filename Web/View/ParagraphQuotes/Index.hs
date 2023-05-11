@@ -20,7 +20,7 @@ instance View IndexView where
                 </thead>
                 <tbody>{forEach paragraphQuotes renderParagraphQuote}</tbody>
             </table>
-            
+
         </div>
     |]
         where
@@ -31,7 +31,7 @@ instance View IndexView where
 renderParagraphQuote :: ParagraphQuote -> Html
 renderParagraphQuote paragraphQuote = [hsx|
     <tr>
-        <td>{paragraphQuote}</td>
+        <td>{paragraphQuote.title}</td>
         <td><a href={ShowParagraphQuoteAction paragraphQuote.id}>Show</a></td>
         <td><a href={EditParagraphQuoteAction paragraphQuote.id} class="text-muted">Edit</a></td>
         <td><a href={DeleteParagraphQuoteAction paragraphQuote.id} class="js-delete text-muted">Delete</a></td>
