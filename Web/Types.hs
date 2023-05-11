@@ -18,3 +18,13 @@ data ArticlesController
     | UpdateArticleAction { articleId :: !(Id Article) }
     | DeleteArticleAction { articleId :: !(Id Article) }
     deriving (Eq, Show, Data)
+
+data ParagraphQuotesController
+    = ParagraphQuotesAction
+    | NewParagraphQuoteAction
+    | ShowParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
+    | CreateParagraphQuoteAction
+    | EditParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
+    | UpdateParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
+    | DeleteParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
+    deriving (Eq, Show, Data)
