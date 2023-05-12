@@ -62,9 +62,3 @@ instance Controller LandingPagesController where
 buildLandingPage landingPage = landingPage
     |> fill @'["title", "slug"]
 
-fetchLandingPageWithParagraphs landingPageId = do
-    fetch landingPageId
-        >>= pure . modify #paragraphCtas (orderByDesc #weight)
-        >>= pure . modify #paragraphQuotes (orderByDesc #weight)
-        >>= fetchRelated #paragraphCtas
-        >>= fetchRelated #paragraphQuotes

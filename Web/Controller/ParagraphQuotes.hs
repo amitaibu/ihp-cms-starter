@@ -43,7 +43,7 @@ instance Controller ParagraphQuotesController where
                 Right paragraphQuote -> do
                     paragraphQuote <- paragraphQuote |> createRecord
                     setSuccessMessage "ParagraphQuote created"
-                    redirectTo ParagraphQuotesAction
+                    redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
     action DeleteParagraphQuoteAction { paragraphQuoteId } = do
         paragraphQuote <- fetch paragraphQuoteId
