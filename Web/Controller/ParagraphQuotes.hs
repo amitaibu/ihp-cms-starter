@@ -12,7 +12,11 @@ instance Controller ParagraphQuotesController where
         render IndexView { .. }
 
     action NewParagraphQuoteAction { landingPageId } = do
-        let paragraphQuote = newRecord |> set #landingPageId landingPageId
+        weight <- getParagraphsCount landingPageId
+        let paragraphQuote = newRecord
+                |> set #landingPageId landingPageId
+                |> set #weight weight
+
         render NewView { .. }
 
     action ShowParagraphQuoteAction { paragraphQuoteId } = do

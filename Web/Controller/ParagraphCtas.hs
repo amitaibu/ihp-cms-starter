@@ -12,17 +12,11 @@ instance Controller ParagraphCtasController where
         render IndexView { .. }
 
     action NewParagraphCtaAction { landingPageId } = do
-        -- Default weight should be the total of existing paragraphs on the landing page plus one.
-        -- So we need to fetch the landing page with the paragraphs, and then count them.
-        landingPage <- fetchLandingPageWithParagraphs landingPageId
-        let weight = length landingPage.paragraphCtas
-                        + length landingPage.paragraphQuotes
-                        + 1
+        weight <- getParagraphsCount landingPageId
 
         let paragraphCta = newRecord
                 |> set #landingPageId landingPageId
                 |> set #weight weight
-
 
         render NewView { .. }
 
