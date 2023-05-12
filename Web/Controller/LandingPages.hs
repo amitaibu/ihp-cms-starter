@@ -47,20 +47,28 @@ instance Controller LandingPagesController where
                             pure ()
 
                         uuids -> do
-                            forEachWithIndex uuids (\(weight, uuid) -> do
-                                    let paragraphId = Id uuid
-                                    paragraph <- fetch paragraphId
+                            -- We need to update the weight of the paragraphs.
+                            -- So load them.
+                            landingPage <- fetchLandingPageWithParagraphs landingPageId
 
-                                    if paragraph.weight /= weight
-                                        then do
-                                            -- Set new weight.
-                                            paragraph <- paragraph
-                                                |> set #weight weight
-                                                |> updateRecord
-                                            pure ()
-                                        else
-                                            -- Weight hasn't changed.
-                                            pure ()
+                            forEachWithIndex uuids (\(weight, uuid) -> do
+                                    -- We need to find the paragraph by uuid.
+                                    let mparagraph = find (\p -> p.id == packId uuid) landingPage.paragraphCtas
+
+                                    case mparagraph of
+                                        Nothing -> pure ()
+                                        Just paragraph ->
+                                            if paragraph.weight /= weight
+                                                then do
+                                                    -- Set new weight.
+                                                    paragraph <- paragraph
+                                                        |> set #weight weight
+                                                        |> updateRecord
+
+                                                    setSuccessMessage "Ordered Paragraph"
+                                                else
+                                                    -- Weight hasn't changed.
+                                                    pure ()
                                 )
 
 
