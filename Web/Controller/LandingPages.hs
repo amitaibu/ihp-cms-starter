@@ -63,11 +63,13 @@ instance Controller LandingPagesController where
                                         ( HasField "id" record (Id record)
                                         , SetField "weight" record Int
                                         , CanUpdate record
+                                        , Show (PrimaryKey (GetTableName record))
                                         , ?modelContext :: ModelContext
                                         ) => record -> IO ()
                                 updateParagraph paragraph = do
-                                    let uuid = unpackId paragraph.id
-                                    let weight = elemIndex uuid uuids |> fromMaybe 0
+                                    -- @todo: Why doesn't unpackId paragraph.id work here?
+                                    let uuid = show paragraph.id
+                                    let weight = elemIndex uuid (fmap show uuids ) |> fromMaybe 0
 
                                     paragraph
                                         |> set #weight weight
