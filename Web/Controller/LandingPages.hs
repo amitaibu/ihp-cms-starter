@@ -56,12 +56,18 @@ instance Controller LandingPagesController where
                             forEach landingPage.paragraphCtas updateParagraph
 
                             -- @todo: If I uncomment this, it results with a compiler error.
-                            -- forEach landingPage.paragraphQuotes updateParagraph
+                            forEach landingPage.paragraphQuotes updateParagraph
 
                             where
+                                updateParagraph :: forall record.
+                                        ( HasField "id" record (Id record)
+                                        , SetField "weight" record Int
+                                        , CanUpdate record
+                                        , ?modelContext :: ModelContext
+                                        ) => record -> IO ()
                                 updateParagraph paragraph = do
                                     let uuid = unpackId paragraph.id
-                                    let weight = elemIndex uuid uuids |> fromMaybe 0
+                                    let weight = elemIndex uuid uuids |> fromMaybe
 
                                     paragraph
                                         |> set #weight weight
