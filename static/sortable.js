@@ -1,5 +1,7 @@
-const el = document.getElementById('sortable');
-Sortable.create(el, {
-    handle: '.sortable-handle',
-    animation: 150,
+document.addEventListener('ihp:load', () => {
+    const el = document.getElementById('sortable');
+    Sortable.create(el, {
+        handle: '.sortable-handle',
+        animation: 150,
+    });
 });
