@@ -52,33 +52,19 @@ instance Controller LandingPagesController where
                             -- So load them.
                             landingPage <- fetchLandingPageWithParagraphs landingPageId
 
-                            forEachWithIndex uuids (\(weight, uuid) -> do
-                                    -- We need to find the paragraph by uuid.
-                                    -- @todo: Something like this, but should work :)
-                                    -- Also, there's probably a nicer way to write this.
-                                    let mparagraph = find (\p -> p.id == packId uuid) landingPage.paragraphCtas
-                                            |> \case
-                                                Just paragraph -> Just paragraph
-                                                Nothing -> find (\p -> p.id == packId uuid) landingPage.paragraphQuotes
+                            -- Iterate over all paragraphs, and update the weight.
+                            -- @todo: Iterate over all paragraphs.
+                            forEach landingPage.paragraphCta \paragraph -> do
+                                let uuid = unpackId paragraph.id
+                                let weight = elemIndex uuid uuids |> fromMaybe 0
 
+                                paragraph
+                                    |> set #weight weight
+                                    |> updateRecord
 
-                                    case mparagraph of
-                                        Nothing -> pure ()
-                                        Just paragraph ->
-                                            if paragraph.weight /= weight
-                                                then do
-                                                    -- Set new weight.
-                                                    paragraph <- paragraph
-                                                        |> set #weight weight
-                                                        |> updateRecord
+                                pure ()
 
-                                                    pure ()
-
-                                                else
-                                                    -- Weight hasn't changed.
-                                                    pure ()
-                                )
-
+                            pure ()
 
                     setSuccessMessage "LandingPage updated"
                     redirectTo EditLandingPageAction { .. }
