@@ -38,6 +38,32 @@ instance Controller LandingPagesController where
                     render EditView { .. }
                 Right landingPage -> do
                     landingPage <- landingPage |> updateRecord
+
+                    -- After we update the Landing page, we can set the order of the paragraphs.
+                    let params = paramListOrNothing @UUID "paragraphId"
+                    case catMaybes params of
+                        [] -> do
+                            -- No paragraphs to update.
+                            pure ()
+
+                        uuids -> do
+                            forEachWithIndex uuids (\(weight, uuid) -> do
+                                    let paragraphId = Id uuid
+                                    paragraph <- fetch paragraphId
+
+                                    if paragraph.weight /= weight
+                                        then do
+                                            -- Set new weight.
+                                            paragraph <- paragraph
+                                                |> set #weight weight
+                                                |> updateRecord
+                                            pure ()
+                                        else
+                                            -- Weight hasn't changed.
+                                            pure ()
+                                )
+
+
                     setSuccessMessage "LandingPage updated"
                     redirectTo EditLandingPageAction { .. }
 
