@@ -41,19 +41,26 @@ instance Controller LandingPagesController where
 
                     -- After we update the Landing page, we can set the order of the paragraphs.
                     let params = paramListOrNothing @UUID "paragraphId"
+
                     case catMaybes params of
                         [] -> do
                             -- No paragraphs to update.
                             pure ()
 
                         uuids -> do
-                            -- We need to update the weight of the paragraphs.
+                            -- We need to update the weight of the paragraphs,
                             -- So load them.
                             landingPage <- fetchLandingPageWithParagraphs landingPageId
 
                             forEachWithIndex uuids (\(weight, uuid) -> do
                                     -- We need to find the paragraph by uuid.
+                                    -- @todo: Something like this, but should work :)
+                                    -- Also, there's probably a nicer way to write this.
                                     let mparagraph = find (\p -> p.id == packId uuid) landingPage.paragraphCtas
+                                            |> \case
+                                                Just paragraph -> Just paragraph
+                                                Nothing -> find (\p -> p.id == packId uuid) landingPage.paragraphQuotes
+
 
                                     case mparagraph of
                                         Nothing -> pure ()
@@ -65,7 +72,8 @@ instance Controller LandingPagesController where
                                                         |> set #weight weight
                                                         |> updateRecord
 
-                                                    setSuccessMessage "Ordered Paragraph"
+                                                    pure ()
+
                                                 else
                                                     -- Weight hasn't changed.
                                                     pure ()
