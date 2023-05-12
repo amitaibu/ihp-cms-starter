@@ -53,30 +53,22 @@ instance Controller LandingPagesController where
                             landingPage <- fetchLandingPageWithParagraphs landingPageId
 
                             -- Iterate over all paragraphs, and update the weight.
-                            -- @todo: Iterate over all paragraphs.
-                            forEach landingPage.paragraphCtas \paragraph -> do
-                                let uuid = unpackId paragraph.id
-                                let weight = elemIndex uuid uuids |> fromMaybe 0
+                            forEach landingPage.paragraphCtas updateParagraph
 
-                                paragraph
-                                    |> set #weight weight
-                                    |> updateRecord
+                            -- @todo: If I uncomment this, it results with a compiler error.
+                            -- forEach landingPage.paragraphQuotes updateParagraph
 
+                            where
+                                updateParagraph paragraph = do
+                                    let uuid = unpackId paragraph.id
+                                    let weight = elemIndex uuid uuids |> fromMaybe 0
 
-                                pure ()
-
-                            forEach landingPage.paragraphQuotes \paragraph -> do
-                                let uuid = unpackId paragraph.id
-                                let weight = elemIndex uuid uuids |> fromMaybe 0
-
-                                paragraph
-                                    |> set #weight weight
-                                    |> updateRecord
+                                    paragraph
+                                        |> set #weight weight
+                                        |> updateRecord
 
 
-                                pure ()
-
-                            pure ()
+                                    pure ()
 
                     setSuccessMessage "LandingPage updated"
                     redirectTo EditLandingPageAction { .. }
