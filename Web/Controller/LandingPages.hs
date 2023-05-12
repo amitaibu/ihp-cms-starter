@@ -67,7 +67,7 @@ instance Controller LandingPagesController where
                                         ) => record -> IO ()
                                 updateParagraph paragraph = do
                                     let uuid = unpackId paragraph.id
-                                    let weight = elemIndex uuid uuids |> fromMaybe
+                                    let weight = elemIndex uuid uuids |> fromMaybe 0
 
                                     paragraph
                                         |> set #weight weight
