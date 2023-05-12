@@ -62,6 +62,18 @@ instance Controller LandingPagesController where
                                     |> set #weight weight
                                     |> updateRecord
 
+
+                                pure ()
+
+                            forEach landingPage.paragraphQuotes \paragraph -> do
+                                let uuid = unpackId paragraph.id
+                                let weight = elemIndex uuid uuids |> fromMaybe 0
+
+                                paragraph
+                                    |> set #weight weight
+                                    |> updateRecord
+
+
                                 pure ()
 
                             pure ()
