@@ -15,8 +15,9 @@ instance Controller ParagraphCtasController where
         -- Default weight should be the total of existing paragraphs on the landing page plus one.
         -- So we need to fetch the landing page with the paragraphs, and then count them.
         landingPage <- fetchLandingPageWithParagraphs landingPageId
-        let weight = landingPage.paragraphCtas |> length |> (+) 1
-
+        let weight = length landingPage.paragraphCtas
+                        + length landingPage.paragraphQuotes
+                        + 1
 
         let paragraphCta = newRecord
                 |> set #landingPageId landingPageId
