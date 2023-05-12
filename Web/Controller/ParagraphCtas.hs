@@ -12,7 +12,12 @@ instance Controller ParagraphCtasController where
         render IndexView { .. }
 
     action NewParagraphCtaAction { landingPageId } = do
-        let paragraphCta = newRecord |> set #landingPageId landingPageId
+        weight <- getParagraphsCount landingPageId
+
+        let paragraphCta = newRecord
+                |> set #landingPageId landingPageId
+                |> set #weight weight
+
         render NewView { .. }
 
     action ShowParagraphCtaAction { paragraphCtaId } = do
@@ -32,7 +37,7 @@ instance Controller ParagraphCtasController where
                 Right paragraphCta -> do
                     paragraphCta <- paragraphCta |> updateRecord
                     setSuccessMessage "ParagraphCta updated"
-                    redirectTo EditParagraphCtaAction { .. }
+                    redirectTo EditLandingPageAction { landingPageId = paragraphCta.landingPageId }
 
     action CreateParagraphCtaAction = do
         let paragraphCta = newRecord @ParagraphCta
@@ -43,7 +48,7 @@ instance Controller ParagraphCtasController where
                 Right paragraphCta -> do
                     paragraphCta <- paragraphCta |> createRecord
                     setSuccessMessage "ParagraphCta created"
-                    redirectTo ParagraphCtaAction
+                    redirectTo EditLandingPageAction { landingPageId = paragraphCta.landingPageId }
 
     action DeleteParagraphCtaAction { paragraphCtaId } = do
         paragraphCta <- fetch paragraphCtaId

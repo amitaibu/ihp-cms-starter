@@ -16,16 +16,13 @@ instance Controller LandingPagesController where
         render NewView { .. }
 
     action ShowLandingPageAction { landingPageId } = do
-        landingPage <- fetch landingPageId
-            >>= pure . modify #paragraphCtas (orderByDesc #weight)
-            >>= pure . modify #paragraphQuotes (orderByDesc #weight)
-            >>= fetchRelated #paragraphCtas
-            >>= fetchRelated #paragraphQuotes
+        landingPage <- fetchLandingPageWithParagraphs landingPageId
 
         render ShowView { .. }
 
     action EditLandingPageAction { landingPageId } = do
-        landingPage <- fetch landingPageId
+        landingPage <- fetchLandingPageWithParagraphs landingPageId
+
         render EditView { .. }
 
     action UpdateLandingPageAction { landingPageId } = do
@@ -33,7 +30,12 @@ instance Controller LandingPagesController where
         landingPage
             |> buildLandingPage
             |> ifValid \case
-                Left landingPage -> render EditView { .. }
+                Left landingPage -> do
+
+                    -- Fetch the paragraphs again, because we need to show the validation errors.
+                    landingPage <- fetchLandingPageWithParagraphs landingPageId
+
+                    render EditView { .. }
                 Right landingPage -> do
                     landingPage <- landingPage |> updateRecord
                     setSuccessMessage "LandingPage updated"
@@ -59,3 +61,4 @@ instance Controller LandingPagesController where
 
 buildLandingPage landingPage = landingPage
     |> fill @'["title", "slug"]
+

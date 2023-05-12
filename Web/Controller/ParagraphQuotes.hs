@@ -12,7 +12,11 @@ instance Controller ParagraphQuotesController where
         render IndexView { .. }
 
     action NewParagraphQuoteAction { landingPageId } = do
-        let paragraphQuote = newRecord |> set #landingPageId landingPageId
+        weight <- getParagraphsCount landingPageId
+        let paragraphQuote = newRecord
+                |> set #landingPageId landingPageId
+                |> set #weight weight
+
         render NewView { .. }
 
     action ShowParagraphQuoteAction { paragraphQuoteId } = do
@@ -32,7 +36,7 @@ instance Controller ParagraphQuotesController where
                 Right paragraphQuote -> do
                     paragraphQuote <- paragraphQuote |> updateRecord
                     setSuccessMessage "ParagraphQuote updated"
-                    redirectTo EditParagraphQuoteAction { .. }
+                    redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
     action CreateParagraphQuoteAction = do
         let paragraphQuote = newRecord @ParagraphQuote
@@ -43,7 +47,7 @@ instance Controller ParagraphQuotesController where
                 Right paragraphQuote -> do
                     paragraphQuote <- paragraphQuote |> createRecord
                     setSuccessMessage "ParagraphQuote created"
-                    redirectTo ParagraphQuotesAction
+                    redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
     action DeleteParagraphQuoteAction { paragraphQuoteId } = do
         paragraphQuote <- fetch paragraphQuoteId
