@@ -54,7 +54,7 @@ instance Controller LandingPagesController where
 
                             -- Iterate over all paragraphs, and update the weight.
                             -- @todo: Iterate over all paragraphs.
-                            forEach landingPage.paragraphCta \paragraph -> do
+                            forEach landingPage.paragraphCtas \paragraph -> do
                                 let uuid = unpackId paragraph.id
                                 let weight = elemIndex uuid uuids |> fromMaybe 0
 
