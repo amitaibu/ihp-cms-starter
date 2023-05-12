@@ -32,7 +32,7 @@ instance Controller ParagraphCtasController where
                 Right paragraphCta -> do
                     paragraphCta <- paragraphCta |> updateRecord
                     setSuccessMessage "ParagraphCta updated"
-                    redirectTo EditParagraphCtaAction { .. }
+                    redirectTo EditLandingPageAction { landingPageId = paragraphCta.landingPageId }
 
     action CreateParagraphCtaAction = do
         let paragraphCta = newRecord @ParagraphCta

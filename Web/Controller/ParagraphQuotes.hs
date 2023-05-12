@@ -32,7 +32,7 @@ instance Controller ParagraphQuotesController where
                 Right paragraphQuote -> do
                     paragraphQuote <- paragraphQuote |> updateRecord
                     setSuccessMessage "ParagraphQuote updated"
-                    redirectTo EditParagraphQuoteAction { .. }
+                    redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
     action CreateParagraphQuoteAction = do
         let paragraphQuote = newRecord @ParagraphQuote

@@ -7,7 +7,10 @@ data EditView = EditView { landingPage :: Include' ["paragraphCtas", "paragraphQ
 instance View EditView where
     html EditView { .. } = [hsx|
         {breadcrumb}
-        <h1>Edit LandingPage</h1>
+        <div class="flex flex-row gap-2">
+            <h1>Edit {landingPage.title}</h1>
+            <div><a href={ShowLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline">(Show)</a></div>
+        </div>
         {renderForm landingPage}
     |]
         where
