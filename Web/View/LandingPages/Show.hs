@@ -26,7 +26,7 @@ instance View ShowView where
                             ]
 
 
--- orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> Text.Blaze.Html.Html
+orderAndRenderParagraphs :: (?context::ControllerContext) => [ParagraphCta] -> [ParagraphQuote] -> Text.Blaze.Html.Html
 orderAndRenderParagraphs ctas quotes =
     [hsx|{forEach allSorted (\rendered -> rendered)}|]
     where
