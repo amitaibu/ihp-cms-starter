@@ -57,6 +57,7 @@ orderAndRenderParagraphs ctas quotes =
             [hsx|
                 <li class="flex flex-row gap-2 items-baseline">
                     <input type="hidden" name="paragraphId" value={show id} />
+
                     {title} <span class="text-sm text-gray-600">({type_})</span>
                     <div>
                         <a href={pathTo $ action id} class="text-blue-500 text-sm hover:underline">Edit</a>
