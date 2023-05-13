@@ -51,10 +51,10 @@ orderAndRenderParagraphs ctas quotes =
     [hsx|{forEach allSorted (\rendered -> rendered)}|]
     where
         ctas' = ctas
-            |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphCtaAction paragraph.id paragraph.title ("CTA" :: Text)))
+            |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphCtaAction DeleteParagraphCtaAction paragraph.id paragraph.title ("CTA" :: Text)))
 
         quotes' = quotes
-            |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphQuoteAction paragraph.id paragraph.title ("Quote" :: Text)))
+            |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphQuoteAction DeleteParagraphQuoteAction paragraph.id paragraph.title ("Quote" :: Text)))
 
 
         allSorted = ctas' ++ quotes'
@@ -62,8 +62,8 @@ orderAndRenderParagraphs ctas quotes =
             |> fmap snd
 
         -- Show the paragraph title and the operations to perform on it.
-        paragraphTitleAndOps :: (Show (PrimaryKey record), AutoRoute controller, HasPath controller) => (Id' record -> controller) -> Id' record -> Text -> Text -> Html
-        paragraphTitleAndOps action id title type_  =
+        paragraphTitleAndOps :: (Show (PrimaryKey record), AutoRoute controller, HasPath controller) => (Id' record -> controller) -> (Id' record -> controller) -> Id' record -> Text -> Text -> Html
+        paragraphTitleAndOps editAction deleteAction id title type_  =
             [hsx|
                 <li class="flex flex-row gap-2 items-baseline">
 
@@ -72,8 +72,9 @@ orderAndRenderParagraphs ctas quotes =
                     <input type="hidden" name="paragraphId" value={show id} />
 
                     {title} <span class="text-sm text-gray-600">({type_})</span>
-                    <div>
-                        <a href={pathTo $ action id} class="text-blue-500 text-sm hover:underline">Edit</a>
+                    <div class="flex flex-row gap-2">
+                        <a href={pathTo $ editAction id} class="js-delete text-blue-500 text-sm hover:underline">Edit</a>
+                        <a href={pathTo $ deleteAction id} class="js-delete text-blue-500 text-sm hover:underline">Delete</a>
                     </div>
                 </li>
             |]
