@@ -54,8 +54,6 @@ instance Controller LandingPagesController where
 
                             -- Iterate over all paragraphs, and update the weight.
                             forEach landingPage.paragraphCtas updateParagraph
-
-                            -- @todo: If I uncomment this, it results with a compiler error.
                             forEach landingPage.paragraphQuotes updateParagraph
 
                             where
