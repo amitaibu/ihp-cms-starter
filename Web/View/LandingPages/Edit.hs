@@ -28,7 +28,7 @@ renderForm landingPage = formFor landingPage [hsx|
 
     <div class="flex flex-col gap-y-4">
         {(textField #title)}
-        {(textField #slug)}
+        {(textField #slug) {helpText = "This will be used in the URL. It should be unique."}}
 
         <div class="flex flex-col gap-y-4 border p-4">
             <h3 class="text-xl">Paragraphs</h3>

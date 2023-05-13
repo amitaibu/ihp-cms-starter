@@ -18,9 +18,11 @@ instance View NewView where
 renderForm :: LandingPage -> Html
 renderForm landingPage = formFor landingPage [hsx|
 
-    {(textField #title)}
-    {(textField #slug)}
+    <div class="flex flex-col gap-y-4">
+        {(textField #title)}
+        {(textField #slug) {helpText = "This will be used in the URL. It should be unique."}}
 
-    {submitButton}
+        <div>{submitButton}</div>
+    </div>
 
 |]
