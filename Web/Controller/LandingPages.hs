@@ -38,9 +38,6 @@ instance Controller LandingPagesController where
 
                     render EditView { landingPage = landingPageWithMeta }
 
-
-
-
                 Right landingPage -> do
                     landingPage <- landingPage |> updateRecord
 
