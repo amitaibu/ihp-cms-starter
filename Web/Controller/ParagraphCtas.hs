@@ -54,7 +54,7 @@ instance Controller ParagraphCtasController where
         paragraphCta <- fetch paragraphCtaId
         deleteRecord paragraphCta
         setSuccessMessage "ParagraphCta deleted"
-        redirectTo ParagraphCtaAction
+        redirectTo EditLandingPageAction { landingPageId = paragraphCta.landingPageId }
 
 buildParagraphCta paragraphCta = paragraphCta
     |> fill @'["title", "landingPageId", "weight"]

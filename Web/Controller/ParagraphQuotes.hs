@@ -53,7 +53,7 @@ instance Controller ParagraphQuotesController where
         paragraphQuote <- fetch paragraphQuoteId
         deleteRecord paragraphQuote
         setSuccessMessage "ParagraphQuote deleted"
-        redirectTo ParagraphQuotesAction
+        redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
 buildParagraphQuote paragraphQuote = paragraphQuote
     |> fill @["title", "landingPageId", "weight"]
