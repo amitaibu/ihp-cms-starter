@@ -35,7 +35,7 @@ renderForm landingPage = formFor landingPage [hsx|
             <li><a href={pathTo $ NewParagraphQuoteAction landingPage.id } class="inline-block border border-gray-500 rounded-lg px-4 py-2">+ Quote</a></li>
         </ul>
 
-        <ul id="sortable">
+        <ul class="js-sortable">
             {orderAndRenderParagraphs landingPage.paragraphCtas landingPage.paragraphQuotes}
         </ul>
 
