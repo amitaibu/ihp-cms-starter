@@ -73,7 +73,7 @@ orderAndRenderParagraphs ctas quotes =
 
                     {title} <span class="text-sm text-gray-600">({type_})</span>
                     <div class="flex flex-row gap-2">
-                        <a href={pathTo $ editAction id} class="js-delete text-blue-500 text-sm hover:underline">Edit</a>
+                        <a href={pathTo $ editAction id} class="text-blue-500 text-sm hover:underline">Edit</a>
                         <a href={pathTo $ deleteAction id} class="js-delete text-blue-500 text-sm hover:underline">Delete</a>
                     </div>
                 </li>
