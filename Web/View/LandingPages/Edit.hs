@@ -47,7 +47,7 @@ renderForm landingPage = formFor landingPage [hsx|
 
 |]
 
--- orderAndRenderParagraphs :: (?context::ControllerContext) => [ParagraphCta] -> [ParagraphQuote] -> Text.Blaze.Html.Html
+orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> Html
 orderAndRenderParagraphs ctas quotes =
     [hsx|{forEach allSorted (\rendered -> rendered)}|]
     where
@@ -57,12 +57,13 @@ orderAndRenderParagraphs ctas quotes =
         quotes' = quotes
             |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphQuoteAction paragraph.id paragraph.title ("Quote" :: Text)))
 
+
         allSorted = ctas' ++ quotes'
             |> sortOn fst
             |> fmap snd
 
+        -- Show the paragraph title and the operations to perform on it.
         paragraphTitleAndOps action id title type_  =
-            -- Show the paragraph title and the operations to perform on it.
             [hsx|
                 <li class="flex flex-row gap-2 items-baseline">
 
