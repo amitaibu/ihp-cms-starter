@@ -63,7 +63,6 @@ instance Controller LandingPagesController where
                                         ( HasField "id" record (Id record)
                                         , SetField "weight" record Int
                                         , CanUpdate record
-                                        , Show (PrimaryKey (GetTableName record))
                                         , PrimaryKey (GetTableName record) ~ UUID
                                         , ?modelContext :: ModelContext
                                         ) => record -> IO ()
