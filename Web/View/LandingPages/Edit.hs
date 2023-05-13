@@ -44,8 +44,10 @@ renderForm landingPage = formFor landingPage [hsx|
 
         <div>{submitButton}</div>
     </div>
-
 |]
+
+
+
 
 orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> Html
 orderAndRenderParagraphs ctas quotes =
@@ -80,7 +82,7 @@ orderAndRenderParagraphs ctas quotes =
 
         sortableHandle =
             if
-                length allSorted > 1
+                length ctas + length quotes > 1
             then
                 [hsx|
                     <div class="sortable-handle">
