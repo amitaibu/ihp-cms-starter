@@ -100,4 +100,6 @@ instance Controller LandingPagesController where
 
 buildLandingPage landingPage = landingPage
     |> fill @'["title", "slug"]
+    |> validateField #title nonEmpty
+    |> validateField #slug nonEmpty
 
