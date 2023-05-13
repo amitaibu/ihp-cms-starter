@@ -35,7 +35,8 @@ instance Controller LandingPagesController where
 
                 Right landingPage -> do
                     landingPage
-                        |> extractLandingPageFromInclude
+                        |> clear1
+                        |> clear2
                         |> updateRecord
 
                     -- After we update the Landing page, we can set the order of the paragraphs.
@@ -73,9 +74,13 @@ instance Controller LandingPagesController where
                     setSuccessMessage "LandingPage updated"
                     redirectTo EditLandingPageAction { .. }
                     where
-                        extractLandingPageFromInclude :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage -> LandingPage
-                        extractLandingPageFromInclude landingPage = landingPage
+                        clear1 :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage -> Include "paragraphQuotes" LandingPage
+                        clear1 landingPage = landingPage
                             |> updateField @"paragraphCtas" (newRecord @LandingPage).paragraphCtas
+
+
+                        clear2 :: Include "paragraphQuotes" LandingPage -> LandingPage
+                        clear2 landingPage = landingPage
                             |> updateField @"paragraphQuotes" (newRecord @LandingPage).paragraphQuotes
 
     action CreateLandingPageAction = do
