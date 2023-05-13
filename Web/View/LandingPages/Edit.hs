@@ -1,6 +1,6 @@
 module Web.View.LandingPages.Edit where
 import Web.View.Prelude
-
+import Web.Controller.Prelude
 
 data EditView = EditView { landingPage :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage }
 
@@ -46,9 +46,6 @@ renderForm landingPage = formFor landingPage [hsx|
     </div>
 |]
 
-
-
-
 orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> Html
 orderAndRenderParagraphs ctas quotes =
     [hsx|{forEach allSorted (\rendered -> rendered)}|]
@@ -65,6 +62,7 @@ orderAndRenderParagraphs ctas quotes =
             |> fmap snd
 
         -- Show the paragraph title and the operations to perform on it.
+        paragraphTitleAndOps :: (Show (PrimaryKey record), AutoRoute controller, HasPath controller) => (Id' record -> controller) -> Id' record -> Text -> Text -> Html
         paragraphTitleAndOps action id title type_  =
             [hsx|
                 <li class="flex flex-row gap-2 items-baseline">
