@@ -26,18 +26,18 @@ instance Controller LandingPagesController where
         render EditView { .. }
 
     action UpdateLandingPageAction { landingPageId } = do
-        landingPage <- fetch landingPageId
+        landingPage <- fetchLandingPageWithParagraphs landingPageId
         landingPage
             |> buildLandingPage
             |> ifValid \case
-                Left landingPage -> do
-
-                    -- Fetch the paragraphs again, because we need to show the validation errors.
-                    landingPage <- fetchLandingPageWithParagraphs landingPageId
-
+                Left landingPage ->
                     render EditView { .. }
+
                 Right landingPage -> do
-                    landingPage <- landingPage |> updateRecord
+                    landingPage
+                        |> clear1
+                        |> clear2
+                        |> updateRecord
 
                     -- After we update the Landing page, we can set the order of the paragraphs.
                     let params = paramListOrNothing @UUID "paragraphId"
@@ -48,10 +48,6 @@ instance Controller LandingPagesController where
                             pure ()
 
                         uuids -> do
-                            -- We need to update the weight of the paragraphs,
-                            -- So load them.
-                            landingPage <- fetchLandingPageWithParagraphs landingPageId
-
                             -- Iterate over all paragraphs, and update the weight.
                             forEach landingPage.paragraphCtas updateParagraph
                             forEach landingPage.paragraphQuotes updateParagraph
@@ -77,6 +73,15 @@ instance Controller LandingPagesController where
 
                     setSuccessMessage "LandingPage updated"
                     redirectTo EditLandingPageAction { .. }
+                    where
+                        clear1 :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage -> Include "paragraphQuotes" LandingPage
+                        clear1 landingPage = landingPage
+                            |> updateField @"paragraphCtas" (newRecord @LandingPage).paragraphCtas
+
+
+                        clear2 :: Include "paragraphQuotes" LandingPage -> LandingPage
+                        clear2 landingPage = landingPage
+                            |> updateField @"paragraphQuotes" (newRecord @LandingPage).paragraphQuotes
 
     action CreateLandingPageAction = do
         let landingPage = newRecord @LandingPage
