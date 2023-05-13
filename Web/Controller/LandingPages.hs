@@ -33,9 +33,11 @@ instance Controller LandingPagesController where
                 Left landingPage -> do
 
                     -- Fetch the paragraphs again, because we need to show the validation errors.
-                    landingPage <- fetchLandingPageWithParagraphs landingPageId
+                    landingPageWithParagraphs <- fetchLandingPageWithParagraphs landingPageId
+                    let landingPageWithMeta = landingPageWithParagraphs |> set #meta landingPage.meta
 
-                    render EditView { .. }
+                    render EditView { landingPage = landingPageWithMeta }
+
                 Right landingPage -> do
                     landingPage <- landingPage |> updateRecord
 
@@ -98,4 +100,6 @@ instance Controller LandingPagesController where
 
 buildLandingPage landingPage = landingPage
     |> fill @'["title", "slug"]
+    |> validateField #title nonEmpty
+    |> validateField #slug nonEmpty
 
