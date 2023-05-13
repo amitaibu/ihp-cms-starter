@@ -62,7 +62,7 @@ orderAndRenderParagraphs ctas quotes =
             |> fmap snd
 
         -- Show the paragraph title and the operations to perform on it.
-        paragraphTitleAndOps :: (Show (PrimaryKey record), AutoRoute controller, HasPath controller) => (Id' record -> controller) -> (Id' record -> controller) -> Id' record -> Text -> Text -> Html
+        paragraphTitleAndOps :: (Show (PrimaryKey record), HasPath controller) => (Id' record -> controller) -> (Id' record -> controller) -> Id' record -> Text -> Text -> Html
         paragraphTitleAndOps editAction deleteAction id title type_  =
             [hsx|
                 <li class="flex flex-row gap-2 items-baseline">
