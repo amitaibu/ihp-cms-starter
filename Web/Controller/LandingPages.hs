@@ -34,16 +34,10 @@ instance Controller LandingPagesController where
 
                     -- Fetch the paragraphs again, because we need to show the validation errors.
                     landingPageWithParagraphs <- fetchLandingPageWithParagraphs landingPageId
+                    let landingPageWithMeta = landingPageWithParagraphs |> set #meta landingPage.meta
 
-                    render EditView { landingPage = landingPage |> set1 landingPageWithParagraphs |> set2 landingPageWithParagraphs }
-                    where
-                        set1 :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage -> LandingPage -> Include "paragraphCtas" LandingPage
-                        set1 landingPageWithParagraphs landingPage = landingPage
-                            |> updateField @"paragraphCtas" landingPageWithParagraphs.paragraphCtas
+                    render EditView { landingPage = landingPageWithMeta }
 
-                        set2 :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage -> Include "paragraphCtas" LandingPage -> Include' ["paragraphCtas", "paragraphQuotes"] LandingPage
-                        set2 landingPageWithParagraphs landingPage  = landingPage
-                            |> updateField @"paragraphQuotes" landingPageWithParagraphs.paragraphQuotes
 
 
 
