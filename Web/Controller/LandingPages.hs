@@ -38,6 +38,45 @@ instance Controller LandingPagesController where
                     render EditView { .. }
                 Right landingPage -> do
                     landingPage <- landingPage |> updateRecord
+
+                    -- After we update the Landing page, we can set the order of the paragraphs.
+                    let params = paramListOrNothing @UUID "paragraphId"
+
+                    case catMaybes params of
+                        [] -> do
+                            -- No paragraphs to update.
+                            pure ()
+
+                        uuids -> do
+                            -- We need to update the weight of the paragraphs,
+                            -- So load them.
+                            landingPage <- fetchLandingPageWithParagraphs landingPageId
+
+                            -- Iterate over all paragraphs, and update the weight.
+                            forEach landingPage.paragraphCtas updateParagraph
+
+                            -- @todo: If I uncomment this, it results with a compiler error.
+                            forEach landingPage.paragraphQuotes updateParagraph
+
+                            where
+                                updateParagraph :: forall record.
+                                        ( HasField "id" record (Id record)
+                                        , SetField "weight" record Int
+                                        , CanUpdate record
+                                        , PrimaryKey (GetTableName record) ~ UUID
+                                        , ?modelContext :: ModelContext
+                                        ) => record -> IO ()
+                                updateParagraph paragraph = do
+                                    let uuid :: UUID = unpackId paragraph.id
+                                    let weight = elemIndex uuid uuids |> fromMaybe 0
+
+                                    paragraph
+                                        |> set #weight weight
+                                        |> updateRecord
+
+
+                                    pure ()
+
                     setSuccessMessage "LandingPage updated"
                     redirectTo EditLandingPageAction { .. }
 
