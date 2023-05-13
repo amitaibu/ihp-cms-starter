@@ -47,7 +47,6 @@ instance Controller LandingPagesController where
                             pure ()
 
                         uuids -> do
-
                             -- Iterate over all paragraphs, and update the weight.
                             forEach landingPage.paragraphCtas updateParagraph
                             forEach landingPage.paragraphQuotes updateParagraph
