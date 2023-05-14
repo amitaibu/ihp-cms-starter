@@ -8,7 +8,7 @@ import Web.View.Prelude
 buildLink :: (HasPath controller) => controller -> Text -> Bool ->  Html
 buildLink action text isDeleteAction =
     [hsx|
-        <a href={pathTo action} class="{classes'}">{text}</a>
+        <a href={pathTo action} class={classes'}>{text}</a>
     |]
     where
         classes' = classes
