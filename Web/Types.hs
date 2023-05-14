@@ -52,7 +52,7 @@ data ParagraphCtasController
 data LandingPagesController
     = LandingPagesAction
     | NewLandingPageAction
-    | ShowLandingPageAction { landingPageId :: !(Id LandingPage) }
+    | ShowLandingPageAction { slug :: !Text }
     | CreateLandingPageAction
     | EditLandingPageAction { landingPageId :: !(Id LandingPage) }
     | UpdateLandingPageAction { landingPageId :: !(Id LandingPage) }

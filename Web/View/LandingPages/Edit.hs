@@ -9,7 +9,7 @@ instance View EditView where
         {breadcrumb}
         <div class="flex flex-row gap-2">
             <h1>Edit {landingPage.title}</h1>
-            <div><a href={ShowLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline">(Show)</a></div>
+            <div><a href={ShowLandingPageAction landingPage.slug} class="text-blue-500 text-sm hover:underline">(Show)</a></div>
         </div>
         {renderForm landingPage}
 

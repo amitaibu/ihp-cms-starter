@@ -17,5 +17,16 @@ instance AutoRoute ParagraphFeaturedArticlesController
 instance AutoRoute ParagraphCtasController
 
 
-instance AutoRoute LandingPagesController
 
+
+instance CanRoute LandingPagesController where
+    parseRoute' = do
+        string "/landing-pages/"
+        slug <- remainingText
+        pure ShowLandingPageAction { slug = slug }
+
+-- instance HasPath LandingPagesController where
+--     pathTo ShowLandingPageAction { slug = slug } = "/landing-pages/" <> slug
+
+
+instance AutoRoute LandingPagesController

@@ -15,8 +15,9 @@ instance Controller LandingPagesController where
         let landingPage = newRecord
         render NewView { .. }
 
-    action ShowLandingPageAction { landingPageId } = do
-        landingPage <- fetchLandingPageWithParagraphs landingPageId
+    action ShowLandingPageAction { slug } = do
+        landingPage <- query @LandingPage |> filterWhere (#slug, slug) |> fetchOne
+        landingPage <- fetchLandingPageWithParagraphs landingPage.id
 
         render ShowView { .. }
 
@@ -105,4 +106,3 @@ buildLandingPage landingPage = landingPage
     |> fill @'["title", "slug"]
     |> validateField #title nonEmpty
     |> validateField #slug nonEmpty
-

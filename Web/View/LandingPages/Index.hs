@@ -32,7 +32,7 @@ renderLandingPage :: LandingPage -> Html
 renderLandingPage landingPage = [hsx|
     <tr>
         <td>{landingPage.title}</td>
-        <td><a href={ShowLandingPageAction landingPage.id}>Show</a></td>
+        <td><a href={ShowLandingPageAction landingPage.slug}>Show</a></td>
         <td><a href={EditLandingPageAction landingPage.id} class="text-muted">Edit</a></td>
         <td><a href={DeleteLandingPageAction landingPage.id} class="js-delete text-muted">Delete</a></td>
     </tr>
