@@ -2,6 +2,7 @@ module Web.View.LandingPages.Edit where
 import Web.View.Prelude
 import Web.Controller.Prelude
 import Web.Element.ElementBuild
+import Web.Element.ElementWrap
 
 data EditView = EditView { landingPage :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage }
 

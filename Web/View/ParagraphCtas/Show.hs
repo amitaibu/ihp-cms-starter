@@ -1,5 +1,6 @@
 module Web.View.ParagraphCtas.Show where
 import Web.View.Prelude
+import Web.Element.ElementWrap
 
 data ShowView = ShowView { paragraphCta :: ParagraphCta }
 
@@ -18,10 +19,13 @@ instance View ShowView where
 
 
 
-renderParagraph :: Text -> Html
-renderParagraph title =
-    [hsx|
-    <div>
-        <h1 class="text-3xl font-bold">CTA: {title}</h1>
-    </div>
-    |]
+renderParagraph :: Text -> Text -> Html
+renderParagraph title body =
+    titleWrapped ++ bodyWrapper
+    |> wrapContainerVerticalSpacing
+    where
+        titleWrapped = cs title
+            |> wrapHeaderTag 1
+
+        bodyWrapper = cs body
+            |> wrapProse
