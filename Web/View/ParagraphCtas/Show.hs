@@ -1,6 +1,7 @@
 module Web.View.ParagraphCtas.Show where
 import Web.View.Prelude
 import Web.Element.ElementWrap
+import Web.Element.InnerElementLayout
 
 data ShowView = ShowView { paragraphCta :: ParagraphCta }
 
@@ -22,7 +23,8 @@ instance View ShowView where
 renderParagraph :: Text -> Text -> Html
 renderParagraph title body =
     titleWrapped ++ bodyWrapper
-    |> wrapContainerVerticalSpacing
+    |> wrapContainerVerticalSpacing AlignCenter
+    |> buildInnerElementLayout
     |> wrapContainerNarrow
     |> wrapBackgroundColor Gray100
     where

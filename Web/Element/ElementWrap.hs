@@ -3,10 +3,16 @@ module Web.Element.ElementWrap where
 import Web.View.Prelude
 import Text.Blaze.Internal
 
--- Containers
+-- Types
 
 -- Define type of colors
-data Color = Gray100 | Gray500
+data Color = Gray100 | Gray500 deriving (Eq, Show)
+
+data Align = AlignStart | AlignCenter | AlignEnd | AlignNone deriving (Eq, Show)
+
+-- Containers
+
+
 
 getBackgroundColor :: Color -> Text
 getBackgroundColor color =
@@ -40,19 +46,35 @@ wrapContainerNarrow element =
 
 -- Spacing
 
-wrapContainerVerticalSpacing :: Html -> Html
-wrapContainerVerticalSpacing element =
+wrapContainerVerticalSpacing :: Align -> Html -> Html
+wrapContainerVerticalSpacing align element =
     case element of
         Empty _ -> mempty
-        _ -> [hsx|<div class="flex flex-col gap-y-5 md:gap-y-6">{element}</div>|]
+        _ -> [hsx|<div class={classes'}>{element}</div>|]
+    where
+        classes' =
+            classes
+            [ "flex flex-col gap-y-5 md:gap-y-6"
+            , ("items-start", align == AlignStart)
+            , ("items-center", align == AlignCenter)
+            , ("items-end", align == AlignEnd)
+            ]
 
 
 
-wrapContainerVerticalSpacingTiny :: Html -> Html
-wrapContainerVerticalSpacingTiny element =
+wrapContainerVerticalSpacingTiny :: Align -> Html -> Html
+wrapContainerVerticalSpacingTiny align element =
     case element of
         Empty _ -> mempty
-        _ -> [hsx|<div class="flex flex-col gap-y-2">{element}</div>|]
+        _ -> [hsx|<div class={classes'}>{element}</div>|]
+    where
+        classes' =
+            classes
+            [ "flex flex-col gap-y-2"
+            , ("items-start", align == AlignStart)
+            , ("items-center", align == AlignCenter)
+            , ("items-end", align == AlignEnd)
+            ]
 
 
 -- Text
