@@ -23,6 +23,8 @@ renderParagraph :: Text -> Text -> Html
 renderParagraph title body =
     titleWrapped ++ bodyWrapper
     |> wrapContainerVerticalSpacing
+    |> wrapContainerNarrow
+    |> wrapBackgroundColor Gray100
     where
         titleWrapped = cs title
             |> wrapHeaderTag 1

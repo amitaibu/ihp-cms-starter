@@ -3,6 +3,41 @@ module Web.Element.ElementWrap where
 import Web.View.Prelude
 import Text.Blaze.Internal
 
+-- Containers
+
+-- Define type of colors
+data Color = Gray100 | Gray500
+
+getBackgroundColor :: Color -> Text
+getBackgroundColor color =
+    case color of
+        Gray100 -> "bg-gray-100"
+        Gray500 -> "bg-gray-500"
+
+
+wrapBackgroundColor :: Color -> Html -> Html
+wrapBackgroundColor color element =
+        case element of
+        Empty _ -> mempty
+        _ -> [hsx|<div class={getBackgroundColor color}>{element}</div>|]
+
+
+{- Wrap an element with a wide container -}
+wrapContainerWide :: Html -> Html
+wrapContainerWide element =
+    case element of
+        Empty _ -> mempty
+        _ -> [hsx|<div class="container-wide w-full">{element}</div>|]
+
+
+{- Wrap an element with a narrow container -}
+wrapContainerNarrow :: Html -> Html
+wrapContainerNarrow element =
+    case element of
+        Empty _ -> mempty
+        _ -> [hsx|<div class="container-narrow w-full">{element}</div>|]
+
+
 -- Spacing
 
 wrapContainerVerticalSpacing :: Html -> Html
@@ -59,5 +94,6 @@ wrapHeaderTag number element =
             5 -> [hsx|<h5>{element}</h5>|]
             6 -> [hsx|<h6>{element}</h6>|]
             _ -> mempty
+
 
 
