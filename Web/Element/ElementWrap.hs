@@ -8,7 +8,7 @@ import Text.Blaze.Internal
 -- Define type of colors
 data Color = Gray100 | Gray500 deriving (Eq, Show)
 
-data Align = AlignStart | AlignCenter | AlignEnd | AlignNone deriving (Eq, Show)
+data Align = AlignNone | AlignStart | AlignCenter | AlignEnd deriving (Eq, Show)
 
 -- Containers
 

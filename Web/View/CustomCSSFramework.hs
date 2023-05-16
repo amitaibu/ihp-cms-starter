@@ -26,6 +26,7 @@ customTailwind = def
     , styledTextareaFormField
     , styledCheckboxFormField
     , styledSelectFormField
+    , styledSubmitButton
     , styledSubmitButtonClass
     , styledFormGroupClass
     , styledFormFieldHelp
@@ -192,6 +193,15 @@ customTailwind = def
 
         styledInputClass _ FormField {} = "focus:ring-blue-500 focus:border-blue-500 block w-full border-gray-300 rounded-md"
         styledInputInvalidClass _ _ = "is-invalid"
+
+        styledSubmitButton cssFramework SubmitButton { label, buttonClass } =
+            let className :: Text = cssFramework.styledSubmitButtonClass
+            in [hsx|
+                <div class="inline-block">
+                    <button class={classes [(className, True), (buttonClass, not (null buttonClass))]} type="submit">{label}</button>
+                </div>
+            |]
+
 
         styledSubmitButtonClass = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
 
