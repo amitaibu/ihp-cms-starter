@@ -31,5 +31,5 @@ renderParagraph title body =
         titleWrapped = cs title
             |> wrapHeaderTag 1
 
-        bodyWrapper = cs body
+        bodyWrapper = body |> preEscapedToHtml
             |> wrapProse

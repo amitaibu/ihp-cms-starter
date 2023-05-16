@@ -118,8 +118,9 @@ customTailwind = def
                 {helpText}
             |]
             where
-                twLabelClass = "font-medium text-gray-700" <> " " <> labelClass
-                label = unless (disableLabel || null fieldLabel) [hsx|<label class={twLabelClass} for={fieldInputId}>{fieldLabel}</label>|]
+                twLabelClass = "font-medium text-gray-700 flex flex-row gap-x-1" <> " " <> labelClass
+                label = unless (disableLabel || null fieldLabel) [hsx|<label class={twLabelClass} for={fieldInputId}>{fieldLabel}{requiredAsterisk}</label>|]
+                requiredAsterisk = if required then [hsx|<span class="text-red-500">*</span>|] else mempty
                 inputClass = (styledInputClass cssFramework formField, True)
                 inputInvalidClass = styledInputInvalidClass cssFramework formField
                 helpText = styledFormFieldHelp cssFramework formField
@@ -143,8 +144,9 @@ customTailwind = def
                 >{fieldValue}</textarea>{validationResult}{helpText}
             |]
             where
-                twLabelClass = classes ["font-medium text-gray-700", (labelClass, not (null labelClass))]
-                label = unless (disableLabel || null fieldLabel) [hsx|<label class={twLabelClass} for={fieldInputId}>{fieldLabel}</label>|]
+                twLabelClass = classes ["font-medium text-gray-700 flex flex-row gap-x-1", (labelClass, not (null labelClass))]
+                label = unless (disableLabel || null fieldLabel) [hsx|<label class={twLabelClass} for={fieldInputId}>{fieldLabel}{requiredAsterisk}</label>|]
+                requiredAsterisk = if required then [hsx|<span class="text-red-500">*</span>|] else mempty
                 inputClass = (styledInputClass cssFramework formField, True)
                 inputInvalidClass = styledInputInvalidClass cssFramework formField
                 helpText = styledFormFieldHelp cssFramework formField
