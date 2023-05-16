@@ -28,7 +28,7 @@ instance View EditView where
 renderForm :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage -> Html
 renderForm landingPage = formFor landingPage [hsx|
 
-    <div class="flex flex-col gap-y-4">
+    <div class="container-wide flex flex-col gap-y-4">
         {(textField #title)}
         {(textField #slug) {helpText = "This will be used in the URL. It should be unique."}}
 
@@ -44,7 +44,7 @@ renderForm landingPage = formFor landingPage [hsx|
             </ul>
         </div>
 
-        <div>{submitButton}</div>
+        {submitButton {label = "Save Landing page"}}
     </div>
 |]
 
