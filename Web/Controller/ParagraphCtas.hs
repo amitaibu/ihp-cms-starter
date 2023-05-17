@@ -12,9 +12,6 @@ instance Controller ParagraphCtasController where
         render IndexView { .. }
 
     action NewParagraphCtaAction { landingPageId } = do
-        -- Get all landing pages, so we can select the one we want to link to.
-        landingPages <- query @LandingPage |> fetch
-
         weight <- getParagraphsCount landingPageId
 
         let paragraphCta = newRecord
@@ -39,8 +36,7 @@ instance Controller ParagraphCtasController where
         paragraphCta
             |> buildParagraphCta
             |> ifValid \case
-                Left paragraphCta -> do
-                    landingPages <- query @LandingPage |> fetch
+                Left paragraphCta ->
                     render EditView { .. }
                 Right paragraphCta -> do
                     paragraphCta <- paragraphCta |> updateRecord
