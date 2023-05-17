@@ -12,14 +12,20 @@ instance Controller ParagraphCtasController where
         render IndexView { .. }
 
     action NewParagraphCtaAction { landingPageId } = do
+        -- Get all landing pages, so we can select the one we want to link to.
+        landingPages <- query @LandingPage |> fetch
+
+        let landingPageId = headMay landingPages |> maybe def (.id)
+
+
         weight <- getParagraphsCount landingPageId
 
         let paragraphCta = newRecord
                 |> set #landingPageId landingPageId
                 |> set #weight weight
+                |> set #refLandingPageId landingPageId
 
-        -- Get all landing pages, so we can select the one we want to link to.
-        landingPages <- query @LandingPage |> fetch
+
 
         render NewView { .. }
 

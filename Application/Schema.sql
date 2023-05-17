@@ -42,5 +42,6 @@ CREATE INDEX paragraph_quotes_landing_page_id_index ON paragraph_quotes (landing
 CREATE INDEX paragraph_ctas_landing_page_id_index ON paragraph_ctas (landing_page_id);
 CREATE INDEX paragraph_featured_articles_landing_page_id_index ON paragraph_featured_articles (landing_page_id);
 ALTER TABLE paragraph_ctas ADD CONSTRAINT paragraph_ctas_ref_landing_page_id FOREIGN KEY (landing_page_id) REFERENCES landing_pages (id) ON DELETE NO ACTION;
+ALTER TABLE paragraph_ctas ADD CONSTRAINT paragraph_ctas_ref_ref_landing_page_id FOREIGN KEY (ref_landing_page_id) REFERENCES landing_pages (id) ON DELETE NO ACTION;
 ALTER TABLE paragraph_featured_articles ADD CONSTRAINT paragraph_featured_articles_ref_landing_page_id FOREIGN KEY (landing_page_id) REFERENCES landing_pages (id) ON DELETE NO ACTION;
 ALTER TABLE paragraph_quotes ADD CONSTRAINT paragraph_quotes_ref_landing_page_id FOREIGN KEY (landing_page_id) REFERENCES landing_pages (id) ON DELETE NO ACTION;

@@ -33,7 +33,7 @@ renderForm paragraphCta landingPages = formFor paragraphCta [hsx|
                 [hsx|
                     {(textField #title) {required = True}}
                     {(textareaField #body) {required = True}}
-                    {(selectField #refLandingPageId landingPages)}
+                    <!-- {(selectField #refLandingPageId landingPages)} -->
                     {submitButton}
                 |]
                 |> wrapContainerVerticalSpacing AlignNone

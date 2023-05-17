@@ -40,7 +40,7 @@ renderForm landingPage = formFor landingPage [hsx|
             </ul>
 
             <ul class="js-sortable">
-                {orderAndRenderParagraphs landingPage.paragraphCtas landingPage.paragraphQuotes}
+                <!-- {orderAndRenderParagraphs landingPage.paragraphCtas landingPage.paragraphQuotes} -->
             </ul>
         </div>
 
