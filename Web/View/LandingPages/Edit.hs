@@ -75,8 +75,8 @@ orderAndRenderParagraphs ctas quotes =
 
                     {title} <span class="text-sm text-gray-600">({type_})</span>
                     <div class="flex flex-row gap-2">
-                        {buildLink (editAction id) "Edit" False}
-                        {buildLink (deleteAction id) "Delete" True}
+                        {buildLink (editAction id) "Edit"}
+                        {buildLinkDeleteAction (deleteAction id)}
                     </div>
                 </li>
             |]
