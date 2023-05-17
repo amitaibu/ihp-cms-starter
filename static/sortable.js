@@ -1,4 +1,7 @@
+console.log('Sortable outside onReady');
 $(document).on('ready turbolinks:load', function () {
+
+    console.log('OK: Sortable inside onReady');
 
     // Init sortable.
     document.querySelectorAll('.js-sortable').forEach(function (elem) {
