@@ -44,3 +44,4 @@ instance CanSelect LandingPage where
     type SelectValue LandingPage = Id LandingPage
     selectValue landingPage = landingPage.id
     selectLabel landingPage = landingPage.title
+
