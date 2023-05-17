@@ -1,5 +1,6 @@
 module Web.View.ParagraphCtas.Edit where
 import Web.View.Prelude
+import Web.Element.Types
 import Web.Element.ElementWrap
 
 

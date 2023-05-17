@@ -2,23 +2,11 @@ module Web.Element.ElementWrap where
 
 import Web.View.Prelude
 import Text.Blaze.Internal
+import Web.Element.Types
 
--- Types
 
--- Define type of colors
-data Color = Gray100 | Gray500 deriving (Eq, Show)
-
-data Align = AlignNone | AlignStart | AlignCenter | AlignEnd deriving (Eq, Show)
 
 -- Containers
-
-
-
-getBackgroundColor :: Color -> Text
-getBackgroundColor color =
-    case color of
-        Gray100 -> "bg-gray-100"
-        Gray500 -> "bg-gray-500"
 
 
 wrapBackgroundColor :: Color -> Html -> Html

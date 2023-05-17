@@ -1,5 +1,7 @@
 module Web.View.ParagraphCtas.Show where
 import Web.View.Prelude
+
+import Web.Element.Types
 import Web.Element.ElementWrap
 import Web.Element.InnerElementLayout
 
@@ -23,10 +25,9 @@ instance View ShowView where
 renderParagraph :: Text -> Text -> Html
 renderParagraph title body =
     titleWrapped ++ bodyWrapper
-    |> wrapContainerVerticalSpacing AlignCenter
-    |> buildInnerElementLayout
-    |> wrapContainerNarrow
-    |> wrapBackgroundColor Gray100
+        |> wrapContainerVerticalSpacing AlignCenter
+        |> buildInnerElementLayout Gray100
+        |> wrapContainerNarrow
     where
         titleWrapped = cs title
             |> wrapHeaderTag 1
