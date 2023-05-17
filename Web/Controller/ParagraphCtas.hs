@@ -20,7 +20,6 @@ instance Controller ParagraphCtasController where
         let paragraphCta = newRecord
                 |> set #landingPageId landingPageId
                 |> set #weight weight
-                -- |> set #refLandingPageId landingPageId
 
         render NewView { .. }
 
