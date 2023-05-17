@@ -7,6 +7,7 @@ module.exports = {
         },
     },
     content: [
+        "Web/Element/**/*.hs",
         "Web/View/**/*.hs",
     ],
     safelist: [
@@ -15,5 +16,6 @@ module.exports = {
     ],
     plugins: [
         require('@tailwindcss/forms'),
+        require('@tailwindcss/typography'),
     ],
 };

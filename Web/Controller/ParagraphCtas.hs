@@ -57,4 +57,6 @@ instance Controller ParagraphCtasController where
         redirectTo EditLandingPageAction { landingPageId = paragraphCta.landingPageId }
 
 buildParagraphCta paragraphCta = paragraphCta
-    |> fill @'["title", "landingPageId", "weight"]
+    |> fill @'["landingPageId", "weight", "title", "body"]
+    |> validateField #title nonEmpty
+    |> validateField #body nonEmpty

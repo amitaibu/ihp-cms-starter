@@ -22,7 +22,7 @@ renderForm landingPage = formFor landingPage [hsx|
         {(textField #title)}
         {(textField #slug) {helpText = "This will be used in the URL. It should be unique."}}
 
-        <div>{submitButton}</div>
+        {submitButton {label = "Save Landing page"}}
     </div>
 
 |]

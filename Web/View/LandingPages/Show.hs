@@ -31,7 +31,11 @@ orderAndRenderParagraphs ctas quotes =
     [hsx|{forEach allSorted (\rendered -> rendered)}|]
     where
         ctas' = ctas
-            |> fmap (\paragraph -> (paragraph.weight, ParagraphCtas.renderParagraph paragraph.title))
+            |> fmap (\paragraph ->
+                ( paragraph.weight
+                , ParagraphCtas.renderParagraph paragraph.title paragraph.body
+                )
+            )
 
         quotes' = quotes
             |> fmap (\paragraph -> (paragraph.weight, ParagraphQuotes.renderParagraph paragraph.title))

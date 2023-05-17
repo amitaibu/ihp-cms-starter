@@ -1,6 +1,8 @@
 module Web.View.LandingPages.Edit where
 import Web.View.Prelude
 import Web.Controller.Prelude
+import Web.Element.ElementBuild
+import Web.Element.ElementWrap
 
 data EditView = EditView { landingPage :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage }
 
@@ -26,7 +28,7 @@ instance View EditView where
 renderForm :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage -> Html
 renderForm landingPage = formFor landingPage [hsx|
 
-    <div class="flex flex-col gap-y-4">
+    <div class="container-wide flex flex-col gap-y-4">
         {(textField #title)}
         {(textField #slug) {helpText = "This will be used in the URL. It should be unique."}}
 
@@ -42,7 +44,7 @@ renderForm landingPage = formFor landingPage [hsx|
             </ul>
         </div>
 
-        <div>{submitButton}</div>
+        {submitButton {label = "Save Landing page"}}
     </div>
 |]
 
@@ -73,11 +75,12 @@ orderAndRenderParagraphs ctas quotes =
 
                     {title} <span class="text-sm text-gray-600">({type_})</span>
                     <div class="flex flex-row gap-2">
-                        <a href={pathTo $ editAction id} class="text-blue-500 text-sm hover:underline">Edit</a>
-                        <a href={pathTo $ deleteAction id} class="js-delete text-blue-500 text-sm hover:underline">Delete</a>
+                        {buildLink (editAction id) "Edit"}
+                        {buildLinkDeleteAction (deleteAction id)}
                     </div>
                 </li>
             |]
+
 
         sortableHandle =
             if
