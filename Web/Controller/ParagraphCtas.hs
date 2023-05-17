@@ -26,9 +26,6 @@ instance Controller ParagraphCtasController where
 
     action EditParagraphCtaAction { paragraphCtaId } = do
         paragraphCta <- fetch paragraphCtaId
-
-        -- Get all landing pages, so we can select the one we want to link to.
-        landingPages <- query @LandingPage |> fetch
         render EditView { .. }
 
     action UpdateParagraphCtaAction { paragraphCtaId } = do
@@ -36,8 +33,7 @@ instance Controller ParagraphCtasController where
         paragraphCta
             |> buildParagraphCta
             |> ifValid \case
-                Left paragraphCta ->
-                    render EditView { .. }
+                Left paragraphCta -> render EditView { .. }
                 Right paragraphCta -> do
                     paragraphCta <- paragraphCta |> updateRecord
                     setSuccessMessage "ParagraphCta updated"
