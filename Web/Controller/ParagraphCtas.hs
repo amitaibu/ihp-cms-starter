@@ -15,17 +15,12 @@ instance Controller ParagraphCtasController where
         -- Get all landing pages, so we can select the one we want to link to.
         landingPages <- query @LandingPage |> fetch
 
-        let landingPageId = headMay landingPages |> maybe def (.id)
-
-
         weight <- getParagraphsCount landingPageId
 
         let paragraphCta = newRecord
                 |> set #landingPageId landingPageId
                 |> set #weight weight
-                |> set #refLandingPageId landingPageId
-
-
+                -- |> set #refLandingPageId landingPageId
 
         render NewView { .. }
 
@@ -71,7 +66,6 @@ instance Controller ParagraphCtasController where
         redirectTo EditLandingPageAction { landingPageId = paragraphCta.landingPageId }
 
 buildParagraphCta paragraphCta = paragraphCta
-    |> fill @'["landingPageId", "weight", "title", "body", "refLandingPageId"]
+    |> fill @'["landingPageId", "weight", "title", "body"]
     |> validateField #title nonEmpty
     |> validateField #body nonEmpty
-    |> validateField #refLandingPageId nonEmpty
