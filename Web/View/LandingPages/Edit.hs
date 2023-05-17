@@ -97,5 +97,3 @@ orderAndRenderParagraphs ctas quotes =
                 |]
             else
                 mempty
-
-
