@@ -25,7 +25,8 @@ CREATE TABLE paragraph_ctas (
     landing_page_id UUID NOT NULL,
     weight INT DEFAULT 0 NOT NULL,
     title TEXT NOT NULL,
-    body TEXT NOT NULL
+    body TEXT NOT NULL,
+    ref_landing_page_id UUID DEFAULT uuid_generate_v4() NOT NULL
 );
 CREATE TABLE paragraph_featured_articles (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,

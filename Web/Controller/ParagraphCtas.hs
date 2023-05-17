@@ -18,6 +18,9 @@ instance Controller ParagraphCtasController where
                 |> set #landingPageId landingPageId
                 |> set #weight weight
 
+        -- Get all landing pages, so we can select the one we want to link to.
+        landingPages <- query @LandingPage |> fetch
+
         render NewView { .. }
 
     action ShowParagraphCtaAction { paragraphCtaId } = do
@@ -26,6 +29,9 @@ instance Controller ParagraphCtasController where
 
     action EditParagraphCtaAction { paragraphCtaId } = do
         paragraphCta <- fetch paragraphCtaId
+
+        -- Get all landing pages, so we can select the one we want to link to.
+        landingPages <- query @LandingPage |> fetch
         render EditView { .. }
 
     action UpdateParagraphCtaAction { paragraphCtaId } = do
@@ -33,7 +39,9 @@ instance Controller ParagraphCtasController where
         paragraphCta
             |> buildParagraphCta
             |> ifValid \case
-                Left paragraphCta -> render EditView { .. }
+                Left paragraphCta -> do
+                    landingPages <- query @LandingPage |> fetch
+                    render EditView { .. }
                 Right paragraphCta -> do
                     paragraphCta <- paragraphCta |> updateRecord
                     setSuccessMessage "ParagraphCta updated"
@@ -57,6 +65,7 @@ instance Controller ParagraphCtasController where
         redirectTo EditLandingPageAction { landingPageId = paragraphCta.landingPageId }
 
 buildParagraphCta paragraphCta = paragraphCta
-    |> fill @'["landingPageId", "weight", "title", "body"]
+    |> fill @'["landingPageId", "weight", "title", "body", "refLandingPageId"]
     |> validateField #title nonEmpty
     |> validateField #body nonEmpty
+    |> validateField #refLandingPageId nonEmpty
