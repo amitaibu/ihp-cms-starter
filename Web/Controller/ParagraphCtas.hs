@@ -17,14 +17,11 @@ instance Controller ParagraphCtasController where
 
         let landingPageId = headMay landingPages |> maybe def (.id)
 
-
         weight <- getParagraphsCount landingPageId
 
         let paragraphCta = newRecord
                 |> set #landingPageId landingPageId
                 |> set #weight weight
-                |> set #refLandingPageId landingPageId
-
 
 
         render NewView { .. }
