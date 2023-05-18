@@ -5,7 +5,7 @@ import qualified Web.View.ParagraphCtas.Show as ParagraphCtas
 import qualified Web.View.ParagraphQuotes.Show as ParagraphQuotes
 
 data ShowView = ShowView
-    {   landingPage :: Include' ["paragraphCtasLandingPages", "paragraphQuotes"] LandingPage
+    {   landingPage :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage
     }
 
 instance View ShowView where
