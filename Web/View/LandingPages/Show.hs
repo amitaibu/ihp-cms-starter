@@ -5,7 +5,7 @@ import qualified Web.View.ParagraphCtas.Show as ParagraphCtas
 import qualified Web.View.ParagraphQuotes.Show as ParagraphQuotes
 
 data ShowView = ShowView
-    {   landingPage :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage
+    {   landingPage :: Include' ["paragraphCtasLandingPages", "paragraphQuotes"] LandingPage
     }
 
 instance View ShowView where
@@ -16,7 +16,7 @@ instance View ShowView where
             <a href={EditLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline hover:text-blue-600">(Edit)</a>
         </div>
 
-        {orderAndRenderParagraphs landingPage.paragraphCtas landingPage.paragraphQuotes}
+        {orderAndRenderParagraphs landingPage.paragraphCtasLandingPages landingPage.paragraphQuotes}
 
     |]
         where
