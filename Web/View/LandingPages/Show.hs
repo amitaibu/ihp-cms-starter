@@ -16,7 +16,7 @@ instance View ShowView where
             <a href={EditLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline hover:text-blue-600">(Edit)</a>
         </div>
 
-        {orderAndRenderParagraphs landingPage.paragraphCtasRefLandingPages landingPage.paragraphQuotes}
+        {orderAndRenderParagraphs landingPage.paragraphCtasLandingPages landingPage.paragraphQuotes}
 
     |]
         where
