@@ -32,7 +32,7 @@ renderForm paragraphCta landingPages = formFor paragraphCta [hsx|
                 [hsx|
                     {(textField #title) {required = True}}
                     {(textareaField #body) {required = True}}
-                     {(selectField #refLandingPageId landingPages) {required = True}}
+                     {(selectField #refLandingPageId landingPages) {required = True, fieldLabel = "Landing page", helpText = "Select the landing page you want to link to."}}
                     {submitButton}
                 |]
                 |> wrapContainerVerticalSpacing AlignNone
