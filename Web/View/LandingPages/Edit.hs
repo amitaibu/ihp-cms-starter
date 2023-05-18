@@ -4,7 +4,7 @@ import Web.Controller.Prelude
 import Web.Element.ElementBuild
 import Web.Element.ElementWrap
 
-data EditView = EditView { landingPage :: Include' ["paragraphCtasLandingPages", "paragraphQuotes"] LandingPage }
+data EditView = EditView { landingPage :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage }
 
 instance View EditView where
     html EditView { .. } = [hsx|
@@ -25,7 +25,7 @@ instance View EditView where
                 , breadcrumbText "Edit LandingPage"
                 ]
 
-renderForm :: Include' ["paragraphCtasLandingPages", "paragraphQuotes"] LandingPage -> Html
+renderForm :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage -> Html
 renderForm landingPage = formFor landingPage [hsx|
 
     <div class="container-wide flex flex-col gap-y-4">
