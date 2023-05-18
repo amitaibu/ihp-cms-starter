@@ -58,7 +58,7 @@ instance Controller LandingPagesController where
                             landingPage <- fetchLandingPageWithParagraphs landingPageId
 
                             -- Iterate over all paragraphs, and update the weight.
-                            forEach landingPage.paragraphCtasLandingPages updateParagraph
+                            forEach landingPage.paragraphCtasRefLandingPages updateParagraph
                             forEach landingPage.paragraphQuotes updateParagraph
 
                             where

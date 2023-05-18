@@ -17,14 +17,14 @@ import Web.Routes
 -- @todo: Is this the correct place for helper functions?
 fetchLandingPageWithParagraphs landingPageId = do
     fetch landingPageId
-        >>= pure . modify #paragraphCtasLandingPages (orderByDesc #weight)
+        >>= pure . modify #paragraphCtasRefLandingPages (orderByDesc #weight)
         >>= pure . modify #paragraphQuotes (orderByDesc #weight)
-        >>= fetchRelated #paragraphCtasLandingPages
+        >>= fetchRelated #paragraphCtasRefLandingPages
         >>= fetchRelated #paragraphQuotes
 
 
 getParagraphsCount landingPageId = do
     landingPage <- fetchLandingPageWithParagraphs landingPageId
-    pure $ length landingPage.paragraphCtasLandingPages
+    pure $ length landingPage.paragraphCtasRefLandingPages
                     + length landingPage.paragraphQuotes
                     + 1
