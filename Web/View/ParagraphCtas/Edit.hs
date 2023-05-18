@@ -4,13 +4,16 @@ import Web.Element.Types
 import Web.Element.ElementWrap
 
 
-data EditView = EditView { paragraphCta :: ParagraphCta }
+data EditView = EditView
+    { paragraphCta :: ParagraphCta
+    , landingPages :: [LandingPage]
+    }
 
 instance View EditView where
     html EditView { .. } = [hsx|
         {breadcrumb}
         <h1>Edit ParagraphCta</h1>
-        {renderForm paragraphCta}
+        {renderForm paragraphCta landingPages}
     |]
         where
             breadcrumb = renderBreadcrumb
@@ -18,20 +21,25 @@ instance View EditView where
                 , breadcrumbText "Edit ParagraphCta"
                 ]
 
-renderForm :: ParagraphCta -> Html
-renderForm paragraphCta = formFor paragraphCta [hsx|
+renderForm :: ParagraphCta -> [LandingPage] -> Html
+renderForm paragraphCta landingPages = formFor paragraphCta [hsx|
     {(hiddenField #landingPageId)}
     {(hiddenField #weight)}
-    {visibleForm paragraphCta}
+    {visibleForm paragraphCta landingPages}
 
 |]
     where
-            visibleForm paragraphCta =
+            visibleForm paragraphCta landingPages =
                 [hsx|
                     {(textField #title) {required = True}}
                     {(textareaField #body) {required = True}}
+                     {(selectField #refLandingPageId landingPages) {required = True}}
                     {submitButton}
                 |]
                 |> wrapContainerVerticalSpacing AlignNone
                 |> wrapContainerWide
 
+instance CanSelect LandingPage where
+    type SelectValue LandingPage = Id LandingPage
+    selectValue landingPage = landingPage.id
+    selectLabel landingPage = landingPage.title
