@@ -27,25 +27,6 @@ instance View EditView where
 
 renderForm :: Include' ["paragraphCtas", "paragraphQuotes"] LandingPage -> Html
 renderForm landingPage = formFor landingPage [hsx|
-
-    <div class="container-wide flex flex-col gap-y-4">
-        {(textField #title)}
-        {(textField #slug) {helpText = "This will be used in the URL. It should be unique."}}
-
-        <div class="flex flex-col gap-y-4 border p-4">
-            <h3 class="text-xl">Paragraphs</h3>
-            <ul class="flex flex-row gap-4">
-                <li><a href={pathTo $ NewParagraphCtaAction landingPage.id } class="inline-block border border-gray-500 rounded-lg px-4 py-2">+ CTA</a></li>
-                <li><a href={pathTo $ NewParagraphQuoteAction landingPage.id } class="inline-block border border-gray-500 rounded-lg px-4 py-2">+ Quote</a></li>
-            </ul>
-
-            <ul class="js-sortable">
-                {orderAndRenderParagraphs landingPage.paragraphCtasLandingPages landingPage.paragraphQuotes}
-            </ul>
-        </div>
-
-        {submitButton {label = "Save Landing page"}}
-    </div>
 |]
 
 orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> Html
