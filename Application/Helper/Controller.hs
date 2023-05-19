@@ -18,11 +18,13 @@ fetchLandingPageWithParagraphs landingPageId = do
                     |> fetch
                     >>= collectionFetchRelated #refLandingPageId
 
-
-
-                pure $ landingPage
-                    |> updateField @"paragraphCtasLandingPages" paragraphCtasLandingPages
+                pure $ updateLandingPage landingPage paragraphCtasLandingPages
             )
+        where
+            updateLandingPage :: Include' ["paragraphCtasLandingPages", "paragraphQuotes"] LandingPage -> [Include "refLandingPageId" ParagraphCta] -> Include' ["paragraphCtasLandingPages", "paragraphQuotes"] LandingPage
+            updateLandingPage landingPage paragraphCtasLandingPages =
+                landingPage
+                    |> updateField @"paragraphCtasLandingPages" paragraphCtasLandingPages
 
 
 getParagraphsCount :: (?modelContext::ModelContext) => Id LandingPage -> IO Int
