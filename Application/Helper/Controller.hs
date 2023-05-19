@@ -12,6 +12,17 @@ fetchLandingPageWithParagraphs landingPageId = do
         >>= pure . modify #paragraphQuotes (orderByDesc #weight)
         >>= fetchRelated #paragraphCtasLandingPages
         >>= fetchRelated #paragraphQuotes
+        >>= (\landingPage -> do
+                paragraphCtasLandingPages <- query @ParagraphCta
+                    |> filterWhereIn (#id, ids landingPage.paragraphCtasLandingPages)
+                    |> fetch
+                    >>= collectionFetchRelated #refLandingPageId
+
+
+
+                pure $ landingPage
+                    |> updateField @"paragraphCtasLandingPages" paragraphCtasLandingPages
+            )
 
 
 getParagraphsCount :: (?modelContext::ModelContext) => Id LandingPage -> IO Int
