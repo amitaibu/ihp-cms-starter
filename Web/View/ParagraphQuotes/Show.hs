@@ -20,13 +20,13 @@ instance View ShowView where
                             , breadcrumbText "Show ParagraphQuote"
                             ]
 
-renderParagraph :: Text -> Text -> Html
-renderParagraph body subtitle =
+renderParagraph :: Text -> Text -> Maybe Text -> Html
+renderParagraph body subtitle imageUrl =
     quotationSign
         ++ bodyWrapped
         ++ titleWrapped
         |> wrapContainerVerticalSpacing AlignNone
-        |> buildElementLayoutSplitImageAndContent ("" :: Text)
+        |> buildElementLayoutSplitImageAndContent imageUrl
     where
         quotationSign = [hsx|
             <!-- https://iconmonstr.com/quote-3-svg/ -->
