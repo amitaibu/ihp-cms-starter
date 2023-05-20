@@ -25,9 +25,10 @@ renderForm paragraphQuote isImageRequired = formFor paragraphQuote [hsx|
                         data-preview="#imageUrlPreview"
                     />
 
-                    <img id="imageUrlPreview"/>
+                    <img id="imageUrlPreview" src={paragraphQuote.imageUrl} />
 
                     {submitButton}
                 |]
                 |> wrapContainerVerticalSpacing AlignNone
                 |> wrapContainerWide
+
