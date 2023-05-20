@@ -11,9 +11,6 @@ instance AutoRoute ArticlesController
 instance AutoRoute ParagraphQuotesController
 
 
-instance AutoRoute ParagraphFeaturedArticlesController
-
-
 instance AutoRoute ParagraphCtasController
 
 

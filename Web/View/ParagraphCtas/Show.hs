@@ -4,6 +4,7 @@ import Web.View.Prelude
 import Web.Element.Types
 import Web.Element.ElementWrap
 import Web.Element.InnerElementLayout
+import Web.Element.ElementBuild (buildButtonPrimary)
 
 data ShowView = ShowView { paragraphCta :: ParagraphCta }
 
@@ -22,9 +23,11 @@ instance View ShowView where
 
 
 
-renderParagraph :: Text -> Text -> Html
-renderParagraph title body =
-    titleWrapped ++ bodyWrapper
+renderParagraph :: Text -> Text -> Html -> Html
+renderParagraph title body button =
+    titleWrapped
+        ++ bodyWrapped
+        ++ button
         |> wrapContainerVerticalSpacing AlignCenter
         |> buildInnerElementLayout Gray100
         |> wrapContainerNarrow
@@ -32,5 +35,5 @@ renderParagraph title body =
         titleWrapped = cs title
             |> wrapHeaderTag 1
 
-        bodyWrapper = body |> preEscapedToHtml
+        bodyWrapped = body |> preEscapedToHtml
             |> wrapProse

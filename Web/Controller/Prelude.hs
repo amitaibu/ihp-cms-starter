@@ -3,7 +3,7 @@ module Web.Controller.Prelude
 , module Application.Helper.Controller
 , module IHP.ControllerPrelude
 , module Generated.Types
-, fetchLandingPageWithParagraphs
+, fetchLandingPageWithRecords
 , getParagraphsCount
 )
 where

@@ -4,6 +4,21 @@ import IHP.Prelude
 import IHP.ModelSupport
 import Generated.Types
 
+-- Custom types
+
+{-| The result of fetching Landing page with all its paragraphs.
+
+@see `fetchLandingPageWithRecords`
+-}
+data LandingPageWithRecords = LandingPageWithRecords
+    { landingPageWithRecordsLandingPage :: !LandingPage
+    , landingPageWithRecordsParagraphCtas :: ![ParagraphCta]
+    , landingPageWithRecordsParagraphQuotes :: ![ParagraphQuote]
+    , landingPageWithRecordsParagraphCtaRefLandingPages :: ![LandingPage]
+    } deriving (Show)
+
+--
+
 data WebApplication = WebApplication deriving (Eq, Show)
 
 
@@ -29,16 +44,6 @@ data ParagraphQuotesController
     | DeleteParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
     deriving (Eq, Show, Data)
 
-data ParagraphFeaturedArticlesController
-    = ParagraphFeaturedArticlesAction
-    | NewParagraphFeaturedArticleAction
-    | ShowParagraphFeaturedArticleAction { paragraphFeaturedArticleId :: !(Id ParagraphFeaturedArticle) }
-    | CreateParagraphFeaturedArticleAction
-    | EditParagraphFeaturedArticleAction { paragraphFeaturedArticleId :: !(Id ParagraphFeaturedArticle) }
-    | UpdateParagraphFeaturedArticleAction { paragraphFeaturedArticleId :: !(Id ParagraphFeaturedArticle) }
-    | DeleteParagraphFeaturedArticleAction { paragraphFeaturedArticleId :: !(Id ParagraphFeaturedArticle) }
-    deriving (Eq, Show, Data)
-
 data ParagraphCtasController
     = ParagraphCtaAction
     | NewParagraphCtaAction { landingPageId :: !(Id LandingPage) }
@@ -58,3 +63,5 @@ data LandingPagesController
     | UpdateLandingPageAction { landingPageId :: !(Id LandingPage) }
     | DeleteLandingPageAction { landingPageId :: !(Id LandingPage) }
     deriving (Eq, Show, Data)
+
+

@@ -4,7 +4,7 @@ import Web.Controller.Prelude
 import Web.Element.ElementBuild
 import Web.Element.ElementWrap
 
-data EditView = EditView { landingPage :: Include' ["paragraphCtasLandingPages", "paragraphQuotes"] LandingPage }
+data EditView = EditView { landingPageWithRecords :: LandingPageWithRecords }
 
 instance View EditView where
     html EditView { .. } = [hsx|
@@ -13,20 +13,24 @@ instance View EditView where
             <h1>Edit {landingPage.title}</h1>
             <div><a href={ShowLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline">(Show)</a></div>
         </div>
-        {renderForm landingPage}
+        {renderForm landingPage paragraphCtas paragraphQuotes}
 
         <!-- jsDelivr :: Sortable :: Latest (https://www.jsdelivr.com/package/npm/sortablejs) -->
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
         <script src={assetPath "/sortable.js"}></script>
     |]
         where
+            landingPage = landingPageWithRecords.landingPageWithRecordsLandingPage
+            paragraphCtas = landingPageWithRecords.landingPageWithRecordsParagraphCtas
+            paragraphQuotes = landingPageWithRecords.landingPageWithRecordsParagraphQuotes
+
             breadcrumb = renderBreadcrumb
                 [ breadcrumbLink "LandingPages" LandingPagesAction
                 , breadcrumbText "Edit LandingPage"
                 ]
 
-renderForm :: Include' ["paragraphCtasLandingPages", "paragraphQuotes"] LandingPage -> Html
-renderForm landingPage = formFor landingPage [hsx|
+renderForm :: LandingPage -> [ParagraphCta] -> [ParagraphQuote] -> Html
+renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
 
     <div class="container-wide flex flex-col gap-y-4">
         {(textField #title)}
@@ -40,7 +44,7 @@ renderForm landingPage = formFor landingPage [hsx|
             </ul>
 
             <ul class="js-sortable">
-                {orderAndRenderParagraphs landingPage.paragraphCtasLandingPages landingPage.paragraphQuotes}
+                {orderAndRenderParagraphs paragraphCtas paragraphQuotes}
             </ul>
         </div>
 
@@ -49,19 +53,21 @@ renderForm landingPage = formFor landingPage [hsx|
 |]
 
 orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> Html
-orderAndRenderParagraphs ctas quotes =
-    [hsx|{forEach allSorted (\rendered -> rendered)}|]
+orderAndRenderParagraphs paragraphCtas paragraphQuotes =
+    ctas
+        ++ quotes
+        |> sortOn fst
+        |> fmap snd
+        |> mconcat
+
     where
-        ctas' = ctas
+        ctas = paragraphCtas
             |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphCtaAction DeleteParagraphCtaAction paragraph.id paragraph.title ("CTA" :: Text)))
 
-        quotes' = quotes
-            |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphQuoteAction DeleteParagraphQuoteAction paragraph.id paragraph.title ("Quote" :: Text)))
+        quotes = paragraphQuotes
+            |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphQuoteAction DeleteParagraphQuoteAction paragraph.id paragraph.subtitle ("Quote" :: Text)))
 
 
-        allSorted = ctas' ++ quotes'
-            |> sortOn fst
-            |> fmap snd
 
         -- Show the paragraph title and the operations to perform on it.
         paragraphTitleAndOps :: (Show (PrimaryKey record), HasPath controller) => (Id' record -> controller) -> (Id' record -> controller) -> Id' record -> Text -> Text -> Html
