@@ -58,3 +58,15 @@ data LandingPagesController
     | UpdateLandingPageAction { landingPageId :: !(Id LandingPage) }
     | DeleteLandingPageAction { landingPageId :: !(Id LandingPage) }
     deriving (Eq, Show, Data)
+
+
+-- @todo: Should this be here?
+
+{-| A Landing page with all its paragraphs.
+-}
+data LandingPageWithParagraphs = LandingPageWithParagraphs
+    { landingPage :: !LandingPage
+    , paragraphCtas :: ![ParagraphCta]
+    , paragraphQuotes :: ![ParagraphQuote]
+    , paragraphCtaRefLandingPages :: ![LandingPage]
+    } deriving (Show)

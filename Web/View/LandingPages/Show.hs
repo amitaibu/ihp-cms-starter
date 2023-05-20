@@ -3,10 +3,9 @@ import Web.View.Prelude
 import Text.Blaze.Html
 import qualified Web.View.ParagraphCtas.Show as ParagraphCtas
 import qualified Web.View.ParagraphQuotes.Show as ParagraphQuotes
+import Web.Types
 
-data ShowView = ShowView
-    {   landingPage :: Include' ["paragraphCtasLandingPages", "paragraphQuotes"] LandingPage
-    }
+data ShowView = ShowView { landingPageWithParagraphs :: LandingPageWithParagraphs }
 
 instance View ShowView where
     html ShowView { .. } = [hsx|
@@ -16,10 +15,11 @@ instance View ShowView where
             <a href={EditLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline hover:text-blue-600">(Edit)</a>
         </div>
 
-        {orderAndRenderParagraphs landingPage.paragraphCtasLandingPages landingPage.paragraphQuotes}
+        {orderAndRenderParagraphs landingPageWithParagraphs.paragraphCtas landingPageWithParagraphs.paragraphQuotes}
 
     |]
         where
+            landingPage = landingPageWithParagraphs.landingPage
             breadcrumb = renderBreadcrumb
                             [ breadcrumbLink "LandingPages" LandingPagesAction
                             , breadcrumbText "Show LandingPage"
