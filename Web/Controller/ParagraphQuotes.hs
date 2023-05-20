@@ -28,10 +28,15 @@ instance Controller ParagraphQuotesController where
         render EditView { .. }
 
     action UpdateParagraphQuoteAction { paragraphQuoteId } = do
+        let uploadImage = uploadToStorageWithOptions $ def
+                { preprocess = applyImageMagick "jpg" ["-resize", "1024x1024^", "-gravity", "north", "-extent", "1024x1024", "-quality", "85%", "-strip"] }
+
+
         paragraphQuote <- fetch paragraphQuoteId
         paragraphQuote
             |> buildParagraphQuote
-            |> ifValid \case
+            |> uploadImage #imageUrl
+            >>= ifValid \case
                 Left paragraphQuote -> render EditView { .. }
                 Right paragraphQuote -> do
                     paragraphQuote <- paragraphQuote |> updateRecord

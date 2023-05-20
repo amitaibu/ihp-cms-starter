@@ -26,6 +26,7 @@ renderForm paragraphQuote = formFor paragraphQuote [hsx|
     where
             visibleForm paragraphQuote =
                 [hsx|
+                    {(textareaField #body) {required = True}}
                     {(textField #subtitle) {required = True}}
 
                     <input
@@ -34,12 +35,12 @@ renderForm paragraphQuote = formFor paragraphQuote [hsx|
                         class="form-control-file"
                         accept="image/*"
                         data-preview="#imageUrlPreview"
-                        required="required"
                     />
 
-                    <img id="imageUrlPreview"/>
+                    <img id="imageUrlPreview" src={paragraphQuote.imageUrl} class="w-10 h-10"/>
 
                     {submitButton}
                 |]
                 |> wrapContainerVerticalSpacing AlignNone
                 |> wrapContainerWide
+
