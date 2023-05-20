@@ -13,6 +13,7 @@ fetchLandingPageWithRecords landingPageId = do
         |> filterWhere (#landingPageId, landingPageId)
         |> fetch
 
+    -- Landing pages referenced by ParagraphCta.refLandingPageId
     landingPageWithRecordsParagraphCtaRefLandingPages <- query @LandingPage
         |> filterWhereIn (#id, map (get #refLandingPageId) landingPageWithRecordsParagraphCtas)
         |> fetch
