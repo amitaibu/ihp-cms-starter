@@ -8,10 +8,10 @@ renderForm :: ParagraphQuote -> Bool -> Html
 renderForm paragraphQuote isImageRequired = formFor paragraphQuote [hsx|
     {(hiddenField #landingPageId)}
     {(hiddenField #weight)}
-    {visibleForm paragraphQuote}
+    {visibleForm paragraphQuote isImageRequired}
     |]
     where
-            visibleForm paragraphQuote =
+            visibleForm paragraphQuote isImageRequired =
                 [hsx|
                     {(textareaField #body) {required = True}}
                     {(textField #subtitle) {required = True}}
