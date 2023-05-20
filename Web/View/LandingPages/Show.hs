@@ -5,7 +5,7 @@ import qualified Web.View.ParagraphCtas.Show as ParagraphCtas
 import qualified Web.View.ParagraphQuotes.Show as ParagraphQuotes
 import Web.Types
 
-data ShowView = ShowView { landingPageWithParagraphs :: LandingPageWithParagraphs }
+data ShowView = ShowView { landingPageWithRecords :: LandingPageWithRecords }
 
 instance View ShowView where
     html ShowView { .. } = [hsx|
@@ -15,11 +15,14 @@ instance View ShowView where
             <a href={EditLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline hover:text-blue-600">(Edit)</a>
         </div>
 
-        {orderAndRenderParagraphs landingPageWithParagraphs.paragraphCtas landingPageWithParagraphs.paragraphQuotes}
+        {orderAndRenderParagraphs paragraphCtas paragraphQuotes}
 
     |]
         where
-            landingPage = landingPageWithParagraphs.landingPage
+            landingPage = landingPageWithRecords.landingPageWithRecordsLandingPage
+            paragraphCtas = landingPageWithRecords.landingPageWithRecordsParagraphCtas
+            paragraphQuotes = landingPageWithRecords.landingPageWithRecordsParagraphQuotes
+
             breadcrumb = renderBreadcrumb
                             [ breadcrumbLink "LandingPages" LandingPagesAction
                             , breadcrumbText "Show LandingPage"

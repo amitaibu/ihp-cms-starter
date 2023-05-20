@@ -6,8 +6,8 @@ import Web.Types
 
 -- Here you can add functions which are available in all your controllers
 
-fetchLandingPageWithParagraphs :: (?modelContext :: ModelContext) => Id LandingPage -> IO LandingPageWithParagraphs
-fetchLandingPageWithParagraphs landingPageId = do
+fetchLandingPageWithRecords :: (?modelContext :: ModelContext) => Id LandingPage -> IO LandingPageWithRecords
+fetchLandingPageWithRecords landingPageId = do
     landingPage <- fetch landingPageId
     paragraphCtas <- query @ParagraphCta
         |> filterWhere (#landingPageId, landingPageId)
@@ -21,16 +21,16 @@ fetchLandingPageWithParagraphs landingPageId = do
         |> filterWhereIn (#id, map (get #refLandingPageId) paragraphCtas)
         |> fetch
 
-    return $ LandingPageWithParagraphs
-        { landingPage = landingPage
-        , paragraphCtas = paragraphCtas
-        , paragraphQuotes = paragraphQuotes
-        , paragraphCtaRefLandingPages = paragraphCtaRefLandingPages
+    return $ LandingPageWithRecords
+        { landingPageWithRecordsLandingPage = landingPage
+        , landingPageWithRecordsParagraphCtas = paragraphCtas
+        , landingPageWithRecordsParagraphQuotes = paragraphQuotes
+        , landingPageWithRecordsParagraphCtaRefLandingPages = paragraphCtaRefLandingPages
         }
 
 getParagraphsCount :: (?modelContext::ModelContext) => Id LandingPage -> IO Int
 getParagraphsCount landingPageId = do
-    landingPageWithParagraphs <- fetchLandingPageWithParagraphs landingPageId
-    pure $ length landingPageWithParagraphs.paragraphCtas
-                    + length landingPageWithParagraphs.paragraphQuotes
+    landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
+    pure $ length landingPageWithRecords.landingPageWithRecordsParagraphCtas
+                    + length landingPageWithRecords.landingPageWithRecordsParagraphQuotes
                     + 1

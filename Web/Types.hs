@@ -64,9 +64,9 @@ data LandingPagesController
 
 {-| A Landing page with all its paragraphs.
 -}
-data LandingPageWithParagraphs = LandingPageWithParagraphs
-    { landingPage :: !LandingPage
-    , paragraphCtas :: ![ParagraphCta]
-    , paragraphQuotes :: ![ParagraphQuote]
-    , paragraphCtaRefLandingPages :: ![LandingPage]
+data LandingPageWithRecords = LandingPageWithRecords
+    { landingPageWithRecordsLandingPage :: !LandingPage
+    , landingPageWithRecordsParagraphCtas :: ![ParagraphCta]
+    , landingPageWithRecordsParagraphQuotes :: ![ParagraphQuote]
+    , landingPageWithRecordsParagraphCtaRefLandingPages :: ![LandingPage]
     } deriving (Show)

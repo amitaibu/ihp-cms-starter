@@ -4,7 +4,7 @@ import Web.Controller.Prelude
 import Web.Element.ElementBuild
 import Web.Element.ElementWrap
 
-data EditView = EditView { landingPageWithParagraphs :: LandingPageWithParagraphs }
+data EditView = EditView { landingPageWithRecords :: LandingPageWithRecords }
 
 instance View EditView where
     html EditView { .. } = [hsx|
@@ -13,14 +13,16 @@ instance View EditView where
             <h1>Edit {landingPage.title}</h1>
             <div><a href={ShowLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline">(Show)</a></div>
         </div>
-        {renderForm landingPage landingPageWithParagraphs.paragraphCtas landingPageWithParagraphs.paragraphQuotes}
+        {renderForm landingPage paragraphCtas paragraphQuotes}
 
         <!-- jsDelivr :: Sortable :: Latest (https://www.jsdelivr.com/package/npm/sortablejs) -->
         <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
         <script src={assetPath "/sortable.js"}></script>
     |]
         where
-            landingPage = landingPageWithParagraphs.landingPage
+            landingPage = landingPageWithRecords.landingPageWithRecordsLandingPage
+            paragraphCtas = landingPageWithRecords.landingPageWithRecordsParagraphCtas
+            paragraphQuotes = landingPageWithRecords.landingPageWithRecordsParagraphQuotes
 
             breadcrumb = renderBreadcrumb
                 [ breadcrumbLink "LandingPages" LandingPagesAction

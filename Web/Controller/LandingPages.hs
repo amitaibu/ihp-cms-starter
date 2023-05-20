@@ -16,31 +16,34 @@ instance Controller LandingPagesController where
         render NewView { .. }
 
     action ShowLandingPageAction { landingPageId } = do
-        landingPage <- fetchLandingPageWithParagraphs landingPageId
+        landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
 
         render ShowView { .. }
 
     action EditLandingPageAction { landingPageId } = do
-        landingPage <- fetchLandingPageWithParagraphs landingPageId
+        landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
 
         render EditView { .. }
 
     action UpdateLandingPageAction { landingPageId } = do
-        landingPage <- fetch landingPageId
-        landingPage
+        landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
+
+        landingPageWithRecords
+            |> landingPageWithRecordsLandingPage
             |> buildLandingPage
             |> ifValid \case
-                Left landingPage -> do
+                Left landingPage' -> do
 
                     -- Fetch the paragraphs again, because we need to show the validation errors.
-                    landingPageWithParagraphs <- fetchLandingPageWithParagraphs landingPageId
+                    landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
                     -- Update the Landing page to hold the new input values, and any validation errors.
-                    let landingPageWithMeta = landingPage landingPageWithParagraphs
-                            |> set #meta landingPage.meta
-                            |> set #title landingPage.title
-                            |> set #slug landingPage.slug
+                    let landingPageWithMeta = landingPageWithRecords
+                            |> landingPageWithRecordsLandingPage
+                            |> set #meta landingPage'.meta
+                            |> set #title landingPage'.title
+                            |> set #slug landingPage'.slug
 
-                    render EditView { landingPageWithParagraphs = landingPageWithParagraphs {landingPage = landingPageWithMeta}}
+                    render EditView { landingPageWithRecords = landingPageWithRecords {landingPageWithRecordsLandingPage = landingPageWithMeta}}
 
                 Right landingPage -> do
                     landingPage <- landingPage |> updateRecord
@@ -56,11 +59,11 @@ instance Controller LandingPagesController where
                         uuids -> do
                             -- We need to update the weight of the paragraphs,
                             -- So load them.
-                            landingPageWithParagraphs <- fetchLandingPageWithParagraphs landingPageId
+                            landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
 
                             -- Iterate over all paragraphs, and update the weight.
-                            forEach landingPageWithParagraphs.paragraphCtas updateParagraph
-                            forEach landingPageWithParagraphs.paragraphQuotes updateParagraph
+                            forEach landingPageWithRecords.landingPageWithRecordsParagraphCtas updateParagraph
+                            forEach landingPageWithRecords.landingPageWithRecordsParagraphQuotes updateParagraph
 
                             where
                                 updateParagraph :: forall record.
