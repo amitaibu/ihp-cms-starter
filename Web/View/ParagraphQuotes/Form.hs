@@ -32,5 +32,5 @@ renderForm paragraphQuote isImageRequired = formFor paragraphQuote [hsx|
                 |> wrapContainerVerticalSpacing AlignNone
                 |> wrapContainerWide
 
-            imageClasses = [("w-20 h-20", isJust paragraphQuote.imageUrl)]
+            imageClasses = classes [("w-20 h-20", isJust paragraphQuote.imageUrl)]
 
