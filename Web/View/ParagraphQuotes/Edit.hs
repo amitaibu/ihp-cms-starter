@@ -19,7 +19,7 @@ renderForm :: ParagraphQuote -> Html
 renderForm paragraphQuote = formFor paragraphQuote [hsx|
     {(hiddenField #landingPageId)}
     {(hiddenField #weight)}
-    {(textField #title) {required = True}}
+    {(textField #subtitle) {required = True}}
     {submitButton}
 
 |]

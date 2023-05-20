@@ -56,4 +56,4 @@ instance Controller ParagraphQuotesController where
         redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
 buildParagraphQuote paragraphQuote = paragraphQuote
-    |> fill @["title", "landingPageId", "weight"]
+    |> fill @["subtitle", "landingPageId", "weight"]
