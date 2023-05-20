@@ -5,21 +5,21 @@ import Web.View.Prelude
 
 -- Button
 
-buildButton :: (HasPath controller) => controller -> Text ->  Html
-buildButton action text  =
-    buildButtonHelper action text False
+buildButton :: Text -> Text ->  Html
+buildButton url text  =
+    buildButtonHelper url text False
 
 
-buildButtonPrimary :: (HasPath controller) => controller -> Text ->  Html
-buildButtonPrimary action text  =
-    buildButtonHelper action text True
+buildButtonPrimary :: Text -> Text ->  Html
+buildButtonPrimary url text  =
+    buildButtonHelper url text True
 
 
-buildButtonHelper :: (HasPath controller) => controller -> Text ->  Bool -> Html
-buildButtonHelper action text isPrimary  =
+buildButtonHelper :: Text -> Text ->  Bool -> Html
+buildButtonHelper url text isPrimary  =
     [hsx|
         <div class="inline-block button-wrapper">
-            <a class={classes'} href={pathTo action}>
+            <a class={classes'} href={url}>
                 <div>{text}</div>
             </a>
         </div>

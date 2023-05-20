@@ -15,13 +15,11 @@ instance View ShowView where
             <a href={EditLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline hover:text-blue-600">(Edit)</a>
         </div>
 
-        {orderAndRenderParagraphs paragraphCtas paragraphQuotes}
+        {orderAndRenderParagraphs landingPageWithRecords }
 
     |]
         where
             landingPage = landingPageWithRecords.landingPageWithRecordsLandingPage
-            paragraphCtas = landingPageWithRecords.landingPageWithRecordsParagraphCtas
-            paragraphQuotes = landingPageWithRecords.landingPageWithRecordsParagraphQuotes
 
             breadcrumb = renderBreadcrumb
                             [ breadcrumbLink "LandingPages" LandingPagesAction
@@ -29,18 +27,30 @@ instance View ShowView where
                             ]
 
 
-orderAndRenderParagraphs :: (?context::ControllerContext) => [ParagraphCta] -> [ParagraphQuote] -> Text.Blaze.Html.Html
-orderAndRenderParagraphs ctas quotes =
+orderAndRenderParagraphs :: (?context::ControllerContext) => LandingPageWithRecords -> Text.Blaze.Html.Html
+orderAndRenderParagraphs landingPageWithRecords =
     [hsx|{forEach allSorted (\rendered -> rendered)}|]
     where
-        ctas' = ctas
+        paragraphCtas = landingPageWithRecords.landingPageWithRecordsParagraphCtas
+        paragraphQuotes = landingPageWithRecords.landingPageWithRecordsParagraphQuotes
+        paragraphCtaRefLandingPages = landingPageWithRecords.landingPageWithRecordsParagraphCtaRefLandingPages
+
+
+
+        ctas' = paragraphCtas
             |> fmap (\paragraph ->
+                let
+                    refLandingPageButton =
+                            paragraphCtaRefLandingPages
+                                |> filter (\paragraphCtaRefLandingPage -> paragraphCtaRefLandingPage.id == paragraph.refLandingPageId)
+                in
                 ( paragraph.weight
-                , ParagraphCtas.renderParagraph paragraph.title paragraph.body
+                , ParagraphCtas.renderParagraph paragraph.title paragraph.body [hsx|@todo: button|]
                 )
+
             )
 
-        quotes' = quotes
+        quotes' = paragraphQuotes
             |> fmap (\paragraph -> (paragraph.weight, ParagraphQuotes.renderParagraph paragraph.title))
 
         allSorted = ctas' ++ quotes'
