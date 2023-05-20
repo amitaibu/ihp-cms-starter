@@ -4,7 +4,8 @@ import Web.View.Prelude
 import Web.Element.Types
 import Web.Element.ElementWrap
 
--- renderForm :: (?context::ControllerContext) => ParagraphQuote -> Bool -> Html
+-- @todo: Add `required={isImageRequired}` to form.
+renderForm :: ParagraphQuote -> Bool -> Html
 renderForm paragraphQuote isImageRequired = formFor paragraphQuote [hsx|
     {(hiddenField #landingPageId)}
     {(hiddenField #weight)}
