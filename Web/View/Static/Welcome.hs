@@ -11,7 +11,6 @@ instance View WelcomeView where
                 <li><a href={LandingPagesAction}>Landing pages</a></li>
                 <li><a href={ParagraphCtaAction}>Paragraph CTAs</a></li>
                 <li><a href={ParagraphQuotesAction}>Paragraph quotes</a></li>
-                <li><a href={ParagraphFeaturedArticlesAction}>Paragraph featured articles</a></li>
             </ol>
          </div>
 |]

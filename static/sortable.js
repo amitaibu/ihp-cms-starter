@@ -1,4 +1,4 @@
-$(document).on('ready turbolinks:load', () => {
+// $(document).on('ready turbolinks:load', () => {
 
     // Init sortable.
     document.querySelectorAll('.js-sortable').forEach(function (elem) {
@@ -10,4 +10,4 @@ $(document).on('ready turbolinks:load', () => {
             elem.jsSortableInitialized = true;
         }
     });
-});
+// });
