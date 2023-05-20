@@ -59,7 +59,7 @@ orderAndRenderParagraphs landingPageWithRecords =
             |> fmap (\paragraph ->
                 ( paragraph.weight
                 , case paragraph.imageUrl of
-                    Just imageUrl -> ParagraphQuotes.renderParagraph paragraph.subtitle paragraph.body imageUrl
+                    Just imageUrl -> ParagraphQuotes.renderParagraph paragraph.body paragraph.subtitle imageUrl
                     Nothing -> mempty
                 ))
 
