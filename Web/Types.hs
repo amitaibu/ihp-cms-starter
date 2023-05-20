@@ -4,6 +4,21 @@ import IHP.Prelude
 import IHP.ModelSupport
 import Generated.Types
 
+-- Custom types
+
+{-| The result of fetching Landing page with all its paragraphs.
+
+@see `fetchLandingPageWithRecords`
+-}
+data LandingPageWithRecords = LandingPageWithRecords
+    { landingPageWithRecordsLandingPage :: !LandingPage
+    , landingPageWithRecordsParagraphCtas :: ![ParagraphCta]
+    , landingPageWithRecordsParagraphQuotes :: ![ParagraphQuote]
+    , landingPageWithRecordsParagraphCtaRefLandingPages :: ![LandingPage]
+    } deriving (Show)
+
+--
+
 data WebApplication = WebApplication deriving (Eq, Show)
 
 
@@ -60,13 +75,3 @@ data LandingPagesController
     deriving (Eq, Show, Data)
 
 
--- @todo: Should this be here?
-
-{-| A Landing page with all its paragraphs.
--}
-data LandingPageWithRecords = LandingPageWithRecords
-    { landingPageWithRecordsLandingPage :: !LandingPage
-    , landingPageWithRecordsParagraphCtas :: ![ParagraphCta]
-    , landingPageWithRecordsParagraphQuotes :: ![ParagraphQuote]
-    , landingPageWithRecordsParagraphCtaRefLandingPages :: ![LandingPage]
-    } deriving (Show)
