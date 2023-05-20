@@ -36,7 +36,7 @@ orderAndRenderParagraphs landingPageWithRecords =
         paragraphQuotes = landingPageWithRecords.landingPageWithRecordsParagraphQuotes
         paragraphCtaRefLandingPages = landingPageWithRecords.landingPageWithRecordsParagraphCtaRefLandingPages
 
-        ctas' = paragraphCtas
+        ctas = paragraphCtas
             |> fmap (\paragraph ->
                 let
                     -- Get the referenced Landing page out of the ParagraphCTA, through the `ParagraphCtaRefLandingPageId`
@@ -46,7 +46,7 @@ orderAndRenderParagraphs landingPageWithRecords =
                                 -- Get the referenced Landing page
                                 |> filter (\paragraphCtaRefLandingPage -> paragraphCtaRefLandingPage.id == paragraph.refLandingPageId)
                                 |> head
-                                -- Get the button from the referenced Landing page
+                                -- Get the button from the referenced Landing page.
                                 |> maybe mempty (\landingPage -> buildButtonPrimary (pathTo $ ShowLandingPageAction landingPage.id) landingPage.title)
 
                 in
@@ -56,9 +56,9 @@ orderAndRenderParagraphs landingPageWithRecords =
 
             )
 
-        quotes' = paragraphQuotes
+        quotes = paragraphQuotes
             |> fmap (\paragraph -> (paragraph.weight, ParagraphQuotes.renderParagraph paragraph.title))
 
-        allSorted = ctas' ++ quotes'
+        allSorted = ctas ++ quotes
             |> sortOn fst
             |> fmap snd
