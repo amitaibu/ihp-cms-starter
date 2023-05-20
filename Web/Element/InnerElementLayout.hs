@@ -23,7 +23,7 @@ buildInnerElementLayout color element =
             ]
 
 
-buildElementLayoutSplitImageAndContent :: Maybe Text -> Html  -> Html
+buildElementLayoutSplitImageAndContent :: Text -> Html  -> Html
 buildElementLayoutSplitImageAndContent imageUrl items =
     [hsx|
         <div class="flex flex-col sm:grid sm:grid-rows-1 md:grid-cols-2 gap-2 md:gap-8 lg:gap-10 overflow-hidden bg-gray-50">

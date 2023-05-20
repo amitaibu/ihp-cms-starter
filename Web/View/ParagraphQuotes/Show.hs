@@ -20,7 +20,7 @@ instance View ShowView where
                             , breadcrumbText "Show ParagraphQuote"
                             ]
 
-renderParagraph :: Text -> Text -> Maybe Text -> Html
+renderParagraph :: Text -> Text -> Text -> Html
 renderParagraph body subtitle imageUrl =
     quotationSign
         ++ bodyWrapped
