@@ -39,10 +39,15 @@ instance Controller ParagraphQuotesController where
                     redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
     action CreateParagraphQuoteAction = do
+        let uploadImage = uploadToStorageWithOptions $ def
+                { preprocess = applyImageMagick "jpg" ["-resize", "1024x1024^", "-gravity", "north", "-extent", "1024x1024", "-quality", "85%", "-strip"] }
+
         let paragraphQuote = newRecord @ParagraphQuote
+
         paragraphQuote
             |> buildParagraphQuote
-            |> ifValid \case
+            |> uploadImage #imageUrl
+            >>= ifValid \case
                 Left paragraphQuote -> render NewView { .. }
                 Right paragraphQuote -> do
                     paragraphQuote <- paragraphQuote |> createRecord
@@ -56,4 +61,7 @@ instance Controller ParagraphQuotesController where
         redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
 buildParagraphQuote paragraphQuote = paragraphQuote
-    |> fill @["subtitle", "landingPageId", "weight"]
+    |> fill @["landingPageId", "weight", "subtitle", "body"]
+    |> validateField #subtitle nonEmpty
+    |> validateField #body nonEmpty
+

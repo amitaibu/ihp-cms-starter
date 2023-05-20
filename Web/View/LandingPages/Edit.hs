@@ -53,19 +53,21 @@ renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
 |]
 
 orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> Html
-orderAndRenderParagraphs ctas quotes =
-    [hsx|{forEach allSorted (\rendered -> rendered)}|]
+orderAndRenderParagraphs paragraphCtas paragraphQuotes =
+    ctas
+        ++ quotes
+        |> sortOn fst
+        |> fmap snd
+        |> mconcat
+
     where
-        ctas' = ctas
+        ctas = paragraphCtas
             |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphCtaAction DeleteParagraphCtaAction paragraph.id paragraph.title ("CTA" :: Text)))
 
-        quotes' = quotes
+        quotes = paragraphQuotes
             |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphQuoteAction DeleteParagraphQuoteAction paragraph.id paragraph.subtitle ("Quote" :: Text)))
 
 
-        allSorted = ctas' ++ quotes'
-            |> sortOn fst
-            |> fmap snd
 
         -- Show the paragraph title and the operations to perform on it.
         paragraphTitleAndOps :: (Show (PrimaryKey record), HasPath controller) => (Id' record -> controller) -> (Id' record -> controller) -> Id' record -> Text -> Text -> Html

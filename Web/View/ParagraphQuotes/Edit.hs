@@ -1,5 +1,7 @@
 module Web.View.ParagraphQuotes.Edit where
 import Web.View.Prelude
+import Web.Element.Types
+import Web.Element.ElementWrap
 
 data EditView = EditView { paragraphQuote :: ParagraphQuote }
 
@@ -19,7 +21,25 @@ renderForm :: ParagraphQuote -> Html
 renderForm paragraphQuote = formFor paragraphQuote [hsx|
     {(hiddenField #landingPageId)}
     {(hiddenField #weight)}
-    {(textField #subtitle) {required = True}}
-    {submitButton}
+    {visibleForm paragraphQuote}
+    |]
+    where
+            visibleForm paragraphQuote =
+                [hsx|
+                    {(textField #subtitle) {required = True}}
 
-|]
+                    <input
+                        type="file"
+                        name="imageUrl"
+                        class="form-control-file"
+                        accept="image/*"
+                        data-preview="#imageUrlPreview"
+                        required="required"
+                    />
+
+                    <img id="imageUrlPreview"/>
+
+                    {submitButton}
+                |]
+                |> wrapContainerVerticalSpacing AlignNone
+                |> wrapContainerWide
