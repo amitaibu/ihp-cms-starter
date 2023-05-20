@@ -23,3 +23,7 @@ Config/client_session_key.aes
 IHP
 
 static/app.css
+
+static/articles
+
+Application/Migration
