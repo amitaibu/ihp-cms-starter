@@ -1,6 +1,5 @@
 module Web.View.LandingPages.Show where
 import Web.View.Prelude
-import Text.Blaze.Html
 import qualified Web.View.ParagraphCtas.Show as ParagraphCtas
 import qualified Web.View.ParagraphQuotes.Show as ParagraphQuotes
 import Web.Types
@@ -28,7 +27,7 @@ instance View ShowView where
                             ]
 
 
-orderAndRenderParagraphs :: (?context::ControllerContext) => LandingPageWithRecords -> Text.Blaze.Html.Html
+orderAndRenderParagraphs :: (?context::ControllerContext) => LandingPageWithRecords -> Html
 orderAndRenderParagraphs landingPageWithRecords =
     [hsx|{forEach allSorted (\rendered -> rendered)}|]
     where
