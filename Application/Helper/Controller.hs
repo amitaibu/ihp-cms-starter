@@ -8,17 +8,17 @@ import Web.Types
 
 fetchLandingPageWithRecords :: (?modelContext :: ModelContext) => Id LandingPage -> IO LandingPageWithRecords
 fetchLandingPageWithRecords landingPageId = do
-    landingPageWithRecordsLandingPage <- fetch landingPageId
-    landingPageWithRecordsParagraphCtas <- query @ParagraphCta
+    landingPage <- fetch landingPageId
+    paragraphCtas <- query @ParagraphCta
         |> filterWhere (#landingPageId, landingPageId)
         |> fetch
 
     -- Landing pages referenced by ParagraphCta.refLandingPageId
-    landingPageWithRecordsParagraphCtaRefLandingPages <- query @LandingPage
-        |> filterWhereIn (#id, map (get #refLandingPageId) landingPageWithRecordsParagraphCtas)
+    paragraphCtaRefLandingPages <- query @LandingPage
+        |> filterWhereIn (#id, map (get #refLandingPageId) paragraphCtas)
         |> fetch
 
-    landingPageWithRecordsParagraphQuotes <- query @ParagraphQuote
+    paragraphQuotes <- query @ParagraphQuote
         |> filterWhere (#landingPageId, landingPageId)
         |> fetch
 
@@ -27,6 +27,6 @@ fetchLandingPageWithRecords landingPageId = do
 getParagraphsCount :: (?modelContext::ModelContext) => Id LandingPage -> IO Int
 getParagraphsCount landingPageId = do
     landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
-    pure $ length landingPageWithRecords.landingPageWithRecordsParagraphCtas
-                    + length landingPageWithRecords.landingPageWithRecordsParagraphQuotes
+    pure $ length landingPageWithRecords.paragraphCtas
+                    + length landingPageWithRecords.paragraphQuotes
                     + 1

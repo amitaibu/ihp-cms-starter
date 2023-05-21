@@ -11,10 +11,10 @@ import Generated.Types
 @see `fetchLandingPageWithRecords`
 -}
 data LandingPageWithRecords = LandingPageWithRecords
-    { landingPageWithRecordsLandingPage :: !LandingPage
-    , landingPageWithRecordsParagraphCtas :: ![ParagraphCta]
-    , landingPageWithRecordsParagraphQuotes :: ![ParagraphQuote]
-    , landingPageWithRecordsParagraphCtaRefLandingPages :: ![LandingPage]
+    { landingPage :: !LandingPage
+    , paragraphCtas :: ![ParagraphCta]
+    , paragraphQuotes :: ![ParagraphQuote]
+    , paragraphCtaRefLandingPages :: ![LandingPage]
     } deriving (Show)
 
 --

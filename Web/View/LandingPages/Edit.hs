@@ -20,9 +20,9 @@ instance View EditView where
         <script src={assetPath "/sortable.js"}></script>
     |]
         where
-            landingPage = landingPageWithRecords.landingPageWithRecordsLandingPage
-            paragraphCtas = landingPageWithRecords.landingPageWithRecordsParagraphCtas
-            paragraphQuotes = landingPageWithRecords.landingPageWithRecordsParagraphQuotes
+            landingPage = landingPageWithRecords.landingPage
+            paragraphCtas = landingPageWithRecords.paragraphCtas
+            paragraphQuotes = landingPageWithRecords.paragraphQuotes
 
             breadcrumb = renderBreadcrumb
                 [ breadcrumbLink "LandingPages" LandingPagesAction
