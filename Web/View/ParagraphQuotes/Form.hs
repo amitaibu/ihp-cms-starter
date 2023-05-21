@@ -18,7 +18,7 @@ renderForm paragraphQuote isImageRequired = formFor paragraphQuote [hsx|
                     {(textField #subtitle) {required = True}}
 
                     <div class="flex flex-row">
-                        {(fileField #imageUrl) {required = True, additionalAttributes = [("accept", "image/*"), ("data-preview", "#imageUrlPreview")]}}
+                        {(fileField #imageUrl) {required = isImageRequired, additionalAttributes = [("accept", "image/*"), ("data-preview", "#imageUrlPreview")]}}
 
                         <img id="imageUrlPreview" src={paragraphQuote.imageUrl} class="w-20 h-20" />
                     </div>
