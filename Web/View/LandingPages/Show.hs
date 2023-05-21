@@ -56,7 +56,12 @@ orderAndRenderParagraphs landingPageWithRecords =
             )
 
         quotes = paragraphQuotes
-            |> fmap (\paragraph -> (paragraph.weight, ParagraphQuotes.renderParagraph paragraph.title))
+            |> fmap (\paragraph ->
+                ( paragraph.weight
+                , case paragraph.imageUrl of
+                    Just imageUrl -> ParagraphQuotes.renderParagraph paragraph.body paragraph.subtitle imageUrl
+                    Nothing -> mempty
+                ))
 
         allSorted = ctas ++ quotes
             |> sortOn fst

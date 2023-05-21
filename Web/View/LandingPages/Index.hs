@@ -1,5 +1,8 @@
 module Web.View.LandingPages.Index where
 import Web.View.Prelude
+import Web.Element.Types
+import Web.Element.ElementBuild
+import Web.Element.ElementWrap
 
 data IndexView = IndexView { landingPages :: [LandingPage]  }
 
@@ -7,33 +10,38 @@ instance View IndexView where
     html IndexView { .. } = [hsx|
         {breadcrumb}
 
-        <h1>Index<a href={pathTo NewLandingPageAction} class="btn btn-primary ms-4">+ New</a></h1>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>LandingPage</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>{forEach landingPages renderLandingPage}</tbody>
-            </table>
+        {header}
+        <ol class="list-decimal flex flex-col gap-2">
+            {forEach landingPages renderLandingPage}
+        </ol>
 
-        </div>
     |]
+        |> wrapContainerVerticalSpacing AlignNone
+        |> wrapContainerWide
         where
+            header =
+                [ [hsx|Landing pages Index|] |> wrapHeaderTag 1
+                , buildButton (pathTo NewLandingPageAction) "New Landing page"
+                ]
+                    |> mconcat
+                    |> wrapHorizontalSpacing AlignNone
+
             breadcrumb = renderBreadcrumb
-                [ breadcrumbLink "LandingPages" LandingPagesAction
+                [ breadcrumbLink "Landing Pages" LandingPagesAction
                 ]
 
 renderLandingPage :: LandingPage -> Html
 renderLandingPage landingPage = [hsx|
-    <tr>
-        <td>{landingPage.title}</td>
-        <td><a href={ShowLandingPageAction landingPage.id}>Show</a></td>
-        <td><a href={EditLandingPageAction landingPage.id} class="text-muted">Edit</a></td>
-        <td><a href={DeleteLandingPageAction landingPage.id} class="js-delete text-muted">Delete</a></td>
-    </tr>
+    <li class="flex flex-row gap-2">
+        {landingPage.title}
+        {operations}
+    </li>
 |]
+    where
+        operations =
+            [ buildLink (ShowLandingPageAction landingPage.id) "Show"
+            , buildLink (EditLandingPageAction landingPage.id) "Edit"
+            , buildLinkDeleteAction (DeleteLandingPageAction landingPage.id)
+            ]
+                |> mconcat
+                |> wrapHorizontalSpacingTiny AlignCenter

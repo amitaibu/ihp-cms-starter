@@ -1,6 +1,7 @@
 module Web.View.LandingPages.Edit where
 import Web.View.Prelude
 import Web.Controller.Prelude
+import Web.Element.Types
 import Web.Element.ElementBuild
 import Web.Element.ElementWrap
 
@@ -34,7 +35,6 @@ renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
 
     <div class="container-wide flex flex-col gap-y-4">
         {(textField #title)}
-        {(textField #slug) {helpText = "This will be used in the URL. It should be unique."}}
 
         <div class="flex flex-col gap-y-4 border p-4">
             <h3 class="text-xl">Paragraphs</h3>
@@ -53,19 +53,21 @@ renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
 |]
 
 orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> Html
-orderAndRenderParagraphs ctas quotes =
-    [hsx|{forEach allSorted (\rendered -> rendered)}|]
+orderAndRenderParagraphs paragraphCtas paragraphQuotes =
+    ctas
+        ++ quotes
+        |> sortOn fst
+        |> fmap snd
+        |> mconcat
+
     where
-        ctas' = ctas
+        ctas = paragraphCtas
             |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphCtaAction DeleteParagraphCtaAction paragraph.id paragraph.title ("CTA" :: Text)))
 
-        quotes' = quotes
-            |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphQuoteAction DeleteParagraphQuoteAction paragraph.id paragraph.title ("Quote" :: Text)))
+        quotes = paragraphQuotes
+            |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphQuoteAction DeleteParagraphQuoteAction paragraph.id paragraph.subtitle ("Quote" :: Text)))
 
 
-        allSorted = ctas' ++ quotes'
-            |> sortOn fst
-            |> fmap snd
 
         -- Show the paragraph title and the operations to perform on it.
         paragraphTitleAndOps :: (Show (PrimaryKey record), HasPath controller) => (Id' record -> controller) -> (Id' record -> controller) -> Id' record -> Text -> Text -> Html
@@ -78,12 +80,17 @@ orderAndRenderParagraphs ctas quotes =
                     <input type="hidden" name="paragraphId" value={show id} />
 
                     {title} <span class="text-sm text-gray-600">({type_})</span>
-                    <div class="flex flex-row gap-2">
-                        {buildLink (editAction id) "Edit"}
-                        {buildLinkDeleteAction (deleteAction id)}
-                    </div>
+                    {operations}
                 </li>
             |]
+            where
+                operations =
+                    [ buildLink (editAction id) "Edit"
+                    , buildLinkDeleteAction (deleteAction id)
+                    ]
+                        |> mconcat
+                        |> wrapHorizontalSpacingTiny AlignNone
+
 
 
         sortableHandle =

@@ -26,7 +26,7 @@ instance View ShowView where
 renderParagraph :: Text -> Text -> Html -> Html
 renderParagraph title body button =
     titleWrapped
-        ++ bodyWrapper
+        ++ bodyWrapped
         ++ button
         |> wrapContainerVerticalSpacing AlignCenter
         |> buildInnerElementLayout Gray100
@@ -35,5 +35,5 @@ renderParagraph title body button =
         titleWrapped = cs title
             |> wrapHeaderTag 1
 
-        bodyWrapper = body |> preEscapedToHtml
+        bodyWrapped = body |> preEscapedToHtml
             |> wrapProse

@@ -28,6 +28,7 @@ instance Controller LandingPagesController where
     action UpdateLandingPageAction { landingPageId } = do
         landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
 
+
         landingPageWithRecords.landingPage
             |> buildLandingPage
             |> ifValid \case
@@ -39,7 +40,6 @@ instance Controller LandingPagesController where
                     let landingPageWithMeta = landingPageWithRecords.landingPage
                             |> set #meta landingPage'.meta
                             |> set #title landingPage'.title
-                            |> set #slug landingPage'.slug
 
                     render EditView { landingPageWithRecords = landingPageWithRecords {landingPage = landingPageWithMeta}}
 
@@ -104,7 +104,6 @@ instance Controller LandingPagesController where
         redirectTo LandingPagesAction
 
 buildLandingPage landingPage = landingPage
-    |> fill @'["title", "slug"]
+    |> fill @'["title"]
     |> validateField #title nonEmpty
-    |> validateField #slug nonEmpty
 

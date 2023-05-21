@@ -65,6 +65,48 @@ wrapContainerVerticalSpacingTiny align element =
             ]
 
 
+wrapHorizontalSpacing :: Align -> Html -> Html
+wrapHorizontalSpacing align element =
+    case element of
+        Empty _ -> mempty
+        _ -> [hsx|<div class={classes'}>{element}</div>|]
+    where
+        classes' =
+            classes
+            [ "flex flex-row gap-4 md:gap-5"
+            , ("items-start", align == AlignStart)
+            , ("items-center", align == AlignCenter)
+            , ("items-end", align == AlignEnd)
+            ]
+
+wrapHorizontalSpacingTiny :: Align -> Html -> Html
+wrapHorizontalSpacingTiny align element =
+    case element of
+        Empty _ -> mempty
+        _ -> [hsx|<div class={classes'}>{element}</div>|]
+    where
+        classes' =
+            classes
+            [ "flex flex-row gap-2"
+            , ("items-start", align == AlignStart)
+            , ("items-center", align == AlignCenter)
+            , ("items-end", align == AlignEnd)
+            ]
+
+wrapHorizontalSpacingJustifyBetween :: Align -> Html -> Html
+wrapHorizontalSpacingJustifyBetween align element =
+    case element of
+        Empty _ -> mempty
+        _ -> [hsx|<div class={classes'}>{element}</div>|]
+    where
+        classes' =
+            classes
+            [ "flex flex-row justify-between"
+            , ("items-start", align == AlignStart)
+            , ("items-center", align == AlignCenter)
+            , ("items-end", align == AlignEnd)
+            ]
+
 -- Text
 
 wrapProse :: Html -> Html
@@ -75,22 +117,22 @@ wrapProse element =
         </div>
     |]
 
-wrapTextResponsiveFontSize :: Text -> Html -> Html
-wrapTextResponsiveFontSize size element =
+wrapTextResponsiveFontSize :: TextSize -> Html -> Html
+wrapTextResponsiveFontSize textSize element =
     [hsx|
         <div class={sizeClasses}>{element}</div>
     |]
     where
         sizeClasses :: Text =
-            case size of
-                "xs" -> "text-xs"
-                "sm" -> "text-xs md:text-sm"
-                "base" -> "text-sm md:text-base"
-                "lg" -> "md:text-lg"
-                "xl" -> "text-lg md:text-xl"
-                "2xl" -> "text-xl md:text-2xl"
-                "3xl" -> "text-xl md:text-2xl lg:text-3xl"
-                _ -> "text-base"
+            case textSize of
+                TextSizeXs -> "text-xs"
+                TextSizeSm -> "text-xs md:text-sm"
+                TextSizeBase -> "text-sm md:text-base"
+                TextSizeLg -> "md:text-lg"
+                TextSizeXl -> "text-lg md:text-xl"
+                TextSize2xl -> "text-xl md:text-2xl"
+                TextSize3xl -> "text-xl md:text-2xl lg:text-3xl"
+
 
 wrapHeaderTag :: Int -> Html -> Html
 wrapHeaderTag number element =
