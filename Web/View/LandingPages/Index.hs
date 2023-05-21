@@ -16,7 +16,7 @@ instance View IndexView where
         </ol>
 
     |]
-        |> wrapContainerVerticalSpacing AlignNone
+        |> wrapVerticalSpacing AlignNone
         |> wrapContainerWide
         where
             header =

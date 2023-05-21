@@ -28,7 +28,7 @@ renderParagraph title body button =
     titleWrapped
         ++ bodyWrapped
         ++ button
-        |> wrapContainerVerticalSpacing AlignCenter
+        |> wrapVerticalSpacing AlignCenter
         |> buildInnerElementLayout Gray100
         |> wrapContainerNarrow
     where

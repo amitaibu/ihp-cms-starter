@@ -25,7 +25,7 @@ renderParagraph body subtitle imageUrl =
     quotationSign
         ++ bodyWrapped
         ++ titleWrapped
-        |> wrapContainerVerticalSpacing AlignNone
+        |> wrapVerticalSpacing AlignNone
         |> buildElementLayoutSplitImageAndContent imageUrl
     where
         -- https://iconmonstr.com/quote-3-svg/

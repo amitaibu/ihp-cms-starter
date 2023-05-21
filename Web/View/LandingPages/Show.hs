@@ -3,16 +3,16 @@ import Web.View.Prelude
 import qualified Web.View.ParagraphCtas.Show as ParagraphCtas
 import qualified Web.View.ParagraphQuotes.Show as ParagraphQuotes
 import Web.Types
-import Web.Element.ElementBuild (buildButtonPrimary)
+import Web.Element.Types
+import Web.Element.ElementBuild
+import Web.Element.ElementWrap
 
 data ShowView = ShowView { landingPageWithRecords :: LandingPageWithRecords }
 
 instance View ShowView where
     html ShowView { .. } = [hsx|
-        {breadcrumb}
-        <div class="flex flex-row gap-2 items-baseline">
-            <h1 class="text-3xl">{landingPage.title}</h1>
-            <a href={EditLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline hover:text-blue-600">(Edit)</a>
+        <div class="container-wide w-full flex flex-col gap-4">
+            {header}
         </div>
 
         {orderAndRenderParagraphs landingPageWithRecords }
@@ -21,10 +21,26 @@ instance View ShowView where
         where
             landingPage = landingPageWithRecords.landingPage
 
+
+
+            header = [hsx|
+                    {breadcrumb}
+                    {titleAndEdit}
+                |]
+                    |> wrapVerticalSpacing AlignNone
+                    |> wrapContainerWide
+
             breadcrumb = renderBreadcrumb
                             [ breadcrumbLink "LandingPages" LandingPagesAction
                             , breadcrumbText "Show LandingPage"
                             ]
+
+            titleAndEdit =
+                [ cs landingPage.title |> wrapHeaderTag 1
+                , buildLink (EditLandingPageAction landingPage.id) "Edit"
+                ]
+                    |> mconcat
+                    |> wrapHorizontalSpacingTiny AlignBaseline
 
 
 orderAndRenderParagraphs :: (?context::ControllerContext) => LandingPageWithRecords -> Html

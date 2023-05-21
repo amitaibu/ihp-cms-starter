@@ -25,7 +25,7 @@ renderForm paragraphQuote isImageRequired = formFor paragraphQuote [hsx|
 
                     {submitButton}
                 |]
-                |> wrapContainerVerticalSpacing AlignNone
+                |> wrapVerticalSpacing AlignNone
                 |> wrapContainerWide
 
 

@@ -36,7 +36,7 @@ renderForm paragraphCta landingPages = formFor paragraphCta [hsx|
                      {(selectField #refLandingPageId landingPages) {required = True, fieldLabel = "Landing page", helpText = "Select the landing page you want to link to."}}
                     {submitButton}
                 |]
-                |> wrapContainerVerticalSpacing AlignNone
+                |> wrapVerticalSpacing AlignNone
                 |> wrapContainerWide
 
 instance CanSelect LandingPage where

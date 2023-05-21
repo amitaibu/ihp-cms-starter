@@ -34,8 +34,8 @@ wrapContainerNarrow element =
 
 -- Spacing
 
-wrapContainerVerticalSpacing :: Align -> Html -> Html
-wrapContainerVerticalSpacing align element =
+wrapVerticalSpacing :: Align -> Html -> Html
+wrapVerticalSpacing align element =
     case element of
         Empty _ -> mempty
         _ -> [hsx|<div class={classes'}>{element}</div>|]
@@ -46,12 +46,13 @@ wrapContainerVerticalSpacing align element =
             , ("items-start", align == AlignStart)
             , ("items-center", align == AlignCenter)
             , ("items-end", align == AlignEnd)
+            , ("items-baseline", align == AlignBaseline)
             ]
 
 
 
-wrapContainerVerticalSpacingTiny :: Align -> Html -> Html
-wrapContainerVerticalSpacingTiny align element =
+wrapVerticalSpacingTiny :: Align -> Html -> Html
+wrapVerticalSpacingTiny align element =
     case element of
         Empty _ -> mempty
         _ -> [hsx|<div class={classes'}>{element}</div>|]
@@ -62,6 +63,7 @@ wrapContainerVerticalSpacingTiny align element =
             , ("items-start", align == AlignStart)
             , ("items-center", align == AlignCenter)
             , ("items-end", align == AlignEnd)
+            , ("items-baseline", align == AlignBaseline)
             ]
 
 
@@ -77,6 +79,7 @@ wrapHorizontalSpacing align element =
             , ("items-start", align == AlignStart)
             , ("items-center", align == AlignCenter)
             , ("items-end", align == AlignEnd)
+            , ("items-baseline", align == AlignBaseline)
             ]
 
 wrapHorizontalSpacingTiny :: Align -> Html -> Html
@@ -91,6 +94,7 @@ wrapHorizontalSpacingTiny align element =
             , ("items-start", align == AlignStart)
             , ("items-center", align == AlignCenter)
             , ("items-end", align == AlignEnd)
+            , ("items-baseline", align == AlignBaseline)
             ]
 
 wrapHorizontalSpacingJustifyBetween :: Align -> Html -> Html
