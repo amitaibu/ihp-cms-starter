@@ -34,8 +34,8 @@ instance Controller ParagraphQuotesController where
 
         paragraphQuote <- fetch paragraphQuoteId
         paragraphQuote
-            |> buildParagraphQuote
             |> uploadImage #imageUrl
+            >>= buildParagraphQuote
             >>= ifValid \case
                 Left paragraphQuote -> render EditView { .. }
                 Right paragraphQuote -> do
@@ -50,8 +50,8 @@ instance Controller ParagraphQuotesController where
         let paragraphQuote = newRecord @ParagraphQuote
 
         paragraphQuote
-            |> buildParagraphQuote
             |> uploadImage #imageUrl
+            >>= buildParagraphQuote
             >>= ifValid \case
                 Left paragraphQuote -> render NewView { .. }
                 Right paragraphQuote -> do
@@ -69,4 +69,6 @@ buildParagraphQuote paragraphQuote = paragraphQuote
     |> fill @["landingPageId", "weight", "subtitle", "body"]
     |> validateField #subtitle nonEmpty
     |> validateField #body nonEmpty
+    |> validateField #imageUrl nonEmpty
+    |> return
 

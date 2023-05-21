@@ -4,31 +4,28 @@ import Web.View.Prelude
 import Web.Element.Types
 import Web.Element.ElementWrap
 
--- @todo: Add `required={isImageRequired}` to form.
 renderForm :: ParagraphQuote -> Bool -> Html
 renderForm paragraphQuote isImageRequired = formFor paragraphQuote [hsx|
     {(hiddenField #landingPageId)}
     {(hiddenField #weight)}
-    {visibleForm paragraphQuote}
+    {visibleForm paragraphQuote isImageRequired imageClasses}
     |]
     where
-            visibleForm paragraphQuote =
+            imageClasses = classes [("w-20 h-20", isJust paragraphQuote.imageUrl)]
+
+            visibleForm paragraphQuote isImageRequired imageClasses =
                 [hsx|
                     {(textareaField #body) {required = True}}
                     {(textField #subtitle) {required = True}}
 
-                    <input
-                        type="file"
-                        name="imageUrl"
-                        class="form-control-file"
-                        accept="image/*"
-                        data-preview="#imageUrlPreview"
-                    />
+                    {(fileField #imageUrl) {required = True, additionalAttributes = [("accept", "image/*"), ("data-preview", "#imageUrlPreview")]}}
 
-                    <img id="imageUrlPreview" src={paragraphQuote.imageUrl} />
+                    <img id="imageUrlPreview" src={paragraphQuote.imageUrl} class={imageClasses} />
 
                     {submitButton}
                 |]
                 |> wrapContainerVerticalSpacing AlignNone
                 |> wrapContainerWide
+
+
 
