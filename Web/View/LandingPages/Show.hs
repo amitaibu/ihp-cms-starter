@@ -29,7 +29,10 @@ instance View ShowView where
 
 orderAndRenderParagraphs :: (?context::ControllerContext) => LandingPageWithRecords -> Html
 orderAndRenderParagraphs landingPageWithRecords =
-    [hsx|{forEach allSorted (\rendered -> rendered)}|]
+    ctas ++ quotes
+            |> sortOn fst
+            |> fmap snd
+            |> mconcat
     where
         paragraphCtas = landingPageWithRecords.paragraphCtas
         paragraphQuotes = landingPageWithRecords.paragraphQuotes
@@ -63,6 +66,3 @@ orderAndRenderParagraphs landingPageWithRecords =
                     Nothing -> mempty
                 ))
 
-        allSorted = ctas ++ quotes
-            |> sortOn fst
-            |> fmap snd
