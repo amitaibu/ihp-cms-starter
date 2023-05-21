@@ -75,22 +75,22 @@ wrapProse element =
         </div>
     |]
 
-wrapTextResponsiveFontSize :: Text -> Html -> Html
-wrapTextResponsiveFontSize size element =
+wrapTextResponsiveFontSize :: TextSize -> Html -> Html
+wrapTextResponsiveFontSize textSize element =
     [hsx|
         <div class={sizeClasses}>{element}</div>
     |]
     where
         sizeClasses :: Text =
-            case size of
-                "xs" -> "text-xs"
-                "sm" -> "text-xs md:text-sm"
-                "base" -> "text-sm md:text-base"
-                "lg" -> "md:text-lg"
-                "xl" -> "text-lg md:text-xl"
-                "2xl" -> "text-xl md:text-2xl"
-                "3xl" -> "text-xl md:text-2xl lg:text-3xl"
-                _ -> "text-base"
+            case textSize of
+                TextSizeXs -> "text-xs"
+                TextSizeSm -> "text-xs md:text-sm"
+                TextSizeBase -> "text-sm md:text-base"
+                TextSizeLg -> "md:text-lg"
+                TextSizeXl -> "text-lg md:text-xl"
+                TextSize2xl -> "text-xl md:text-2xl"
+                TextSize3xl -> "text-xl md:text-2xl lg:text-3xl"
+
 
 wrapHeaderTag :: Int -> Html -> Html
 wrapHeaderTag number element =

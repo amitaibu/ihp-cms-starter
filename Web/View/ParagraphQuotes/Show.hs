@@ -37,8 +37,8 @@ renderParagraph body subtitle imageUrl =
         |]
         bodyWrapped = body
             |> preEscapedToHtml
-            |> wrapTextResponsiveFontSize "2xl"
+            |> wrapTextResponsiveFontSize TextSize2xl
 
         titleWrapped = cs subtitle
-            |> wrapTextResponsiveFontSize "sm"
+            |> wrapTextResponsiveFontSize TextSizeSm
 
