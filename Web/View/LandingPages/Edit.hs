@@ -1,6 +1,7 @@
 module Web.View.LandingPages.Edit where
 import Web.View.Prelude
 import Web.Controller.Prelude
+import Web.Element.Types
 import Web.Element.ElementBuild
 import Web.Element.ElementWrap
 
@@ -80,12 +81,17 @@ orderAndRenderParagraphs paragraphCtas paragraphQuotes =
                     <input type="hidden" name="paragraphId" value={show id} />
 
                     {title} <span class="text-sm text-gray-600">({type_})</span>
-                    <div class="flex flex-row gap-2">
-                        {buildLink (editAction id) "Edit"}
-                        {buildLinkDeleteAction (deleteAction id)}
-                    </div>
+                    {operations}
                 </li>
             |]
+            where
+                operations =
+                    [ buildLink (editAction id) "Edit"
+                    , buildLinkDeleteAction (deleteAction id)
+                    ]
+                        |> mconcat
+                        |> wrapHorizontalSpacingTiny AlignNone
+
 
 
         sortableHandle =

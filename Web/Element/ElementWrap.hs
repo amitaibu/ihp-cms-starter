@@ -65,6 +65,48 @@ wrapContainerVerticalSpacingTiny align element =
             ]
 
 
+wrapHorizontalSpacing :: Align -> Html -> Html
+wrapHorizontalSpacing align element =
+    case element of
+        Empty _ -> mempty
+        _ -> [hsx|<div class={classes'}>{element}</div>|]
+    where
+        classes' =
+            classes
+            [ "flex flex-row gap-4 md:gap-5"
+            , ("items-start", align == AlignStart)
+            , ("items-center", align == AlignCenter)
+            , ("items-end", align == AlignEnd)
+            ]
+
+wrapHorizontalSpacingTiny :: Align -> Html -> Html
+wrapHorizontalSpacingTiny align element =
+    case element of
+        Empty _ -> mempty
+        _ -> [hsx|<div class={classes'}>{element}</div>|]
+    where
+        classes' =
+            classes
+            [ "flex flex-row gap-2"
+            , ("items-start", align == AlignStart)
+            , ("items-center", align == AlignCenter)
+            , ("items-end", align == AlignEnd)
+            ]
+
+wrapHorizontalSpacingJustifyBetween :: Align -> Html -> Html
+wrapHorizontalSpacingJustifyBetween align element =
+    case element of
+        Empty _ -> mempty
+        _ -> [hsx|<div class={classes'}>{element}</div>|]
+    where
+        classes' =
+            classes
+            [ "flex flex-row justify-between"
+            , ("items-start", align == AlignStart)
+            , ("items-center", align == AlignCenter)
+            , ("items-end", align == AlignEnd)
+            ]
+
 -- Text
 
 wrapProse :: Html -> Html
