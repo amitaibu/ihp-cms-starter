@@ -25,5 +25,6 @@ IHP
 static/app.css
 
 static/articles
+static/paragraph_quotes
 
 Application/Migration

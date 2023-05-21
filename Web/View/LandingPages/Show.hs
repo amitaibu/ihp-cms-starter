@@ -19,7 +19,7 @@ instance View ShowView where
 
     |]
         where
-            landingPage = landingPageWithRecords.landingPageWithRecordsLandingPage
+            landingPage = landingPageWithRecords.landingPage
 
             breadcrumb = renderBreadcrumb
                             [ breadcrumbLink "LandingPages" LandingPagesAction
@@ -29,11 +29,14 @@ instance View ShowView where
 
 orderAndRenderParagraphs :: (?context::ControllerContext) => LandingPageWithRecords -> Html
 orderAndRenderParagraphs landingPageWithRecords =
-    [hsx|{forEach allSorted (\rendered -> rendered)}|]
+    ctas ++ quotes
+            |> sortOn fst
+            |> fmap snd
+            |> mconcat
     where
-        paragraphCtas = landingPageWithRecords.landingPageWithRecordsParagraphCtas
-        paragraphQuotes = landingPageWithRecords.landingPageWithRecordsParagraphQuotes
-        paragraphCtaRefLandingPages = landingPageWithRecords.landingPageWithRecordsParagraphCtaRefLandingPages
+        paragraphCtas = landingPageWithRecords.paragraphCtas
+        paragraphQuotes = landingPageWithRecords.paragraphQuotes
+        paragraphCtaRefLandingPages = landingPageWithRecords.paragraphCtaRefLandingPages
 
         ctas = paragraphCtas
             |> fmap (\paragraph ->
@@ -63,6 +66,3 @@ orderAndRenderParagraphs landingPageWithRecords =
                     Nothing -> mempty
                 ))
 
-        allSorted = ctas ++ quotes
-            |> sortOn fst
-            |> fmap snd

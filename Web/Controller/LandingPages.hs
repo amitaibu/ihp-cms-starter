@@ -28,8 +28,8 @@ instance Controller LandingPagesController where
     action UpdateLandingPageAction { landingPageId } = do
         landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
 
-        landingPageWithRecords
-            |> landingPageWithRecordsLandingPage
+
+        landingPageWithRecords.landingPage
             |> buildLandingPage
             |> ifValid \case
                 Left landingPage' -> do
@@ -37,12 +37,11 @@ instance Controller LandingPagesController where
                     -- Fetch the paragraphs again, because we need to show the validation errors.
                     landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
                     -- Update the Landing page to hold the new input values, and any validation errors.
-                    let landingPageWithMeta = landingPageWithRecords
-                            |> landingPageWithRecordsLandingPage
+                    let landingPageWithMeta = landingPageWithRecords.landingPage
                             |> set #meta landingPage'.meta
                             |> set #title landingPage'.title
 
-                    render EditView { landingPageWithRecords = landingPageWithRecords {landingPageWithRecordsLandingPage = landingPageWithMeta}}
+                    render EditView { landingPageWithRecords = landingPageWithRecords {landingPage = landingPageWithMeta}}
 
                 Right landingPage -> do
                     landingPage <- landingPage |> updateRecord
@@ -61,8 +60,8 @@ instance Controller LandingPagesController where
                             landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
 
                             -- Iterate over all paragraphs, and update the weight.
-                            forEach landingPageWithRecords.landingPageWithRecordsParagraphCtas updateParagraph
-                            forEach landingPageWithRecords.landingPageWithRecordsParagraphQuotes updateParagraph
+                            forEach landingPageWithRecords.paragraphCtas updateParagraph
+                            forEach landingPageWithRecords.paragraphQuotes updateParagraph
 
                             where
                                 updateParagraph :: forall record.
