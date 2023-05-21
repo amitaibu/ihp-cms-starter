@@ -8,17 +8,14 @@ import Web.View.Layout (defaultLayout)
 import Web.Controller.LandingPages
 import Web.Controller.ParagraphCtas
 import Web.Controller.ParagraphQuotes
-import Web.Controller.Articles
-import Web.Controller.Static
 
 instance FrontController WebApplication where
     controllers =
-        [ startPage WelcomeAction
+        [ startPage LandingPagesAction
         -- Generator Marker
         , parseRoute @LandingPagesController
         , parseRoute @ParagraphCtasController
         , parseRoute @ParagraphQuotesController
-        , parseRoute @ArticlesController
         ]
 
 instance InitControllerContext WebApplication where

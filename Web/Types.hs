@@ -21,19 +21,6 @@ data LandingPageWithRecords = LandingPageWithRecords
 
 data WebApplication = WebApplication deriving (Eq, Show)
 
-
-data StaticController = WelcomeAction deriving (Eq, Show, Data)
-
-data ArticlesController
-    = ArticlesAction
-    | NewArticleAction
-    | ShowArticleAction { articleId :: !(Id Article) }
-    | CreateArticleAction
-    | EditArticleAction { articleId :: !(Id Article) }
-    | UpdateArticleAction { articleId :: !(Id Article) }
-    | DeleteArticleAction { articleId :: !(Id Article) }
-    deriving (Eq, Show, Data)
-
 data ParagraphQuotesController
     = ParagraphQuotesAction
     | NewParagraphQuoteAction { landingPageId :: !(Id LandingPage) }

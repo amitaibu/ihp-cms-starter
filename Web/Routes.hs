@@ -4,9 +4,6 @@ import Generated.Types
 import Web.Types
 
 -- Generator Marker
-instance AutoRoute StaticController
-instance AutoRoute ArticlesController
-
 
 instance AutoRoute ParagraphQuotesController
 
