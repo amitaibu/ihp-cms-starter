@@ -8,12 +8,13 @@ renderForm :: ParagraphQuote -> Bool -> Html
 renderForm paragraphQuote isImageRequired = formFor paragraphQuote [hsx|
     {(hiddenField #landingPageId)}
     {(hiddenField #weight)}
-    {visibleForm paragraphQuote isImageRequired imageClasses}
+    {visibleForm paragraphQuote}
     |]
     where
             imageClasses = classes [("w-20 h-20", isJust paragraphQuote.imageUrl)]
 
-            visibleForm paragraphQuote isImageRequired imageClasses =
+            visibleForm :: (?formContext :: FormContext ParagraphQuote) => ParagraphQuote -> Html
+            visibleForm paragraphQuote =
                 [hsx|
                     {(textareaField #body) {required = True}}
                     {(textField #subtitle) {required = True}}
