@@ -35,7 +35,6 @@ renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
 
     <div class="container-wide flex flex-col gap-y-4">
         {(textField #title)}
-        {(textField #slug) {helpText = "This will be used in the URL. It should be unique."}}
 
         <div class="flex flex-col gap-y-4 border p-4">
             <h3 class="text-xl">Paragraphs</h3>

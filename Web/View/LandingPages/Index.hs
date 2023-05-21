@@ -27,7 +27,7 @@ instance View IndexView where
                     |> wrapHorizontalSpacing AlignNone
 
             breadcrumb = renderBreadcrumb
-                [ breadcrumbLink "LandingPages" LandingPagesAction
+                [ breadcrumbLink "Landing Pages" LandingPagesAction
                 ]
 
 renderLandingPage :: LandingPage -> Html

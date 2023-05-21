@@ -41,7 +41,6 @@ instance Controller LandingPagesController where
                             |> landingPageWithRecordsLandingPage
                             |> set #meta landingPage'.meta
                             |> set #title landingPage'.title
-                            |> set #slug landingPage'.slug
 
                     render EditView { landingPageWithRecords = landingPageWithRecords {landingPageWithRecordsLandingPage = landingPageWithMeta}}
 
@@ -106,7 +105,6 @@ instance Controller LandingPagesController where
         redirectTo LandingPagesAction
 
 buildLandingPage landingPage = landingPage
-    |> fill @'["title", "slug"]
+    |> fill @'["title"]
     |> validateField #title nonEmpty
-    |> validateField #slug nonEmpty
 
