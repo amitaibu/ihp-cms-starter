@@ -11,17 +11,17 @@ renderForm paragraphQuote isImageRequired = formFor paragraphQuote [hsx|
     {visibleForm paragraphQuote}
     |]
     where
-            imageClasses = classes [("w-20 h-20", isJust paragraphQuote.imageUrl)]
-
             visibleForm :: (?formContext :: FormContext ParagraphQuote) => ParagraphQuote -> Html
             visibleForm paragraphQuote =
                 [hsx|
                     {(textareaField #body) {required = True}}
                     {(textField #subtitle) {required = True}}
 
-                    {(fileField #imageUrl) {required = True, additionalAttributes = [("accept", "image/*"), ("data-preview", "#imageUrlPreview")]}}
+                    <div class="flex flex-row">
+                        {(fileField #imageUrl) {required = True, additionalAttributes = [("accept", "image/*"), ("data-preview", "#imageUrlPreview")]}}
 
-                    <img id="imageUrlPreview" src={paragraphQuote.imageUrl} class={imageClasses} />
+                        <img id="imageUrlPreview" src={paragraphQuote.imageUrl} class="w-20 h-20" />
+                    </div>
 
                     {submitButton}
                 |]
