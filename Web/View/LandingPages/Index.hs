@@ -11,9 +11,7 @@ instance View IndexView where
         {breadcrumb}
 
         {header}
-        <ol class="list-decimal flex flex-col gap-2">
-            {forEach landingPages renderLandingPage}
-        </ol>
+        {body}
 
     |]
         |> wrapVerticalSpacing AlignNone
@@ -26,18 +24,23 @@ instance View IndexView where
                     |> mconcat
                     |> wrapHorizontalSpacing AlignNone
 
+            body = forEach landingPages renderLandingPage |> wrapListOl
+
             breadcrumb = renderBreadcrumb
                 [ breadcrumbLink "Landing Pages" LandingPagesAction
                 ]
 
 renderLandingPage :: LandingPage -> Html
 renderLandingPage landingPage = [hsx|
-    <li class="flex flex-row gap-2">
-        {landingPage.title}
-        {operations}
-    </li>
+    {body}
 |]
     where
+        body =
+            [ cs landingPage.title
+            , operations
+            ]
+                |> mconcat
+                |> wrapHorizontalSpacingTiny AlignBaseline
         operations =
             [ buildLink (ShowLandingPageAction landingPage.id) "Show"
             , buildLink (EditLandingPageAction landingPage.id) "Edit"

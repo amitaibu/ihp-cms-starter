@@ -35,5 +35,6 @@ renderParagraph title body button =
         titleWrapped = cs title
             |> wrapHeaderTag 1
 
-        bodyWrapped = body |> preEscapedToHtml
+        bodyWrapped = body
+            |> preEscapedToHtml
             |> wrapProse

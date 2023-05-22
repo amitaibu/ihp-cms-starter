@@ -111,6 +111,21 @@ wrapHorizontalSpacingJustifyBetween align element =
             , ("items-end", align == AlignEnd)
             ]
 
+-- Lists (ul and ol)
+
+wrapListOl :: Html -> Html
+wrapListOl element =
+    case element of
+        Empty _ -> mempty
+        _ -> [hsx|<ol class="list-decimal flex flex-col gap-2">{element}</ol>|]
+
+wrapListUl :: Html -> Html
+wrapListUl element =
+    case element of
+        Empty _ -> mempty
+        _ -> [hsx|<ol class="list-disc flex flex-col gap-2">{element}</ol>|]
+
+
 -- Text
 
 wrapProse :: Html -> Html
