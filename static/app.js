@@ -1,3 +1,13 @@
-$(document).on('ready turbolinks:load', function () {
-    // This is called on the first page load *and* also when the page is changed by turbolinks
+$(document).on('ready turbolinks:load', () => {
+
+    // Init sortable.
+    document.querySelectorAll('.js-sortable').forEach(function (elem) {
+        if (Boolean(elem.jsSortableInitialized) === false) {
+            Sortable.create(elem, {
+                handle: '.sortable-handle',
+                animation: 150,
+            });
+            elem.jsSortableInitialized = true;
+        }
+    });
 });

@@ -15,10 +15,6 @@ instance View EditView where
             <div><a href={ShowLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline">(Show)</a></div>
         </div>
         {renderForm landingPage paragraphCtas paragraphQuotes}
-
-        <!-- jsDelivr :: Sortable :: Latest (https://www.jsdelivr.com/package/npm/sortablejs) -->
-        <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-        <script src={assetPath "/sortable.js"}></script>
     |]
         where
             landingPage = landingPageWithRecords.landingPage

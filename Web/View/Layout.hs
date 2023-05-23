@@ -48,6 +48,8 @@ scripts = [hsx|
         <script src={assetPath "/vendor/turbolinks.js"}></script>
         <script src={assetPath "/vendor/turbolinksInstantClick.js"}></script>
         <script src={assetPath "/vendor/turbolinksMorphdom.js"}></script>
+        <!-- jsDelivr :: Sortable :: Latest (https://www.jsdelivr.com/package/npm/sortablejs) -->
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
         <script src={assetPath "/helpers.js"}></script>
         <script src={assetPath "/ihp-auto-refresh.js"}></script>
         <script src={assetPath "/app.js"}></script>
