@@ -17,6 +17,17 @@ data LandingPageWithRecords = LandingPageWithRecords
     , paragraphCtaRefLandingPages :: ![LandingPage]
     } deriving (Show)
 
+
+{-| The result of fetching a `Post` with all the nested records.
+
+@see `fetchPostWithRecords`
+-}
+data PostWithRecords = PostWithRecords
+    { post :: !Post
+    , comments :: ![Comment]
+    , commentUsers :: ![User]
+    } deriving (Show)
+
 --
 
 data WebApplication = WebApplication deriving (Eq, Show)
@@ -52,3 +63,13 @@ data LandingPagesController
     deriving (Eq, Show, Data)
 
 
+
+data PostsController
+    = PostsAction
+    | NewPostAction
+    | ShowPostAction { postId :: !(Id Post) }
+    | CreatePostAction
+    | EditPostAction { postId :: !(Id Post) }
+    | UpdatePostAction { postId :: !(Id Post) }
+    | DeletePostAction { postId :: !(Id Post) }
+    deriving (Eq, Show, Data)

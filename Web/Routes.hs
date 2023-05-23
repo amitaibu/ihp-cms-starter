@@ -13,3 +13,6 @@ instance AutoRoute ParagraphCtasController
 
 instance AutoRoute LandingPagesController
 
+
+instance AutoRoute PostsController
+

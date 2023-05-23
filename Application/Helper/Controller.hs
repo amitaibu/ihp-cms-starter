@@ -32,3 +32,25 @@ getParagraphsCount landingPageId = do
     pure $ length landingPageWithRecords.paragraphCtas
                     + length landingPageWithRecords.paragraphQuotes
                     + 1
+
+
+{-| a `Post` with all the nested records along with the referencing `Comment`s,
+and the authors of those comments.
+-}
+fetchPostWithRecords :: (?modelContext :: ModelContext) => Id Post -> IO PostWithRecords
+fetchPostWithRecords postId = do
+    post <- fetch postId
+
+    -- Comments referencing the post ID.
+    comments <- query @Comment
+        |> filterWhere (#postId, postId)
+        |> fetch
+
+    -- Authors of the comments.
+    commentUsers <- query @User
+        |> filterWhereIn (#id, map (get #userId) comments)
+        |> fetch
+
+
+
+    return $ PostWithRecords { .. }
