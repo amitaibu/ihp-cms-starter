@@ -23,6 +23,9 @@ JS_FILES += ${IHP}/static/vendor/morphdom-umd.min.js
 JS_FILES += ${IHP}/static/vendor/turbolinks.js
 JS_FILES += ${IHP}/static/vendor/turbolinksInstantClick.js
 JS_FILES += ${IHP}/static/vendor/turbolinksMorphdom.js
+CSS_FILES += ${IHP}/static/vendor/bootstrap.min.css
+JS_FILES += ${IHP}/static/vendor/popper.min.js
+JS_FILES += ${IHP}/static/vendor/bootstrap.min.js
 
 include ${IHP}/Makefile.dist
 
