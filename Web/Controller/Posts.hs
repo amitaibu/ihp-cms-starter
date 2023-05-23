@@ -16,7 +16,7 @@ instance Controller PostsController where
         render NewView { .. }
 
     action ShowPostAction { postId } = do
-        post <- fetch postId
+        postWithRecords <- fetchPostWithRecords postId
         render ShowView { .. }
 
     action EditPostAction { postId } = do
@@ -39,7 +39,7 @@ instance Controller PostsController where
         post
             |> buildPost
             |> ifValid \case
-                Left post -> render NewView { .. } 
+                Left post -> render NewView { .. }
                 Right post -> do
                     post <- post |> createRecord
                     setSuccessMessage "Post created"

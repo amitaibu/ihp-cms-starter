@@ -51,6 +51,4 @@ fetchPostWithRecords postId = do
         |> filterWhereIn (#id, map (get #userId) comments)
         |> fetch
 
-
-
     return $ PostWithRecords { .. }
