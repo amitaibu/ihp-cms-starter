@@ -17,9 +17,7 @@ fetchLandingPageWithRecords landingPageId = do
         |> filterWhereIn (#id, map (get #refLandingPageId) paragraphCtas)
         |> fetch
 
-    paragraphQuotes <- query @ParagraphQuote
-        |> filterWhere (#landingPageId, landingPageId)
-        |> fetch
+    paragraphQuotes <- fetch landingPage.paragraphQuotes
 
     return $ LandingPageWithRecords { .. }
 
