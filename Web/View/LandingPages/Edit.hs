@@ -40,25 +40,48 @@ instance View EditView where
 
 renderForm :: LandingPage -> [ParagraphCta] -> [ParagraphQuote] -> Html
 renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
-
-    <div class="container-wide flex flex-col gap-y-4">
-        {(textField #title)}
-
-        <div class="flex flex-col gap-y-4 border p-4">
-            <h3 class="text-xl">Paragraphs</h3>
-            <ul class="flex flex-row gap-4">
-                <li><a href={pathTo $ NewParagraphCtaAction landingPage.id } class="inline-block border border-gray-500 rounded-lg px-4 py-2">+ CTA</a></li>
-                <li><a href={pathTo $ NewParagraphQuoteAction landingPage.id } class="inline-block border border-gray-500 rounded-lg px-4 py-2">+ Quote</a></li>
-            </ul>
-
-            <ul class="js-sortable">
-                {orderAndRenderParagraphs paragraphCtas paragraphQuotes}
-            </ul>
-        </div>
-
-        {submitButton {label = "Save Landing page"}}
-    </div>
+    {visibleForm}
 |]
+
+    where
+        visibleForm :: (?formContext :: FormContext LandingPage) => Html
+        visibleForm = [hsx|
+            {(textField #title)}
+
+            <div class="border p-4">
+                {paragraphs}
+            </div>
+
+            {submitButton {label = "Save Landing page"}}
+        |]
+            |> wrapVerticalSpacing AlignNone
+            |> wrapContainerWide
+
+        paragraphs =
+            [   addParagraphs
+            ,   [hsx|
+                    <ul class="js-sortable">
+                        {orderAndRenderParagraphs paragraphCtas paragraphQuotes}
+                    </ul>
+                |]
+            ]
+                |> mconcat
+                |> wrapVerticalSpacing AlignNone
+
+
+        addParagraphs =
+            [   cs ("Paragraphs" :: Text) |> wrapHeaderTag 3
+            ,   paragraphButtons
+            ]
+                    |> mconcat
+                    |> wrapVerticalSpacing AlignNone
+
+        paragraphButtons =
+            [   buildButton (pathTo $ NewParagraphCtaAction landingPage.id) "New CTA"
+            ,   buildButton (pathTo $ NewParagraphQuoteAction landingPage.id) "New Quote"
+            ]
+                    |> mconcat
+                    |> wrapHorizontalSpacing AlignCenter
 
 orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> Html
 orderAndRenderParagraphs paragraphCtas paragraphQuotes =
