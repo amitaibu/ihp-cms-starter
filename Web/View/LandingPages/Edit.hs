@@ -77,15 +77,15 @@ renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
             [   cs ("Paragraphs" :: Text) |> wrapHeaderTag 3
             ,   paragraphButtons
             ]
-                    |> mconcat
-                    |> wrapVerticalSpacing AlignNone
+                |> mconcat
+                |> wrapVerticalSpacing AlignNone
 
         paragraphButtons =
             [   buildButton (pathTo $ NewParagraphCtaAction landingPage.id) "New CTA"
             ,   buildButton (pathTo $ NewParagraphQuoteAction landingPage.id) "New Quote"
             ]
-                    |> mconcat
-                    |> wrapHorizontalSpacing AlignCenter
+                |> mconcat
+                |> wrapHorizontalSpacing AlignCenter
 
 orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> Html
 orderAndRenderParagraphs paragraphCtas paragraphQuotes =
@@ -123,8 +123,8 @@ orderAndRenderParagraphs paragraphCtas paragraphQuotes =
                         |> wrapHorizontalSpacingTiny AlignCenter
 
                 operations =
-                    [ buildLink (editAction id) "Edit"
-                    , buildLinkDeleteAction (deleteAction id)
+                    [   buildLink (editAction id) "Edit"
+                    ,   buildLinkDeleteAction (deleteAction id)
                     ]
                         |> mconcat
                         |> wrapHorizontalSpacingTiny AlignNone
