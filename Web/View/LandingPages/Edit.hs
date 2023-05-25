@@ -9,11 +9,17 @@ data EditView = EditView { landingPageWithRecords :: LandingPageWithRecords }
 
 instance View EditView where
     html EditView { .. } = [hsx|
-        {header}
-
-        {renderForm landingPage paragraphCtas paragraphQuotes}
+        {inner}
     |]
         where
+            inner = [hsx|
+                {header}
+
+                {renderForm landingPage paragraphCtas paragraphQuotes}
+            |]
+                |> wrapVerticalSpacing AlignNone
+                |> wrapContainerWide
+
             landingPage = landingPageWithRecords.landingPage
             paragraphCtas = landingPageWithRecords.paragraphCtas
             paragraphQuotes = landingPageWithRecords.paragraphQuotes
@@ -28,7 +34,6 @@ instance View EditView where
                     {titleAndEdit}
                 |]
                     |> wrapVerticalSpacing AlignNone
-                    |> wrapContainerWide
 
 
             titleAndEdit =
@@ -40,12 +45,12 @@ instance View EditView where
 
 renderForm :: LandingPage -> [ParagraphCta] -> [ParagraphQuote] -> Html
 renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
-    {visibleForm}
+    {inner}
 |]
 
     where
-        visibleForm :: (?formContext :: FormContext LandingPage) => Html
-        visibleForm = [hsx|
+        inner :: (?formContext :: FormContext LandingPage) => Html
+        inner = [hsx|
             {(textField #title)}
 
             <div class="border p-4">
@@ -55,7 +60,6 @@ renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
             {submitButton {label = "Save Landing page"}}
         |]
             |> wrapVerticalSpacing AlignNone
-            |> wrapContainerWide
 
         paragraphs =
             [   addParagraphs
@@ -104,17 +108,20 @@ orderAndRenderParagraphs paragraphCtas paragraphQuotes =
         paragraphTitleAndOps :: (Show (PrimaryKey record), HasPath controller) => (Id' record -> controller) -> (Id' record -> controller) -> Id' record -> Text -> Text -> Html
         paragraphTitleAndOps editAction deleteAction id title type_  =
             [hsx|
-                <li class="flex flex-row gap-2 items-baseline">
-
-                    {sortableHandle}
-
-                    <input type="hidden" name="paragraphId" value={show id} />
-
-                    {title} <span class="text-sm text-gray-600">({type_})</span>
-                    {operations}
-                </li>
+                <li>{inner}</li>
             |]
             where
+                inner =
+                    [hsx|
+                        {sortableHandle}
+
+                        <input type="hidden" name="paragraphId" value={show id} />
+
+                        {title} <span class="text-sm text-gray-600">({type_})</span>
+                        {operations}
+                    |]
+                        |> wrapHorizontalSpacingTiny AlignCenter
+
                 operations =
                     [ buildLink (editAction id) "Edit"
                     , buildLinkDeleteAction (deleteAction id)
