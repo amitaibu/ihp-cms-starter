@@ -11,9 +11,7 @@ data ShowView = ShowView { landingPageWithRecords :: LandingPageWithRecords }
 
 instance View ShowView where
     html ShowView { .. } = [hsx|
-        <div class="container-wide w-full flex flex-col gap-4">
-            {header}
-        </div>
+        {header}
 
         {orderAndRenderParagraphs landingPageWithRecords }
 
@@ -21,7 +19,10 @@ instance View ShowView where
         where
             landingPage = landingPageWithRecords.landingPage
 
-
+            breadcrumb = renderBreadcrumb
+                            [ breadcrumbLink "LandingPages" LandingPagesAction
+                            , breadcrumbText "Show LandingPage"
+                            ]
 
             header = [hsx|
                     {breadcrumb}
@@ -30,10 +31,6 @@ instance View ShowView where
                     |> wrapVerticalSpacing AlignNone
                     |> wrapContainerWide
 
-            breadcrumb = renderBreadcrumb
-                            [ breadcrumbLink "LandingPages" LandingPagesAction
-                            , breadcrumbText "Show LandingPage"
-                            ]
 
             titleAndEdit =
                 [ cs landingPage.title |> wrapHeaderTag 1

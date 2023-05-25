@@ -9,11 +9,8 @@ data EditView = EditView { landingPageWithRecords :: LandingPageWithRecords }
 
 instance View EditView where
     html EditView { .. } = [hsx|
-        {breadcrumb}
-        <div class="flex flex-row gap-2">
-            <h1>Edit {landingPage.title}</h1>
-            <div><a href={ShowLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline">(Show)</a></div>
-        </div>
+        {header}
+
         {renderForm landingPage paragraphCtas paragraphQuotes}
     |]
         where
@@ -25,6 +22,21 @@ instance View EditView where
                 [ breadcrumbLink "LandingPages" LandingPagesAction
                 , breadcrumbText "Edit LandingPage"
                 ]
+
+            header = [hsx|
+                    {breadcrumb}
+                    {titleAndEdit}
+                |]
+                    |> wrapVerticalSpacing AlignNone
+                    |> wrapContainerWide
+
+
+            titleAndEdit =
+                [ [hsx|Edit {landingPage.title}|] |> wrapHeaderTag 1
+                , buildLink (ShowLandingPageAction landingPage.id) "Show"
+                ]
+                    |> mconcat
+                    |> wrapHorizontalSpacingTiny AlignBaseline
 
 renderForm :: LandingPage -> [ParagraphCta] -> [ParagraphQuote] -> Html
 renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
