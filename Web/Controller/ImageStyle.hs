@@ -1,55 +1,23 @@
 module Web.Controller.ImageStyle where
 
 import Web.Controller.Prelude
-import Web.View.ImageStyle.Index
-import Web.View.ImageStyle.New
-import Web.View.ImageStyle.Edit
-import Web.View.ImageStyle.Show
+import IHP.ControllerSupport
+import System.Directory (doesFileExist)
+
 
 instance Controller ImageStyleController where
-    action ImageStylesAction = do
-        imageStyle <- query @ImageStyle |> fetch
-        render IndexView { .. }
+    action RenderImageStyleAction { width, height, path, uuid } = do
+        -- @todo: Check if the processed image already exists
+        let size = show width <> "x" <> show height
+        let originalImagePAth = path <> "/" <> show uuid
+        let imageStylePathDirectory = path <> "/imageStyles/" <> show width <> "x" <> show height
 
-    action NewImageStyleAction = do
-        let imageStyle = newRecord
-        render NewView { .. }
 
-    action ShowImageStyleAction { imageStyleId } = do
-        imageStyle <- fetch imageStyleId
-        render ShowView { .. }
+        let options :: StoreFileOptions = def
+                { directory = path <> "/imageStyles/" <> show width <> "x" <> show height
+                , preprocess = applyImageMagick "jpg" ["-resize", cs size <> "^", "-gravity", "north", "-extent", cs size, "-quality", "85%", "-strip"]
+                }
 
-    action EditImageStyleAction { imageStyleId } = do
-        imageStyle <- fetch imageStyleId
-        render EditView { .. }
+        storedFile <- storeFileFromPath originalImagePAth options
 
-    action UpdateImageStyleAction { imageStyleId } = do
-        imageStyle <- fetch imageStyleId
-        imageStyle
-            |> buildImageStyle
-            |> ifValid \case
-                Left imageStyle -> render EditView { .. }
-                Right imageStyle -> do
-                    imageStyle <- imageStyle |> updateRecord
-                    setSuccessMessage "ImageStyle updated"
-                    redirectTo EditImageStyleAction { .. }
-
-    action CreateImageStyleAction = do
-        let imageStyle = newRecord @ImageStyle
-        imageStyle
-            |> buildImageStyle
-            |> ifValid \case
-                Left imageStyle -> render NewView { .. } 
-                Right imageStyle -> do
-                    imageStyle <- imageStyle |> createRecord
-                    setSuccessMessage "ImageStyle created"
-                    redirectTo ImageStylesAction
-
-    action DeleteImageStyleAction { imageStyleId } = do
-        imageStyle <- fetch imageStyleId
-        deleteRecord imageStyle
-        setSuccessMessage "ImageStyle deleted"
-        redirectTo ImageStylesAction
-
-buildImageStyle imageStyle = imageStyle
-    |> fill @'[]
+        renderFile (cs storedFile.path) "application/jpg"

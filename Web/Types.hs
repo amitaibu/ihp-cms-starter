@@ -54,11 +54,5 @@ data LandingPagesController
 
 
 data ImageStyleController
-    = ImageStylesAction
-    | NewImageStyleAction
-    | ShowImageStyleAction { imageStyleId :: !(Id ImageStyle) }
-    | CreateImageStyleAction
-    | EditImageStyleAction { imageStyleId :: !(Id ImageStyle) }
-    | UpdateImageStyleAction { imageStyleId :: !(Id ImageStyle) }
-    | DeleteImageStyleAction { imageStyleId :: !(Id ImageStyle) }
+    = RenderImageStyleAction { width :: !Int, height :: !Int, path :: !Text, uuid :: !UUID }
     deriving (Eq, Show, Data)
