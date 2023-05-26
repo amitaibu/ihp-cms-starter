@@ -16,7 +16,6 @@ instance Controller ImageStyleController where
         let imageStylePathDirectory = originalImageDirectory <> "/imageStyles/" <> size
         let imageStylePath = imageStylePathDirectory <> "/" <> uuid
 
-
         -- @todo: How to get rid of the "static/" prefix?
         fileExists <- doesFileExist (cs $ "static/" <> imageStylePath)
 
@@ -36,12 +35,12 @@ instance Controller ImageStyleController where
                 renderFile (cs storedFile.path) "application/jpg"
 
 
-extractDirectoryAndUUID :: Text -> (Text, Text)
-extractDirectoryAndUUID inputText = do
+extractDirectoryAndUUID :: (?context :: context, ConfigProvider context) => Text -> (Text, Text)
+extractDirectoryAndUUID inputText =
     case reverse parts of
         uuid : pathSegments -> (T.intercalate "/" (reverse pathSegments), uuid)
         _ -> ("", "")
     where
-        -- @todo: How to get rid of the hardcoded "http://localhost:8000/" prefix?
-        trimmedText = T.replace "http://localhost:8000/" "" inputText
+        frameworkConfig = ?context.frameworkConfig
+        trimmedText = T.replace (frameworkConfig.baseUrl <> "/") "" inputText
         parts = T.splitOn "/" trimmedText
