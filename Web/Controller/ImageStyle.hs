@@ -3,21 +3,43 @@ module Web.Controller.ImageStyle where
 import Web.Controller.Prelude
 import IHP.ControllerSupport
 import System.Directory (doesFileExist)
+import qualified Data.Text as T
 
 
 instance Controller ImageStyleController where
-    action RenderImageStyleAction { width, height, path, uuid } = do
-        -- @todo: Check if the processed image already exists
+    action RenderImageStyleAction { width, height, originalImagePath } = do
+        -- Remove the prefix, and extract the UUID.
+        let (originalImageDirectory, uuid) = extractDirectoryAndUUID originalImagePath
+
         let size = show width <> "x" <> show height
-        let originalImagePAth = path <> "/" <> show uuid
-        let imageStylePathDirectory = path <> "/imageStyles/" <> show width <> "x" <> show height
+
+        let imageStylePathDirectory = originalImageDirectory <> "/imageStyles/" <> size
+        let imageStylePath = imageStylePathDirectory <> "/" <> uuid
 
 
-        let options :: StoreFileOptions = def
-                { directory = path <> "/imageStyles/" <> show width <> "x" <> show height
-                , preprocess = applyImageMagick "jpg" ["-resize", cs size <> "^", "-gravity", "north", "-extent", cs size, "-quality", "85%", "-strip"]
-                }
+        -- @todo: How to get rid of the "static/" prefix?
+        fileExists <- doesFileExist (cs $ "static/" <> imageStylePath)
 
-        storedFile <- storeFileFromPath originalImagePAth options
+        if fileExists
+            then do
+                -- Image style found.
+                renderFile (cs $ "static/" <> imageStylePath) "application/jpg"
+            else do
+                -- Image style not found, so create it.
+                let options :: StoreFileOptions = def
+                        { directory = imageStylePathDirectory
+                        , preprocess = applyImageMagick "jpg" ["-resize", cs size <> "^", "-gravity", "north", "-crop", cs size, "-quality", "85%", "-strip"]
+                        }
 
-        renderFile (cs storedFile.path) "application/jpg"
+                storedFile <- storeFileFromPath originalImagePath options
+
+                renderFile (cs storedFile.path) "application/jpg"
+
+
+extractDirectoryAndUUID :: Text -> (Text, Text)
+extractDirectoryAndUUID inputText = do
+  let trimmedText = T.replace "http://localhost:8000/static" "" inputText
+      parts = T.splitOn "/" trimmedText
+  case reverse parts of
+    uuid : pathSegments -> (T.intercalate "/" (reverse pathSegments), uuid)
+    _ -> ("", "")

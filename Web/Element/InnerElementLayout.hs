@@ -40,4 +40,4 @@ buildElementLayoutSplitImageAndContent imageUrl items =
         </div>
     |]
     where
-        image = [hsx|<img src={imageUrl} class="w-full h-full" />|]
+        image = [hsx|<img src={pathTo $ RenderImageStyleAction 300 400 imageUrl} class="w-full h-full" />|]
