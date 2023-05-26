@@ -38,9 +38,10 @@ instance Controller ImageStyleController where
 
 extractDirectoryAndUUID :: Text -> (Text, Text)
 extractDirectoryAndUUID inputText = do
-    -- @todo: How to get rid of the hardcoded "http://localhost:8000/static" prefix?
-  let trimmedText = T.replace "http://localhost:8000/static" "" inputText
-      parts = T.splitOn "/" trimmedText
-  case reverse parts of
-    uuid : pathSegments -> (T.intercalate "/" (reverse pathSegments), uuid)
-    _ -> ("", "")
+    case reverse parts of
+        uuid : pathSegments -> (T.intercalate "/" (reverse pathSegments), uuid)
+        _ -> ("", "")
+    where
+        -- @todo: How to get rid of the hardcoded "http://localhost:8000/static" prefix?
+        trimmedText = T.replace "http://localhost:8000/static" "" inputText
+        parts = T.splitOn "/" trimmedText
