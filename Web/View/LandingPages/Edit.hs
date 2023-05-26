@@ -9,14 +9,17 @@ data EditView = EditView { landingPageWithRecords :: LandingPageWithRecords }
 
 instance View EditView where
     html EditView { .. } = [hsx|
-        {breadcrumb}
-        <div class="flex flex-row gap-2">
-            <h1>Edit {landingPage.title}</h1>
-            <div><a href={ShowLandingPageAction landingPage.id} class="text-blue-500 text-sm hover:underline">(Show)</a></div>
-        </div>
-        {renderForm landingPage paragraphCtas paragraphQuotes}
+        {body}
     |]
         where
+            body = [hsx|
+                {header}
+
+                {renderForm landingPage paragraphCtas paragraphQuotes}
+            |]
+                |> wrapVerticalSpacing AlignNone
+                |> wrapContainerWide
+
             landingPage = landingPageWithRecords.landingPage
             paragraphCtas = landingPageWithRecords.paragraphCtas
             paragraphQuotes = landingPageWithRecords.paragraphQuotes
@@ -26,27 +29,63 @@ instance View EditView where
                 , breadcrumbText "Edit LandingPage"
                 ]
 
+            header = [hsx|
+                    {breadcrumb}
+                    {titleAndEdit}
+                |]
+                    |> wrapVerticalSpacing AlignNone
+
+
+            titleAndEdit =
+                [ [hsx|Edit {landingPage.title}|] |> wrapHeaderTag 1
+                , buildLink (ShowLandingPageAction landingPage.id) "Show"
+                ]
+                    |> mconcat
+                    |> wrapHorizontalSpacingTiny AlignBaseline
+
 renderForm :: LandingPage -> [ParagraphCta] -> [ParagraphQuote] -> Html
 renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
-
-    <div class="container-wide flex flex-col gap-y-4">
-        {(textField #title)}
-
-        <div class="flex flex-col gap-y-4 border p-4">
-            <h3 class="text-xl">Paragraphs</h3>
-            <ul class="flex flex-row gap-4">
-                <li><a href={pathTo $ NewParagraphCtaAction landingPage.id } class="inline-block border border-gray-500 rounded-lg px-4 py-2">+ CTA</a></li>
-                <li><a href={pathTo $ NewParagraphQuoteAction landingPage.id } class="inline-block border border-gray-500 rounded-lg px-4 py-2">+ Quote</a></li>
-            </ul>
-
-            <ul class="js-sortable">
-                {orderAndRenderParagraphs paragraphCtas paragraphQuotes}
-            </ul>
-        </div>
-
-        {submitButton {label = "Save Landing page"}}
-    </div>
+    {body}
 |]
+
+    where
+        body :: (?formContext :: FormContext LandingPage) => Html
+        body = [hsx|
+            {(textField #title)}
+
+            <div class="border p-4">
+                {paragraphs}
+            </div>
+
+            {submitButton {label = "Save Landing page"}}
+        |]
+            |> wrapVerticalSpacing AlignNone
+
+        paragraphs =
+            [   addParagraphs
+            ,   [hsx|
+                    <ul class="js-sortable">
+                        {orderAndRenderParagraphs paragraphCtas paragraphQuotes}
+                    </ul>
+                |]
+            ]
+                |> mconcat
+                |> wrapVerticalSpacing AlignNone
+
+
+        addParagraphs =
+            [   cs ("Paragraphs" :: Text) |> wrapHeaderTag 3
+            ,   paragraphButtons
+            ]
+                |> mconcat
+                |> wrapVerticalSpacing AlignNone
+
+        paragraphButtons =
+            [   buildButton (pathTo $ NewParagraphCtaAction landingPage.id) "New CTA"
+            ,   buildButton (pathTo $ NewParagraphQuoteAction landingPage.id) "New Quote"
+            ]
+                |> mconcat
+                |> wrapHorizontalSpacing AlignCenter
 
 orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> Html
 orderAndRenderParagraphs paragraphCtas paragraphQuotes =
@@ -69,20 +108,23 @@ orderAndRenderParagraphs paragraphCtas paragraphQuotes =
         paragraphTitleAndOps :: (Show (PrimaryKey record), HasPath controller) => (Id' record -> controller) -> (Id' record -> controller) -> Id' record -> Text -> Text -> Html
         paragraphTitleAndOps editAction deleteAction id title type_  =
             [hsx|
-                <li class="flex flex-row gap-2 items-baseline">
-
-                    {sortableHandle}
-
-                    <input type="hidden" name="paragraphId" value={show id} />
-
-                    {title} <span class="text-sm text-gray-600">({type_})</span>
-                    {operations}
-                </li>
+                <li>{body}</li>
             |]
             where
+                body =
+                    [hsx|
+                        {sortableHandle}
+
+                        <input type="hidden" name="paragraphId" value={show id} />
+
+                        {title} <span class="text-sm text-gray-600">({type_})</span>
+                        {operations}
+                    |]
+                        |> wrapHorizontalSpacingTiny AlignCenter
+
                 operations =
-                    [ buildLink (editAction id) "Edit"
-                    , buildLinkDeleteAction (deleteAction id)
+                    [   buildLink (editAction id) "Edit"
+                    ,   buildLinkDeleteAction (deleteAction id)
                     ]
                         |> mconcat
                         |> wrapHorizontalSpacingTiny AlignNone
