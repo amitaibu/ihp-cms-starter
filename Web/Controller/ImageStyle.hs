@@ -31,7 +31,7 @@ instance Controller ImageStyleController where
                         , preprocess = applyImageMagick "jpg" ["-resize", cs size <> "^", "-gravity", "north", "-crop", cs size, "-quality", "85%", "-strip"]
                         }
 
-                storedFile <- storeFileFromPath originalImagePath options
+                storedFile <- storeFileFromPath (cs $ "static/" <> originalImageDirectory <> "/" <> uuid) options
 
                 renderFile (cs storedFile.path) "application/jpg"
 
@@ -42,6 +42,6 @@ extractDirectoryAndUUID inputText = do
         uuid : pathSegments -> (T.intercalate "/" (reverse pathSegments), uuid)
         _ -> ("", "")
     where
-        -- @todo: How to get rid of the hardcoded "http://localhost:8000/static" prefix?
-        trimmedText = T.replace "http://localhost:8000/static" "" inputText
+        -- @todo: How to get rid of the hardcoded "http://localhost:8000/" prefix?
+        trimmedText = T.replace "http://localhost:8000/" "" inputText
         parts = T.splitOn "/" trimmedText
