@@ -52,3 +52,13 @@ data LandingPagesController
     deriving (Eq, Show, Data)
 
 
+
+data ImageStyleController
+    = ImageStylesAction
+    | NewImageStyleAction
+    | ShowImageStyleAction { imageStyleId :: !(Id ImageStyle) }
+    | CreateImageStyleAction
+    | EditImageStyleAction { imageStyleId :: !(Id ImageStyle) }
+    | UpdateImageStyleAction { imageStyleId :: !(Id ImageStyle) }
+    | DeleteImageStyleAction { imageStyleId :: !(Id ImageStyle) }
+    deriving (Eq, Show, Data)
