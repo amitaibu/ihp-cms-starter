@@ -9,10 +9,10 @@ data EditView = EditView { landingPageWithRecords :: LandingPageWithRecords }
 
 instance View EditView where
     html EditView { .. } = [hsx|
-        {inner}
+        {body}
     |]
         where
-            inner = [hsx|
+            body = [hsx|
                 {header}
 
                 {renderForm landingPage paragraphCtas paragraphQuotes}
@@ -45,12 +45,12 @@ instance View EditView where
 
 renderForm :: LandingPage -> [ParagraphCta] -> [ParagraphQuote] -> Html
 renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
-    {inner}
+    {body}
 |]
 
     where
-        inner :: (?formContext :: FormContext LandingPage) => Html
-        inner = [hsx|
+        body :: (?formContext :: FormContext LandingPage) => Html
+        body = [hsx|
             {(textField #title)}
 
             <div class="border p-4">
@@ -108,10 +108,10 @@ orderAndRenderParagraphs paragraphCtas paragraphQuotes =
         paragraphTitleAndOps :: (Show (PrimaryKey record), HasPath controller) => (Id' record -> controller) -> (Id' record -> controller) -> Id' record -> Text -> Text -> Html
         paragraphTitleAndOps editAction deleteAction id title type_  =
             [hsx|
-                <li>{inner}</li>
+                <li>{body}</li>
             |]
             where
-                inner =
+                body =
                     [hsx|
                         {sortableHandle}
 
