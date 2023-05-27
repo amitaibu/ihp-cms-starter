@@ -27,7 +27,7 @@ instance Controller ImageStyleController where
                 -- Image style not found, so create it.
                 let options :: StoreFileOptions = def
                         { directory = imageStylePathDirectory
-                        , preprocess = applyImageMagick "jpg" ["-resize", cs size <> "^", "-gravity", "north", "-extent", cs size, "-quality", "85%", "-strip"]
+                        , preprocess = applyImageMagick "jpg" ["-resize", cs size <> "^", "-gravity", "center", "-extent", cs size, "-quality", "85%", "-strip"]
                         }
 
                 storedFile <- storeFileFromPath (cs $ "static/" <> originalImageDirectory <> "/" <> uuid) options
