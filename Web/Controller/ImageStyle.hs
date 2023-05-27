@@ -8,11 +8,10 @@ import qualified Data.Text as T
 
 instance Controller ImageStyleController where
     action RenderImageStyleAction { width, height, originalImagePath } = do
-        -- Remove the prefix, and extract the UUID.
+        -- Get the original image directory and UUID from the path.
         let (originalImageDirectory, uuid) = extractDirectoryAndUUID originalImagePath
 
         let size = show width <> "x" <> show height
-
         let imageStylePathDirectory = originalImageDirectory <> "/imageStyles/" <> size
         let imageStylePath = imageStylePathDirectory <> "/" <> uuid
 
