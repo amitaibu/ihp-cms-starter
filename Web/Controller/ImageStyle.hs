@@ -32,7 +32,7 @@ instance Controller ImageStyleController where
 
                 storedFile <- storeFileFromPath (cs $ "static/" <> originalImageDirectory <> "/" <> uuid) options
 
-                renderFile (cs storedFile.path) "application/jpg"
+                renderFile (cs $ "static/" <> storedFile.path) "application/jpg"
 
 
 extractDirectoryAndUUID :: (?context :: context, ConfigProvider context) => Text -> (Text, Text)
