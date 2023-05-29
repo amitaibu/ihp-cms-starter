@@ -2,7 +2,8 @@
 
 ## Install 
 
-npm install
+- Install [IHP](https://ihp.digitallyinduced.com/)
+- `npm install`
 
 ## Execute
 
