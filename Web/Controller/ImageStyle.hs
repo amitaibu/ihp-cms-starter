@@ -4,6 +4,7 @@ import Web.Controller.Prelude
 import IHP.ControllerSupport
 import System.Directory (doesFileExist)
 import qualified Data.Text as T
+import qualified Data.UUID as UUID
 
 
 instance Controller ImageStyleController where
@@ -27,6 +28,7 @@ instance Controller ImageStyleController where
                 let options :: StoreFileOptions = def
                         { directory = imageStylePathDirectory
                         , preprocess = applyImageMagick "jpg" ["-resize", cs size <> "^", "-gravity", "center", "-extent", cs size, "-quality", "85%", "-strip"]
+                        , fileName = UUID.fromText uuid
                         }
 
                 storedFile <- storeFileFromPath (cs $ "static/" <> originalImageDirectory <> "/" <> uuid) options
