@@ -4,7 +4,6 @@ import Web.Controller.Prelude
 import IHP.ControllerSupport
 import System.Directory (doesFileExist)
 import qualified Data.Text as T
-import qualified Data.UUID as UUID
 
 
 instance Controller ImageStyleController where
@@ -16,24 +15,26 @@ instance Controller ImageStyleController where
         let imageStylePathDirectory = originalImageDirectory <> "/imageStyles/" <> size
         let imageStylePath = imageStylePathDirectory <> "/" <> uuid
 
-        -- @todo: How to get rid of the "static/" prefix?
-        fileExists <- doesFileExist (cs $ "static/" <> imageStylePath)
+        let storagePrefix = case storage of
+                StaticDirStorage -> "static/"
+                _ -> ""
+
+        fileExists <- doesFileExist (cs $ storagePrefix <> imageStylePath)
 
         if fileExists
             then do
                 -- Image style found.
-                renderFile (cs $ "static/" <> imageStylePath) "application/jpg"
+                renderFile (cs $ storagePrefix <> imageStylePath) "application/jpg"
             else do
                 -- Image style not found, so create it.
                 let options :: StoreFileOptions = def
                         { directory = imageStylePathDirectory
                         , preprocess = applyImageMagick "jpg" ["-resize", cs size <> "^", "-gravity", "center", "-extent", cs size, "-quality", "85%", "-strip"]
-                        , fileName = UUID.fromText uuid
                         }
 
-                storedFile <- storeFileFromPath (cs $ "static/" <> originalImageDirectory <> "/" <> uuid) options
+                storedFile <- storeFileFromPath (cs $ storagePrefix <> originalImageDirectory <> "/" <> uuid) options
 
-                renderFile (cs $ "static/" <> storedFile.path) "application/jpg"
+                renderFile (cs $ storagePrefix <> storedFile.path) "application/jpg"
 
 
 extractDirectoryAndUUID :: (?context :: context, ConfigProvider context) => Text -> (Text, Text)
