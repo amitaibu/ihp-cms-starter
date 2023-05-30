@@ -22,14 +22,16 @@ instance View ShowView where
                             ]
 
 -- @todo: Find the right type signature.
--- renderParagraph :: Text -> Text -> Text -> IO Html
+renderParagraph :: Text -> Text -> Text -> IO Html
 renderParagraph body subtitle imageUrl = do
     hash <- hashPassword $ imageUrl <> "400x200"
-    pure $ quotationSign
+    quotationSign
         ++ bodyWrapped
         ++ titleWrapped
         |> wrapVerticalSpacing AlignNone
-        |> buildElementLayoutSplitImageAndContent (pathTo $ RenderImageStyleAction 400 200 imageUrl hash)
+        |> buildElementLayoutSplitImageAndContent (pathTo $ RenderImageStyleAction 400 200 imageUrl "")
+        |> pure
+
     where
         -- https://iconmonstr.com/quote-3-svg/
         quotationSign = [hsx|
