@@ -6,6 +6,7 @@ import Web.View.ParagraphQuotes.New
 import Web.View.ParagraphQuotes.Edit
 import Web.View.ParagraphQuotes.Show
 
+
 instance Controller ParagraphQuotesController where
     action ParagraphQuotesAction = do
         paragraphQuotes <- query @ParagraphQuote |> fetch
@@ -21,6 +22,7 @@ instance Controller ParagraphQuotesController where
 
     action ShowParagraphQuoteAction { paragraphQuoteId } = do
         paragraphQuote <- fetch paragraphQuoteId
+
         render ShowView { .. }
 
     action EditParagraphQuoteAction { paragraphQuoteId } = do

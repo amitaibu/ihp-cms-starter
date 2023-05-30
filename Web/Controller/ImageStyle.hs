@@ -5,13 +5,23 @@ import IHP.ControllerSupport
 import System.Directory (doesFileExist)
 import qualified Data.Text as T
 
+-- @todo: Find a better way
+import qualified Crypto.PasswordStore
+import IHP.AuthSupport.Authentication
+
 
 instance Controller ImageStyleController where
-    action RenderImageStyleAction { width, height, originalImagePath } = do
+    action RenderImageStyleAction { width, height, originalImagePath, hash } = do
+        let size = show width <> "x" <> show height
+        test <- hashPassword (cs $ originalImagePath <> size)
+
+        _ <- putStr $ "**************" <> cs test
+        accessDeniedUnless (Crypto.PasswordStore.verifyPassword (cs $ originalImagePath <> size) (cs hash))
+
         -- Get the original image directory and UUID from the path.
         let (originalImageDirectory, uuid) = extractDirectoryAndUUID originalImagePath
 
-        let size = show width <> "x" <> show height
+
         let imageStylePathDirectory = originalImageDirectory <> "/imageStyles/" <> size
         let imageStylePath = imageStylePathDirectory <> "/" <> uuid
 
