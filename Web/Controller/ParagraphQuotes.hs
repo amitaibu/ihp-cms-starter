@@ -5,6 +5,7 @@ import Web.View.ParagraphQuotes.Index
 import Web.View.ParagraphQuotes.New
 import Web.View.ParagraphQuotes.Edit
 import Web.View.ParagraphQuotes.Show
+import IHP.AuthSupport.Authentication
 
 
 instance Controller ParagraphQuotesController where
@@ -22,7 +23,6 @@ instance Controller ParagraphQuotesController where
 
     action ShowParagraphQuoteAction { paragraphQuoteId } = do
         paragraphQuote <- fetch paragraphQuoteId
-
         render ShowView { .. }
 
     action EditParagraphQuoteAction { paragraphQuoteId } = do

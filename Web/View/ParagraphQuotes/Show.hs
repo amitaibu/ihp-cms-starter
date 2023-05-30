@@ -3,7 +3,7 @@ import Web.View.Prelude
 import Web.Element.Types
 import Web.Element.ElementWrap
 import Web.Element.InnerElementLayout
-import Control.Monad.Free (MonadFree(wrap))
+
 
 data ShowView = ShowView { paragraphQuote :: ParagraphQuote }
 
@@ -26,7 +26,7 @@ renderParagraph body subtitle imageUrl =
         ++ bodyWrapped
         ++ titleWrapped
         |> wrapVerticalSpacing AlignNone
-        |> buildElementLayoutSplitImageAndContent imageUrl
+        |> buildElementLayoutSplitImageAndContent (pathTo $ RenderImageStyleAction 400 200 imageUrl "the-hash")
     where
         -- https://iconmonstr.com/quote-3-svg/
         quotationSign = [hsx|
