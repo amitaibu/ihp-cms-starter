@@ -10,12 +10,14 @@ import Web.Element.ElementWrap
 data ShowView = ShowView { landingPageWithRecords :: LandingPageWithRecords }
 
 instance View ShowView where
-    html ShowView { .. } = [hsx|
-        {header}
+    html ShowView { .. } = do
+        paragraphs <- orderAndRenderParagraphs landingPageWithRecords
+        [hsx|
+            {header}
 
-        {orderAndRenderParagraphs landingPageWithRecords }
+            { paragraphs }
 
-    |]
+        |]
         where
             landingPage = landingPageWithRecords.landingPage
 
@@ -40,7 +42,7 @@ instance View ShowView where
                     |> wrapHorizontalSpacingTiny AlignBaseline
 
 
-orderAndRenderParagraphs :: (?context::ControllerContext) => LandingPageWithRecords -> Html
+-- orderAndRenderParagraphs :: (?context::ControllerContext) => LandingPageWithRecords -> IO Html
 orderAndRenderParagraphs landingPageWithRecords =
     ctas ++ quotes
             |> sortOn fst
@@ -66,7 +68,7 @@ orderAndRenderParagraphs landingPageWithRecords =
 
                 in
                 ( paragraph.weight
-                , ParagraphCtas.renderParagraph paragraph.title paragraph.body refLandingPageButton
+                , pure $ ParagraphCtas.renderParagraph paragraph.title paragraph.body refLandingPageButton
                 )
 
             )
@@ -74,8 +76,6 @@ orderAndRenderParagraphs landingPageWithRecords =
         quotes = paragraphQuotes
             |> fmap (\paragraph ->
                 ( paragraph.weight
-                , case paragraph.imageUrl of
-                    Just imageUrl -> ParagraphQuotes.renderParagraph paragraph.body paragraph.subtitle imageUrl
-                    Nothing -> mempty
+                , ParagraphQuotes.renderParagraph paragraph.body paragraph.subtitle (fromMaybe "" paragraph.imageUrl)
                 ))
 

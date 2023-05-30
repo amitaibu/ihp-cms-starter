@@ -3,6 +3,7 @@ import Web.View.Prelude
 import Web.Element.Types
 import Web.Element.ElementWrap
 import Web.Element.InnerElementLayout
+import IHP.AuthSupport.Authentication
 
 
 data ShowView = ShowView { paragraphQuote :: ParagraphQuote }
@@ -20,13 +21,15 @@ instance View ShowView where
                             , breadcrumbText "Show ParagraphQuote"
                             ]
 
-renderParagraph :: Text -> Text -> Text -> Html
-renderParagraph body subtitle imageUrl =
-    quotationSign
+-- @todo: Find the right type signature.
+-- renderParagraph :: Text -> Text -> Text -> IO Html
+renderParagraph body subtitle imageUrl = do
+    hash <- hashPassword $ imageUrl <> "400x200"
+    pure $ quotationSign
         ++ bodyWrapped
         ++ titleWrapped
         |> wrapVerticalSpacing AlignNone
-        |> buildElementLayoutSplitImageAndContent (pathTo $ RenderImageStyleAction 400 200 imageUrl "the-hash")
+        |> buildElementLayoutSplitImageAndContent (pathTo $ RenderImageStyleAction 400 200 imageUrl hash)
     where
         -- https://iconmonstr.com/quote-3-svg/
         quotationSign = [hsx|
