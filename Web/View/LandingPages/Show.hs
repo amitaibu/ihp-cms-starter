@@ -64,7 +64,7 @@ orderAndRenderParagraphs landingPageWithRecords =
                                 |> filter (\paragraphCtaRefLandingPage -> paragraphCtaRefLandingPage.id == paragraph.refLandingPageId)
                                 |> head
                                 -- Get the button from the referenced Landing page.
-                                |> maybe mempty (\landingPage -> buildButtonPrimary (pathTo $ ShowLandingPageAction landingPage.id) landingPage.title)
+                                |> maybe "" (\landingPage -> buildButtonPrimary (pathTo $ ShowLandingPageAction landingPage.id) landingPage.title)
 
                 in
                 ( paragraph.weight
