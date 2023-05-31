@@ -17,7 +17,7 @@ config = do
     option customTailwind
 
     -- Private and public keys to sign and verify image style URLs.
-    (publicKey, privateKey) <- liftIO $ liftIO $ RSA.generate 10 65537
+    (publicKey, privateKey) <- liftIO $ liftIO $ RSA.generate 300 65537
     option $ PublicAndPrivateKeys (publicKey, privateKey)
 
     -- Static directory.
