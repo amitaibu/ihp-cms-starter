@@ -34,7 +34,7 @@ renderParagraph body subtitle imageUrl =
     where
 
         -- Sign the image URL to prevent tampering.
-        Config.PublicAndPrivateKeys (_, privateKey) = getAppConfig @Config.PublicAndPrivateKeys
+        Config.RsaPublicAndPrivateKeys (_, privateKey) = getAppConfig @Config.RsaPublicAndPrivateKeys
         signed = case RSA.sign Nothing (Just Hash.Algorithms.SHA256) privateKey (cs $ imageUrl <> "400x200") of
             Left msg -> error $ "Cannot sign image URL, private key is invalid:" <> show msg
             Right signature -> signature |> Base64.encode

@@ -13,7 +13,7 @@ instance Controller ImageStyleController where
     action RenderImageStyleAction { width, height, originalImagePath, signed } = do
         let size = show width <> "x" <> show height
 
-        let Config.PublicAndPrivateKeys (publicKey, _) = getAppConfig @Config.PublicAndPrivateKeys
+        let Config.RsaPublicAndPrivateKeys (publicKey, _) = getAppConfig @Config.RsaPublicAndPrivateKeys
 
         signDecoded <- case cs signed |> Base64.decode of
                 Left msg -> fail "Access denied"
