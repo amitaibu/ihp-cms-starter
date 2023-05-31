@@ -13,7 +13,7 @@ instance Controller ImageStyleController where
         let size = show width <> "x" <> show height
 
         let Config.PublicAndPrivateKeys (publicKey, _) = getAppConfig @Config.PublicAndPrivateKeys
-        accessDeniedUnless (RSA.verify (Just Hash.Algorithms.MD5) publicKey (cs $ originalImagePath <> size) (cs signed))
+        accessDeniedUnless (RSA.verify (Just Hash.Algorithms.SHA256) publicKey (cs $ originalImagePath <> size) (cs signed))
 
         -- Get the original image directory and UUID from the path.
         let (originalImageDirectory, uuid) = extractDirectoryAndUUID originalImagePath
