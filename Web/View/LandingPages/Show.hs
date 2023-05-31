@@ -42,7 +42,7 @@ instance View ShowView where
                     |> wrapHorizontalSpacingTiny AlignBaseline
 
 
--- orderAndRenderParagraphs :: (?context::ControllerContext) => LandingPageWithRecords -> IO Html
+orderAndRenderParagraphs :: (?context::ControllerContext) => LandingPageWithRecords -> Html
 orderAndRenderParagraphs landingPageWithRecords =
     ctas ++ quotes
             |> sortOn fst
@@ -68,7 +68,7 @@ orderAndRenderParagraphs landingPageWithRecords =
 
                 in
                 ( paragraph.weight
-                , pure $ ParagraphCtas.renderParagraph paragraph.title paragraph.body refLandingPageButton
+                , ParagraphCtas.renderParagraph paragraph.title paragraph.body refLandingPageButton
                 )
 
             )
