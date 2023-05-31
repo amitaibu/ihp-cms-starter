@@ -15,9 +15,9 @@ instance Controller ImageStyleController where
 
         let Config.PublicAndPrivateKeys (publicKey, _) = getAppConfig @Config.PublicAndPrivateKeys
 
-        let signDecoded = case cs signed |> Base64.decode of
-                Left msg -> error $ "Cannot decode signature: " <> show msg
-                Right signature -> signature
+        signDecoded <- case cs signed |> Base64.decode of
+                Left msg -> fail "Access denied"
+                Right signature -> pure signature
 
         accessDeniedUnless (RSA.verify (Just Hash.Algorithms.SHA256) publicKey (cs $ originalImagePath <> size) signDecoded)
 
