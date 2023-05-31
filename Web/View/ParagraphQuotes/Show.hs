@@ -3,11 +3,6 @@ import Web.View.Prelude
 import Web.Element.Types
 import Web.Element.ElementWrap
 import Web.Element.InnerElementLayout
-import IHP.AuthSupport.Authentication
-import Crypto.PubKey.RSA.PKCS15 as RSA
-import qualified Config
-import IHP.ControllerSupport
-
 
 data ShowView = ShowView { paragraphQuote :: ParagraphQuote }
 
@@ -24,21 +19,14 @@ instance View ShowView where
                             , breadcrumbText "Show ParagraphQuote"
                             ]
 
--- @todo: Find the right type signature.
 renderParagraph :: Text -> Text -> Text -> Html
 renderParagraph body subtitle imageUrl =
-
     quotationSign
         ++ bodyWrapped
         ++ titleWrapped
         |> wrapVerticalSpacing AlignNone
-        |> buildElementLayoutSplitImageAndContent (pathTo $ RenderImageStyleAction 400 200 imageUrl "")
-
+        |> buildElementLayoutSplitImageAndContent imageUrl
     where
-        Config.PublicAndPrivateKeys (_, privateKey) = getAppConfig @Config.PublicAndPrivateKeys
-
-        signed = RSA.sign Nothing Nothing privateKey (cs $ imageUrl <> "400x200")
-
         -- https://iconmonstr.com/quote-3-svg/
         quotationSign = [hsx|
             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" class="fill-gray-300">
