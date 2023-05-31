@@ -18,7 +18,7 @@ config = do
 
     (publicKey, privateKey) <- liftIO $ liftIO $ RSA.generate 10 65537
 
-    -- option $ Gen gen
+    option $ PublicAndPrivateKeys (publicKey, privateKey)
 
     -- Static directory.
     initStaticDirStorage
