@@ -15,11 +15,9 @@ instance Controller ImageStyleController where
 
         let Config.RsaPublicAndPrivateKeys (publicKey, _) = getAppConfig @Config.RsaPublicAndPrivateKeys
 
-        signDecoded <- case cs signed |> Base64.decode of
-                Left msg -> fail "Access denied"
-                Right signature -> pure signature
-
-        accessDeniedUnless (RSA.verify (Just Hash.Algorithms.SHA256) publicKey (cs $ originalImagePath <> size) signDecoded)
+        accessDeniedUnless case cs signed |> Base64.decode of
+                Left msg -> False
+                Right signed -> RSA.verify (Just Hash.Algorithms.SHA256) publicKey (cs $ originalImagePath <> size) signed
 
         -- Get the original image directory and UUID from the path.
         let (originalImageDirectory, uuid) = extractDirectoryAndUUID originalImagePath
