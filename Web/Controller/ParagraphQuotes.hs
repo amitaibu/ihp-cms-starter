@@ -5,8 +5,6 @@ import Web.View.ParagraphQuotes.Index
 import Web.View.ParagraphQuotes.New
 import Web.View.ParagraphQuotes.Edit
 import Web.View.ParagraphQuotes.Show
-import IHP.AuthSupport.Authentication
-
 
 instance Controller ParagraphQuotesController where
     action ParagraphQuotesAction = do
