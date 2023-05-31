@@ -7,6 +7,7 @@ import Crypto.PubKey.RSA.PKCS15 as RSA
 import Crypto.Hash.Algorithms as Hash.Algorithms
 import qualified Config
 import IHP.ControllerSupport
+import Data.ByteString.Base64 as Base64
 
 data ShowView = ShowView { paragraphQuote :: ParagraphQuote }
 
@@ -36,7 +37,7 @@ renderParagraph body subtitle imageUrl =
         Config.PublicAndPrivateKeys (_, privateKey) = getAppConfig @Config.PublicAndPrivateKeys
         signed = case RSA.sign Nothing (Just Hash.Algorithms.SHA256) privateKey (cs $ imageUrl <> "400x200") of
             Left msg -> error $ "Cannot sign image URL, private key is invalid:" <> show msg
-            Right signature -> signature
+            Right signature -> signature |> Base64.encode
 
         -- https://iconmonstr.com/quote-3-svg/
         quotationSign = [hsx|

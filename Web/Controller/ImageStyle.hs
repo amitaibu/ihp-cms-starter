@@ -7,13 +7,19 @@ import qualified Data.Text as T
 import Crypto.PubKey.RSA.PKCS15 as RSA
 import Crypto.Hash.Algorithms as Hash.Algorithms
 import Config
+import Data.ByteString.Base64 as Base64
 
 instance Controller ImageStyleController where
     action RenderImageStyleAction { width, height, originalImagePath, signed } = do
         let size = show width <> "x" <> show height
 
         let Config.PublicAndPrivateKeys (publicKey, _) = getAppConfig @Config.PublicAndPrivateKeys
-        accessDeniedUnless (RSA.verify (Just Hash.Algorithms.SHA256) publicKey (cs $ originalImagePath <> size) (cs signed))
+
+        let signDecoded = case cs signed |> Base64.decode of
+                Left msg -> error $ "Cannot decode signature: " <> show msg
+                Right signature -> signature
+
+        accessDeniedUnless (RSA.verify (Just Hash.Algorithms.SHA256) publicKey (cs $ originalImagePath <> size) signDecoded)
 
         -- Get the original image directory and UUID from the path.
         let (originalImageDirectory, uuid) = extractDirectoryAndUUID originalImagePath
