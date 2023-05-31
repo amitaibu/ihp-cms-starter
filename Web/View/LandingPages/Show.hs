@@ -10,14 +10,12 @@ import Web.Element.ElementWrap
 data ShowView = ShowView { landingPageWithRecords :: LandingPageWithRecords }
 
 instance View ShowView where
-    html ShowView { .. } = do
-        paragraphs <- orderAndRenderParagraphs landingPageWithRecords
-        [hsx|
-            {header}
+    html ShowView { .. } = [hsx|
+        {header}
 
-            { paragraphs }
+        {orderAndRenderParagraphs landingPageWithRecords }
 
-        |]
+    |]
         where
             landingPage = landingPageWithRecords.landingPage
 
@@ -76,6 +74,8 @@ orderAndRenderParagraphs landingPageWithRecords =
         quotes = paragraphQuotes
             |> fmap (\paragraph ->
                 ( paragraph.weight
-                , ParagraphQuotes.renderParagraph paragraph.body paragraph.subtitle (fromMaybe "" paragraph.imageUrl)
+                , case paragraph.imageUrl of
+                    Just imageUrl -> ParagraphQuotes.renderParagraph paragraph.body paragraph.subtitle imageUrl
+                    Nothing -> ""
                 ))
 
