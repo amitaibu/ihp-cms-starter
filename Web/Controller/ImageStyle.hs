@@ -10,6 +10,7 @@ import Config
 instance Controller ImageStyleController where
     action RenderImageStyleAction { width, height, originalImagePath, hash } = do
         let size = show width <> "x" <> show height
+
         let Config.PublicAndPrivateKeys (publicKey, _) = getAppConfig @Config.PublicAndPrivateKeys
         accessDeniedUnless (RSA.verify Nothing publicKey (cs $ originalImagePath <> size) (cs hash))
 
