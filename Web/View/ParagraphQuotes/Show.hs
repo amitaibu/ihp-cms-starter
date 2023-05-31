@@ -37,7 +37,8 @@ renderParagraph body subtitle imageUrl =
     where
         Config.PublicAndPrivateKeys (publicKey, privateKey) = getAppConfig @Config.PublicAndPrivateKeys
 
-        signed = RSA.signSaferSource Nothing privateKey (cs $ imageUrl <> "400x200")
+        signed = RSA.signSafer Nothing privateKey (cs $ imageUrl <> "400x200")
+
         -- https://iconmonstr.com/quote-3-svg/
         quotationSign = [hsx|
             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" class="fill-gray-300">

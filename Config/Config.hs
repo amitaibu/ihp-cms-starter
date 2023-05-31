@@ -7,7 +7,7 @@ import IHP.FrameworkConfig
 import Web.View.CustomCSSFramework
 import Crypto.PubKey.RSA as RSA
 
-newtype PublicAndPrivateKeys = PublicAndPrivateKeys (Text, Text)
+newtype PublicAndPrivateKeys = PublicAndPrivateKeys (RSA.PublicKey, RSA.PrivateKey)
 
 
 config :: ConfigBuilder
