@@ -54,5 +54,5 @@ data LandingPagesController
 
 
 data ImageStyleController
-    = RenderImageStyleAction { width :: !Int, height :: !Int, originalImagePath :: !Text, hash :: !Text }
+    = RenderImageStyleAction { width :: !Int, height :: !Int, originalImagePath :: !Text, signed :: !Text }
     deriving (Eq, Show, Data)
