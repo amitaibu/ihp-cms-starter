@@ -35,9 +35,9 @@ renderParagraph body subtitle imageUrl =
         |> buildElementLayoutSplitImageAndContent (pathTo $ RenderImageStyleAction 400 200 imageUrl "")
 
     where
-        Config.PublicAndPrivateKeys (publicKey, privateKey) = getAppConfig @Config.PublicAndPrivateKeys
+        Config.PublicAndPrivateKeys (_, privateKey) = getAppConfig @Config.PublicAndPrivateKeys
 
-        signed = RSA.signSafer Nothing privateKey (cs $ imageUrl <> "400x200")
+        signed = RSA.sign Nothing Nothing privateKey (cs $ imageUrl <> "400x200")
 
         -- https://iconmonstr.com/quote-3-svg/
         quotationSign = [hsx|

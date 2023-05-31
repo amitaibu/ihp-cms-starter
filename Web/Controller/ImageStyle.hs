@@ -4,14 +4,14 @@ import Web.Controller.Prelude
 import IHP.ControllerSupport
 import System.Directory (doesFileExist)
 import qualified Data.Text as T
-
--- @todo: Find a better way
-import qualified Crypto.PasswordStore
+import Crypto.PubKey.RSA.PKCS15 as RSA
+import Config
 
 instance Controller ImageStyleController where
     action RenderImageStyleAction { width, height, originalImagePath, hash } = do
         let size = show width <> "x" <> show height
-        accessDeniedUnless (Crypto.PasswordStore.verifyPassword (cs $ originalImagePath <> size) (cs hash))
+        let Config.PublicAndPrivateKeys (publicKey, _) = getAppConfig @Config.PublicAndPrivateKeys
+        accessDeniedUnless (RSA.verify Nothing publicKey (cs $ originalImagePath <> size) (cs hash))
 
         -- Get the original image directory and UUID from the path.
         let (originalImageDirectory, uuid) = extractDirectoryAndUUID originalImagePath
