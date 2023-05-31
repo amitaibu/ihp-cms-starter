@@ -4,6 +4,7 @@ import Web.Element.Types
 import Web.Element.ElementWrap
 import Web.Element.InnerElementLayout
 import Crypto.PubKey.RSA.PKCS15 as RSA
+import Crypto.Hash.Algorithms as Hash.Algorithms
 import qualified Config
 import IHP.ControllerSupport
 
@@ -33,7 +34,7 @@ renderParagraph body subtitle imageUrl =
 
         -- Sign the image URL to prevent tampering.
         Config.PublicAndPrivateKeys (_, privateKey) = getAppConfig @Config.PublicAndPrivateKeys
-        (Right signed) = RSA.sign Nothing Nothing privateKey (cs $ imageUrl <> "400x200")
+        (Right signed) = RSA.sign Nothing (Just Hash.Algorithms.MD5) privateKey (cs $ imageUrl <> "400x200")
 
         -- https://iconmonstr.com/quote-3-svg/
         quotationSign = [hsx|

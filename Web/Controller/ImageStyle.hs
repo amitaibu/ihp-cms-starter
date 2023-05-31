@@ -5,14 +5,15 @@ import IHP.ControllerSupport
 import System.Directory (doesFileExist)
 import qualified Data.Text as T
 import Crypto.PubKey.RSA.PKCS15 as RSA
+import Crypto.Hash.Algorithms as Hash.Algorithms
 import Config
 
 instance Controller ImageStyleController where
-    action RenderImageStyleAction { width, height, originalImagePath, hash } = do
+    action RenderImageStyleAction { width, height, originalImagePath, signed } = do
         let size = show width <> "x" <> show height
 
         let Config.PublicAndPrivateKeys (publicKey, _) = getAppConfig @Config.PublicAndPrivateKeys
-        accessDeniedUnless (RSA.verify Nothing publicKey (cs $ originalImagePath <> size) (cs hash))
+        accessDeniedUnless (RSA.verify (Just Hash.Algorithms.MD5) publicKey (cs $ originalImagePath <> size) (cs signed))
 
         -- Get the original image directory and UUID from the path.
         let (originalImageDirectory, uuid) = extractDirectoryAndUUID originalImagePath
