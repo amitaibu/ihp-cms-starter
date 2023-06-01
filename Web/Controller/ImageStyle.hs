@@ -3,7 +3,7 @@ module Web.Controller.ImageStyle where
 import Web.Controller.Prelude
 import IHP.ControllerSupport
 import System.Directory (doesFileExist)
-import qualified Data.Text as T
+import qualified Data.Text as Text
 import Crypto.PubKey.RSA.PKCS15 as RSA
 import Crypto.Hash.Algorithms as Hash.Algorithms
 import Config
@@ -51,9 +51,9 @@ instance Controller ImageStyleController where
 extractDirectoryAndUUID :: (?context :: context, ConfigProvider context) => Text -> (Text, Text)
 extractDirectoryAndUUID inputText =
     case reverse parts of
-        uuid : pathSegments -> (T.intercalate "/" (reverse pathSegments), uuid)
+        uuid : pathSegments -> (Text.intercalate "/" (reverse pathSegments), uuid)
         _ -> ("", "")
     where
         frameworkConfig = ?context.frameworkConfig
-        trimmedText = T.replace (frameworkConfig.baseUrl <> "/") "" inputText
-        parts = T.splitOn "/" trimmedText
+        trimmedText = Text.replace (frameworkConfig.baseUrl <> "/") "" inputText
+        parts = Text.splitOn "/" trimmedText
