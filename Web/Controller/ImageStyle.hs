@@ -4,6 +4,8 @@ import Web.Controller.Prelude
 import IHP.ControllerSupport
 import System.Directory (doesFileExist)
 import qualified Data.Text as Text
+
+-- Imports for the signed token.
 import Crypto.PubKey.RSA.PKCS15 as RSA
 import Crypto.Hash.Algorithms as Hash.Algorithms
 import Config
@@ -13,11 +15,9 @@ instance Controller ImageStyleController where
     action RenderImageStyleAction { width, height, originalImagePath, signed } = do
         let size = show width <> "x" <> show height
 
-        let Config.RsaPublicAndPrivateKeys (publicKey, _) = getAppConfig @Config.RsaPublicAndPrivateKeys
+        -- Verify the token, and deny or allow access based on the result.
+        accessDeniedUnless (rsaSignatureMatches (originalImagePath <> size) signed )
 
-        accessDeniedUnless case cs signed |> Base64.decode of
-            Left msg -> False
-            Right signed -> RSA.verify (Just Hash.Algorithms.SHA256) publicKey (cs $ originalImagePath <> size) signed
 
         -- Get the original image directory and UUID from the path.
         let (originalImageDirectory, uuid) = extractDirectoryAndUUID originalImagePath
@@ -26,9 +26,6 @@ instance Controller ImageStyleController where
         let imageStylePathDirectory = originalImageDirectory <> "/imageStyles/" <> size
         let imageStylePath = imageStylePathDirectory <> "/" <> uuid
 
-        let storagePrefix = case storage of
-                StaticDirStorage -> "static/"
-                _ -> ""
 
         fileExists <- doesFileExist (cs $ storagePrefix <> imageStylePath)
 
@@ -47,7 +44,7 @@ instance Controller ImageStyleController where
 
                 renderFile (cs $ storagePrefix <> storedFile.path) "application/jpg"
 
-
+-- | Extracts the directory and UUID from a path like "pictures/8ed22caa-11ea-4c45-a05e-91a51e72558d"
 extractDirectoryAndUUID :: (?context :: context, ConfigProvider context) => Text -> (Text, Text)
 extractDirectoryAndUUID inputText =
     case reverse parts of

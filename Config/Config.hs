@@ -7,8 +7,7 @@ import IHP.FrameworkConfig
 import Web.View.CustomCSSFramework
 import Crypto.PubKey.RSA as RSA
 
-newtype RsaPublicAndPrivateKeys = RsaPublicAndPrivateKeys (RSA.PublicKey, RSA.PrivateKey)
-
+data RsaPublicAndPrivateKeys = RsaPublicAndPrivateKeys { publicKey :: RSA.PublicKey, privateKey :: RSA.PrivateKey }
 
 config :: ConfigBuilder
 config = do
@@ -18,7 +17,7 @@ config = do
 
     -- Private and public keys to sign and verify image style URLs.
     (publicKey, privateKey) <- liftIO $ liftIO $ RSA.generate 300 65537
-    option $ RsaPublicAndPrivateKeys (publicKey, privateKey)
+    option $ RsaPublicAndPrivateKeys publicKey privateKey
 
     -- Static directory.
     initStaticDirStorage
