@@ -16,7 +16,9 @@ instance Controller ImageStyleController where
         let size = show width <> "x" <> show height
 
         -- Verify the token, and deny or allow access based on the result.
-        accessDeniedUnless (rsaSignatureMatches (originalImagePath <> size) signed )
+        -- Also, deny access if there's `../` in the path, to prevent traversal attacks.
+
+        accessDeniedUnless (rsaSignatureMatches (originalImagePath <> size) signed || not (Text.isInfixOf "../" originalImagePath))
 
 
         -- Get the original image directory and UUID from the path.
