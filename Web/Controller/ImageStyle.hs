@@ -20,7 +20,6 @@ instance Controller ImageStyleController where
 
         accessDeniedUnless (rsaSignatureMatches (originalImagePath <> size) signed || not (Text.isInfixOf "../" originalImagePath))
 
-
         -- Get the original image directory and UUID from the path.
         let (originalImageDirectory, uuid) = extractDirectoryAndUUID originalImagePath
 
