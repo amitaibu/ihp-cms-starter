@@ -31,7 +31,7 @@ renderParagraph body subtitle imageUrl =
         ++ bodyWrapped
         ++ titleWrapped
         |> wrapVerticalSpacing AlignNone
-        |> buildElementLayoutSplitImageAndContent (pathTo $ RenderImageStyleAction 400 200 imageUrl (cs signed))
+        |> buildElementLayoutSplitImageAndContent (pathTo $ RenderImageStyleAction 400 200 imageUrl signed)
     where
 
         -- Sign the image URL to prevent tampering.
