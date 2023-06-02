@@ -28,4 +28,4 @@ static/articles
 static/paragraph_quotes
 
 Application/Migration
-Config/id_rsa*
+Config/jwtRS256.key*

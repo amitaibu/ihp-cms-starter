@@ -22,12 +22,12 @@ config = do
     initStaticDirStorage
 
     -- Private and public keys to sign and verify image style URLs.
-    privateKeyContent <- liftIO $ readRsaKeyFromFile "./Config/id_rsa"
-    publicKeyContent <- liftIO $ readRsaKeyFromFile "./Config/id_rsa.pub"
+    privateKeyContent <- liftIO $ readRsaKeyFromFile "./Config/jwtRS256.key"
+    publicKeyContent <- liftIO $ readRsaKeyFromFile "./Config/jwtRS256.key.pub"
 
     case (readRsaSecret privateKeyContent, readRsaPublicKey publicKeyContent) of
         (Just privateKey, Just publicKey) -> option $ RsaPublicAndPrivateKeys publicKey privateKey
-        _ -> error "Failed to read RSA keys, please execute from the root of your project: ssh-keygen -t rsa -f ./Config/id_rsa"
+        _ -> error "Failed to read RSA keys, please execute from the root of your project: ssh-keygen -t rsa -b 4096 -m PEM -f ./Config/jwtRS256.key && openssl rsa -in ./Config/jwtRS256.key -pubout -outform PEM -out ./Config/jwtRS256.key.pub"
 
 
 readRsaKeyFromFile :: FilePath -> IO BS.ByteString
