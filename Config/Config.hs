@@ -22,10 +22,6 @@ config = do
     initStaticDirStorage
 
     -- Private and public keys to sign and verify image style URLs.
-    (publicKey, privateKey) <- liftIO $ liftIO $ RSA.generate 300 65537
-    option $ RsaPublicAndPrivateKeys publicKey privateKey
-
-        -- Private and public keys to sign and verify image style URLs.
     privateKeyContent <- liftIO $ readRsaKeyFromFile "./Config/id_rsa"
     publicKeyContent <- liftIO $ readRsaKeyFromFile "./Config/id_rsa.pub"
 
