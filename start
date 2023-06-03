@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-# Script to start the local dev server
-
-set -e
-
-RunDevServer
