@@ -7,7 +7,7 @@ else
 ifneq ($(shell which RunDevServer),)
 IHP = $(shell dirname $$(which RunDevServer))/../lib/IHP
 else
-IHP = $(error IHP not found! Run the following command to fix this:    nix-shell --run 'make .envrc'    )
+IHP = $(error IHP not found!)
 endif
 endif
 endif
