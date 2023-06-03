@@ -10,7 +10,7 @@ import Control.Exception (catch)
 import qualified Data.ByteString as BS
 import Web.JWT
 
-data RsaPublicAndPrivateKeys = RsaPublicAndPrivateKeys { publicKey :: RSA.PublicKey, privateKey :: RSA.PrivateKey }
+data RsaKeys = RsaKeys { publicKey :: RSA.PublicKey, privateKey :: RSA.PrivateKey }
 
 config :: ConfigBuilder
 config = do
@@ -26,7 +26,7 @@ config = do
     publicKeyContent <- liftIO $ readRsaKeyFromFile "./Config/jwtRS256.key.pub"
 
     case (readRsaSecret privateKeyContent, readRsaPublicKey publicKeyContent) of
-        (Just privateKey, Just publicKey) -> option $ RsaPublicAndPrivateKeys publicKey privateKey
+        (Just privateKey, Just publicKey) -> option $ RsaKeys publicKey privateKey
         _ -> error "Failed to read RSA keys, please execute from the root of your project: ssh-keygen -t rsa -b 4096 -m PEM -f ./Config/jwtRS256.key && openssl rsa -in ./Config/jwtRS256.key -pubout -outform PEM -out ./Config/jwtRS256.key.pub"
 
 

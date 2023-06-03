@@ -37,11 +37,11 @@ getParagraphsCount landingPageId = do
 
 -- | The RSA public key, can be used to verify image style URLs that were signed.
 rsaPublicKey :: (?context :: ControllerContext) => RSA.PublicKey
-rsaPublicKey = (getAppConfig @Config.RsaPublicAndPrivateKeys).publicKey
+rsaPublicKey = (getAppConfig @Config.RsaKeys).publicKey
 
 -- | The RSA private key, can be used to sign image style URLs.
 rsaPrivateKey :: (?context :: ControllerContext) => RSA.PrivateKey
-rsaPrivateKey = (getAppConfig @Config.RsaPublicAndPrivateKeys).privateKey
+rsaPrivateKey = (getAppConfig @Config.RsaKeys).privateKey
 
 rsaSignatureMatches :: (?context :: ControllerContext) =>  Text -> Text -> Bool
 rsaSignatureMatches original signature = case Base64.decode $ cs signature of
