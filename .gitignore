@@ -28,5 +28,6 @@ static/paragraph_quotes
 
 Application/Migration
 
-.devenv
+.devenv*
+devenv.local.nix
 .direnv
