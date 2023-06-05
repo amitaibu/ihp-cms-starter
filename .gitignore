@@ -31,3 +31,4 @@ Application/Migration
 .devenv*
 devenv.local.nix
 .direnv
+.env
