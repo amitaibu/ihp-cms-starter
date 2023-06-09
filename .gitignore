@@ -1,5 +1,4 @@
 .DS_Store
-.envrc
 .idea
 tmp
 result
@@ -28,3 +27,8 @@ static/articles
 static/paragraph_quotes
 
 Application/Migration
+
+.devenv*
+devenv.local.nix
+.direnv
+.env
