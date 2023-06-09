@@ -6,6 +6,8 @@ import Web.View.ParagraphQuotes.New
 import Web.View.ParagraphQuotes.Edit
 import Web.View.ParagraphQuotes.Show
 
+import qualified Network.Wai.Parse as Wai
+
 instance Controller ParagraphQuotesController where
     action ParagraphQuotesAction = do
         paragraphQuotes <- query @ParagraphQuote |> fetch

@@ -39,6 +39,13 @@ CREATE TABLE uploaded_files (
     file_name TEXT NOT NULL,
     content_type TEXT NOT NULL
 );
+CREATE TABLE companies (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
+    title TEXT NOT NULL,
+    uploaded_file_id UUID NOT NULL
+);
+CREATE INDEX companies_uploaded_file_id_index ON companies (uploaded_file_id);
+ALTER TABLE companies ADD CONSTRAINT companies_ref_uploaded_file_id FOREIGN KEY (uploaded_file_id) REFERENCES uploaded_files (id) ON DELETE NO ACTION;
 ALTER TABLE paragraph_ctas ADD CONSTRAINT paragraph_ctas_ref_landing_page_id FOREIGN KEY (landing_page_id) REFERENCES landing_pages (id) ON DELETE NO ACTION;
 ALTER TABLE paragraph_ctas ADD CONSTRAINT paragraph_ctas_ref_ref_landing_page_id FOREIGN KEY (ref_landing_page_id) REFERENCES landing_pages (id) ON DELETE NO ACTION;
 ALTER TABLE paragraph_quotes ADD CONSTRAINT paragraph_quotes_ref_landing_page_id FOREIGN KEY (landing_page_id) REFERENCES landing_pages (id) ON DELETE NO ACTION;
