@@ -77,16 +77,16 @@
     "ihp": {
       "flake": false,
       "locked": {
-        "lastModified": 1682767030,
-        "narHash": "sha256-YuOEcKBzDAzn+La8Hp6Uhxv6RWojE5wY66zw1oqH6RU=",
+        "lastModified": 1686032863,
+        "narHash": "sha256-fyvMMbyCO+EEydKau6Q9pg0z9B08CyH5T38OLdBD7Xs=",
         "owner": "digitallyinduced",
         "repo": "ihp",
-        "rev": "abb513016b372f9f76b6c95caed66def536a885a",
+        "rev": "85e935819dd559b12d6fc492351b0138a983494e",
         "type": "github"
       },
       "original": {
         "owner": "digitallyinduced",
-        "ref": "abb513016b372f9f76b6c95caed66def536a885a",
+        "ref": "85e935819dd559b12d6fc492351b0138a983494e",
         "repo": "ihp",
         "type": "github"
       }
