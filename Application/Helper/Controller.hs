@@ -12,6 +12,33 @@ fetchCompanyWithRecords companyId = do
     uploadedFile <- fetch company.uploadedFileId
     pure $ CompanyWithRecords { .. }
 
+
+getTemporaryDownloadUrlFromFile :: forall record.
+    ( HasField "signedUrlExpiredAt" record UTCTime
+    , HasField "path" record Text
+    , HasField "signedUrl" record Text
+    , SetField "signedUrlExpiredAt" record UTCTime
+    , SetField "path" record Text
+    , SetField "signedUrl" record Text
+
+    ) => record  -> IO record
+getTemporaryDownloadUrlFromFile record = do
+    now <- getCurrentTime
+    let diff = diffUTCTime now record.signedUrlExpiredAt
+    if diff < 0
+        then do
+            temporaryDownloadUrl <- createTemporaryDownloadUrlFromPath record.path
+            record
+                |> set #signedUrl (temporaryDownloadUrl |> get #url)
+                |> set #signedUrlExpiredAt (temporaryDownloadUrl |> get #expiredAt)
+                |> pure
+
+        else
+            pure record
+
+
+
+
 fetchLandingPageWithRecords :: (?modelContext :: ModelContext) => Id LandingPage -> IO LandingPageWithRecords
 fetchLandingPageWithRecords landingPageId = do
 
