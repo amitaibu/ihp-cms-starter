@@ -20,7 +20,7 @@ instance Controller CompaniesController where
         render NewView { .. }
 
     action ShowCompanyAction { companyId } = do
-        company <- fetch companyId
+        companyWithRecords <- fetchCompanyWithRecords companyId
         render ShowView { .. }
 
     action EditCompanyAction { companyId } = do
