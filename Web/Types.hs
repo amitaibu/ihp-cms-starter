@@ -19,6 +19,11 @@ data LandingPageWithRecords = LandingPageWithRecords
 
 --
 
+data CompanyWithRecords = CompanyWithRecords
+    { company :: !Company
+    , uploadedFile :: !UploadedFile
+    } deriving (Show)
+
 data WebApplication = WebApplication deriving (Eq, Show)
 
 data ParagraphQuotesController
