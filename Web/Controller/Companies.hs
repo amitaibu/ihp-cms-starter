@@ -21,7 +21,14 @@ instance Controller CompaniesController where
 
     action ShowCompanyAction { companyId } = do
         companyWithRecords <- fetchCompanyWithRecords companyId
-        render ShowView { .. }
+
+        let uploadedFile = companyWithRecords.uploadedFile
+        uploadedFile <- getTemporaryDownloadUrlFromFile uploadedFile
+
+        -- @todo: Why is this not working?
+        -- companyWithRecords |> set #uploadedFile uploadedFile
+
+        render ShowView { companyWithRecords = companyWithRecords {uploadedFile = uploadedFile} }
 
     action EditCompanyAction { companyId } = do
         company <- fetch companyId

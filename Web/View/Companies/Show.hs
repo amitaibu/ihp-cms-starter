@@ -8,7 +8,7 @@ instance View ShowView where
         {breadcrumb}
         <h1>Show Company</h1>
         <p>{companyWithRecords.company.name}</p>
-        <img src={companyWithRecords.uploadedFile.signedUrl} />
+        <img class="w-20" src={companyWithRecords.uploadedFile.signedUrl} />
         <a href={companyWithRecords.uploadedFile.signedUrl} download={companyWithRecords.uploadedFile.fileName}>Download</a>
 
     |]

@@ -14,8 +14,10 @@ fetchCompanyWithRecords companyId = do
 
 
 getTemporaryDownloadUrlFromFile ::
-    ( ?context :: context
+    ( ?modelContext::ModelContext
+    , ?context :: context
     , ConfigProvider context
+    , CanUpdate record
     , HasField "signedUrlExpiredAt" record UTCTime
     , HasField "path" record Text
     , HasField "signedUrl" record Text
@@ -26,16 +28,17 @@ getTemporaryDownloadUrlFromFile ::
 getTemporaryDownloadUrlFromFile record = do
     now <- getCurrentTime
     let diff = diffUTCTime now record.signedUrlExpiredAt
-    if diff < 0
+    if diff > 0
         then do
             temporaryDownloadUrl <- createTemporaryDownloadUrlFromPath record.path
             record
                 |> set #signedUrl (temporaryDownloadUrl |> get #url)
                 |> set #signedUrlExpiredAt (temporaryDownloadUrl |> get #expiredAt)
-                |> pure
+                |> updateRecord
 
         else
             pure record
+
 
 
 
