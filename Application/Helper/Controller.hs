@@ -39,10 +39,6 @@ getTemporaryDownloadUrlFromFile record = do
         else
             pure record
 
-
-
-
-
 fetchLandingPageWithRecords :: (?modelContext :: ModelContext) => Id LandingPage -> IO LandingPageWithRecords
 fetchLandingPageWithRecords landingPageId = do
 
