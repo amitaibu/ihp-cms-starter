@@ -18,7 +18,14 @@ instance View NewView where
 renderForm :: Company -> Html
 renderForm company = formFor company [hsx|
     {(textField #name)}
-    {(textField #uploadedFileId)}
+
+    <input
+        type="file"
+        name="uploadedFile"
+        class="form-control-file"
+        accept="image/*"
+    />
+
     {submitButton}
 
 |]
