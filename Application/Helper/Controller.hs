@@ -13,14 +13,15 @@ fetchCompanyWithRecords companyId = do
     pure $ CompanyWithRecords { .. }
 
 
-getTemporaryDownloadUrlFromFile :: forall record.
-    ( HasField "signedUrlExpiredAt" record UTCTime
+getTemporaryDownloadUrlFromFile ::
+    ( ?context :: context
+    , ConfigProvider context
+    , HasField "signedUrlExpiredAt" record UTCTime
     , HasField "path" record Text
     , HasField "signedUrl" record Text
     , SetField "signedUrlExpiredAt" record UTCTime
     , SetField "path" record Text
     , SetField "signedUrl" record Text
-
     ) => record  -> IO record
 getTemporaryDownloadUrlFromFile record = do
     now <- getCurrentTime
