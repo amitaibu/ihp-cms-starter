@@ -12,7 +12,8 @@ fetchCompanyWithRecords companyId = do
     uploadedFile <- fetch company.uploadedFileId
     pure $ CompanyWithRecords { .. }
 
-
+-- | Use the temporary download URL if the current one is not expired.
+-- Otherwise, create a new temporary download URL and update the record.
 getTemporaryDownloadUrlFromFile ::
     ( ?modelContext::ModelContext
     , ?context :: context
