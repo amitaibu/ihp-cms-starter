@@ -56,3 +56,13 @@ data LandingPagesController
 data ImageStyleController
     = RenderImageStyleAction { width :: !Int, height :: !Int, originalImagePath :: !Text}
     deriving (Eq, Show, Data)
+
+data CompaniesController
+    = CompaniesAction
+    | NewCompanyAction
+    | ShowCompanyAction { companyId :: !(Id Company) }
+    | CreateCompanyAction
+    | EditCompanyAction { companyId :: !(Id Company) }
+    | UpdateCompanyAction { companyId :: !(Id Company) }
+    | DeleteCompanyAction { companyId :: !(Id Company) }
+    deriving (Eq, Show, Data)
