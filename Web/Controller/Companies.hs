@@ -25,9 +25,6 @@ instance Controller CompaniesController where
         let uploadedFile = companyWithRecords.uploadedFile
         uploadedFile <- getTemporaryDownloadUrlFromFile uploadedFile
 
-        -- @todo: Why is this not working?
-        -- companyWithRecords |> set #uploadedFile uploadedFile
-
         render ShowView { companyWithRecords = companyWithRecords {uploadedFile = uploadedFile} }
 
     action EditCompanyAction { companyId } = do
