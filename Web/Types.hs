@@ -24,6 +24,11 @@ data CompanyWithRecords = CompanyWithRecords
     , uploadedFile :: !UploadedFile
     } deriving (Show)
 
+
+instance SetField "uploadedFile" CompanyWithRecords UploadedFile where
+  setField :: UploadedFile -> CompanyWithRecords -> CompanyWithRecords
+  setField uploadedFile record = record { uploadedFile }
+
 data WebApplication = WebApplication deriving (Eq, Show)
 
 data ParagraphQuotesController
