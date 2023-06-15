@@ -3,7 +3,12 @@ import Web.View.Prelude
 import Web.Element.Types
 import Web.Element.ElementWrap
 import Web.Element.InnerElementLayout
-import Control.Monad.Free (MonadFree(wrap))
+import Crypto.PubKey.RSA.PKCS15 as RSA
+import Crypto.Hash.Algorithms as Hash.Algorithms
+import qualified Config
+import IHP.ControllerSupport
+import Data.ByteString.Base64 as Base64
+import Application.Helper.Controller
 
 data ShowView = ShowView { paragraphQuote :: ParagraphQuote }
 
@@ -26,8 +31,12 @@ renderParagraph body subtitle imageUrl =
         ++ bodyWrapped
         ++ titleWrapped
         |> wrapVerticalSpacing AlignNone
-        |> buildElementLayoutSplitImageAndContent imageUrl
+        |> buildElementLayoutSplitImageAndContent (pathTo $ RenderImageStyleAction 400 200 imageUrl signed)
     where
+
+        -- Sign the image URL to prevent tampering.
+        signed = signImageUrl imageUrl 400 200
+
         -- https://iconmonstr.com/quote-3-svg/
         quotationSign = [hsx|
             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" class="fill-gray-300">

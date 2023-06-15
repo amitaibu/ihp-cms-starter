@@ -31,6 +31,7 @@
                     wai
                     text
                     hlint
+                    jwt
                 ];
 
                 packages = with pkgs; [
