@@ -27,7 +27,7 @@ instance Controller UsersController where
 
     action UpdateUserAction { userId } = do
         user <- fetch userId
-        let originalpasswordHash = user.passwordHash
+        let originalPasswordHash = user.passwordHash
         user
             |> fill @["email", "passwordHash"]
             -- We only validate the email field isn't empty, as the password
@@ -41,7 +41,7 @@ instance Controller UsersController where
                     -- the original password hash.
                     hashed <-
                         if user.passwordHash == ""
-                            then pure originalpasswordHash
+                            then pure originalPasswordHash
                             else hashPassword user.passwordHash
 
                     user <- user
