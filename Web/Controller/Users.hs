@@ -29,7 +29,10 @@ instance Controller UsersController where
         user <- fetch userId
         let originalpasswordHash = user.passwordHash
         user
-            |> buildUser
+            |> fill @["email", "passwordHash"]
+            -- We only validate the email field isn't empty, as the password
+            -- can remain empty.
+            |> validateField #email isEmail
             |> ifValid \case
                 Left user -> render EditView { .. }
                 Right user -> do
@@ -38,8 +41,8 @@ instance Controller UsersController where
                     -- the original password hash.
                     hashed <-
                         if user.passwordHash == ""
-                            then hashPassword user.passwordHash
-                            else pure originalpasswordHash
+                            then pure originalpasswordHash
+                            else hashPassword user.passwordHash
 
                     user <- user
                         |> set #passwordHash hashed
