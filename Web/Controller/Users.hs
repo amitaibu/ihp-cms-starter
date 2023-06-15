@@ -33,7 +33,8 @@ instance Controller UsersController where
         user
             |> fill @["email", "passwordHash"]
             -- We only validate the email field isn't empty, as the password
-            -- can remain empty.
+            -- can remain empty. We ensure that the error message doesn't include
+            -- the entered password.
             |> validateField #passwordHash (isEqual passwordConfirmation |> withCustomErrorMessage "Passwords don't match")
             |> validateField #passwordHash nonEmpty
             |> validateField #email isEmail
@@ -62,6 +63,8 @@ instance Controller UsersController where
         let passwordConfirmation = param @Text "passwordConfirmation"
         user
             |> fill @["email", "passwordHash"]
+            -- We ensure that the error message doesn't include
+            -- the entered password.
             |> validateField #passwordHash (isEqual passwordConfirmation |> withCustomErrorMessage "Passwords don't match")
             |> validateField #passwordHash nonEmpty
             |> validateField #email isEmail
