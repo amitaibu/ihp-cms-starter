@@ -1,5 +1,4 @@
 .DS_Store
-.envrc
 .idea
 tmp
 result
@@ -28,4 +27,12 @@ static/articles
 static/paragraph_quotes
 
 Application/Migration
+
+# JWT
 Config/jwtRS256.key*
+
+# devenv
+.devenv*
+devenv.local.nix
+.direnv
+.env
