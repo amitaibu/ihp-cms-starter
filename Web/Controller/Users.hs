@@ -21,6 +21,9 @@ instance Controller UsersController where
 
     action EditUserAction { userId } = do
         user <- fetch userId
+
+        -- Empty the password hash.
+        let user = user |> set #passwordHash ""
         render EditView { .. }
 
     action UpdateUserAction { userId } = do
@@ -37,12 +40,17 @@ instance Controller UsersController where
     action CreateUserAction = do
         let user = newRecord @User
         user
-            |> buildUser
+            |> fill @["email", "passwordHash"]
+            |> validateField #email isEmail
+            |> validateField #passwordHash nonEmpty
             |> ifValid \case
-                Left user -> render NewView { .. } 
+                Left user -> render NewView { .. }
                 Right user -> do
-                    user <- user |> createRecord
-                    setSuccessMessage "User created"
+                    hashed <- hashPassword user.passwordHash
+                    user <- user
+                        |> set #passwordHash hashed
+                        |> createRecord
+                    setSuccessMessage "You have registered successfully"
                     redirectTo UsersAction
 
     action DeleteUserAction { userId } = do
