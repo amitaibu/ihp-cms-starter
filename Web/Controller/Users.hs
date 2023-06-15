@@ -27,12 +27,23 @@ instance Controller UsersController where
 
     action UpdateUserAction { userId } = do
         user <- fetch userId
+        let originalpasswordHash = user.passwordHash
         user
             |> buildUser
             |> ifValid \case
                 Left user -> render EditView { .. }
                 Right user -> do
-                    user <- user |> updateRecord
+                    -- If the password hash is empty, then the user did not
+                    -- change the password. So, we set the password hash to
+                    -- the original password hash.
+                    hashed <-
+                        if user.passwordHash == ""
+                            then hashPassword user.passwordHash
+                            else pure originalpasswordHash
+
+                    user <- user
+                        |> set #passwordHash hashed
+                        |> updateRecord
                     setSuccessMessage "User updated"
                     redirectTo EditUserAction { .. }
 
