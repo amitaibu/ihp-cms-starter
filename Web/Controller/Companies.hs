@@ -45,27 +45,25 @@ instance Controller CompaniesController where
                     redirectTo EditCompanyAction { .. }
 
     action CreateCompanyAction = do
-        uploadedFile <- withTransaction do
-            uploadedFile <- newRecord @UploadedFile |> createRecord
+        let file = fileOrNothing "uploadedFile" |> fromMaybe (error "no file given")
 
-            let file = fileOrNothing "uploadedFile" |> fromMaybe (error "no file given")
+        let options :: StoreFileOptions = def
+                { directory = "uploaded_files"
+                , contentDisposition = contentDispositionAttachmentAndFileName
+                }
 
-            let options :: StoreFileOptions = def
-                    { directory = "uploaded_files"
-                    , contentDisposition = contentDispositionAttachmentAndFileName
-                    }
+        storedFile <- storeFileWithOptions file options
 
-            storedFile <- storeFileWithOptions file options
+        signedUrl <- createTemporaryDownloadUrl storedFile
 
-            signedUrl <- createTemporaryDownloadUrl storedFile
-
-            uploadedFile
-                |> set #signedUrl (signedUrl |> get #url)
-                |> set #signedUrlExpiredAt (signedUrl |> get #expiredAt)
-                |> set #path (storedFile |> get #path)
-                |> set #fileName (cs $ get #fileName file)
-                |> set #contentType (cs $ Wai.fileContentType file)
-                |> updateRecord
+        uploadedFile <- newRecord @UploadedFile |> createRecord
+        uploadedFile <- uploadedFile
+            |> set #signedUrl signedUrl.url
+            |> set #signedUrlExpiredAt signedUrl.expiredAt
+            |> set #path storedFile.path
+            |> set #fileName (cs file.fileName)
+            |> set #contentType (cs $ Wai.fileContentType file)
+            |> updateRecord
 
         let company = newRecord @Company
         company
