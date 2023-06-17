@@ -28,22 +28,50 @@ instance Controller UsersController where
 
     action UpdateUserAction { userId } = do
         user <- fetch userId
+        let originalPasswordHash = user.passwordHash
+        -- The value from the password confirmation input field.
+        let passwordConfirmation = param @Text "passwordConfirmation"
         user
-            |> buildUser
-            |> ifValid \case
+            |> fill @["email", "passwordHash"]
+            -- We only validate the email field isn't empty, as the password
+            -- can remain empty. We ensure that the error message doesn't include
+            -- the entered password.
+            |> validateField #passwordHash (isEqual passwordConfirmation |> withCustomErrorMessage "Passwords don't match")
+            |> validateField #passwordHash nonEmpty
+            |> validateField #email isEmail
+            -- After this validation, since it's operation on the IO, we'll need to use >>=.
+            |> validateIsUnique #email
+            >>= ifValid \case
                 Left user -> render EditView { .. }
                 Right user -> do
-                    user <- user |> updateRecord
+                    -- If the password hash is empty, then the user did not
+                    -- change the password. So, we set the password hash to
+                    -- the original password hash.
+                    hashed <-
+                        if user.passwordHash == ""
+                            then pure originalPasswordHash
+                            else hashPassword user.passwordHash
+
+                    user <- user
+                        |> set #passwordHash hashed
+                        |> updateRecord
                     setSuccessMessage "User updated"
                     redirectTo EditUserAction { .. }
 
     action CreateUserAction = do
         let user = newRecord @User
+        -- The value from the password confirmation input field.
+        let passwordConfirmation = param @Text "passwordConfirmation"
         user
             |> fill @["email", "passwordHash"]
-            |> validateField #email isEmail
+            -- We ensure that the error message doesn't include
+            -- the entered password.
+            |> validateField #passwordHash (isEqual passwordConfirmation |> withCustomErrorMessage "Passwords don't match")
             |> validateField #passwordHash nonEmpty
-            |> ifValid \case
+            |> validateField #email isEmail
+            -- After this validation, since it's operation on the IO, we'll need to use >>=.
+            |> validateIsUnique #email
+            >>= ifValid \case
                 Left user -> render NewView { .. }
                 Right user -> do
                     hashed <- hashPassword user.passwordHash
@@ -51,7 +79,7 @@ instance Controller UsersController where
                         |> set #passwordHash hashed
                         |> createRecord
                     setSuccessMessage "You have registered successfully"
-                    redirectTo UsersAction
+                    redirectToPath "/"
 
     action DeleteUserAction { userId } = do
         user <- fetch userId
@@ -60,4 +88,4 @@ instance Controller UsersController where
         redirectTo UsersAction
 
 buildUser user = user
-    |> fill @["email", "passwordHash", "failedLoginAttempts"]
+    |> fill @["email", "passwordHash"]
