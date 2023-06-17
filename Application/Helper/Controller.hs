@@ -18,34 +18,6 @@ fetchCompanyWithRecords companyId = do
     uploadedFile <- fetch company.uploadedFileId
     pure $ CompanyWithRecords { .. }
 
--- | Use the temporary download URL if the current one is not expired.
--- Otherwise, create a new temporary download URL and update the record.
-refreshTemporaryDownloadUrlFromFile ::
-    ( ?modelContext::ModelContext
-    , ?context :: context
-    , ConfigProvider context
-    , CanUpdate record
-    , HasField "signedUrlExpiredAt" record UTCTime
-    , HasField "path" record Text
-    , HasField "signedUrl" record Text
-    , SetField "signedUrlExpiredAt" record UTCTime
-    , SetField "path" record Text
-    , SetField "signedUrl" record Text
-    ) => record  -> IO record
-refreshTemporaryDownloadUrlFromFile record = do
-    now <- getCurrentTime
-    let diff = diffUTCTime now record.signedUrlExpiredAt
-    if diff > 0
-        then do
-            temporaryDownloadUrl <- createTemporaryDownloadUrlFromPath record.path
-            record
-                |> set #signedUrl (temporaryDownloadUrl |> get #url)
-                |> set #signedUrlExpiredAt (temporaryDownloadUrl |> get #expiredAt)
-                |> updateRecord
-
-        else
-            pure record
-
 fetchLandingPageWithRecords :: (?modelContext :: ModelContext) => Id LandingPage -> IO LandingPageWithRecords
 fetchLandingPageWithRecords landingPageId = do
 

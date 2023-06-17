@@ -45,6 +45,7 @@ instance Controller CompaniesController where
                     redirectTo EditCompanyAction { .. }
 
     action CreateCompanyAction = do
+        -- Upload file. If no file provided, we error and short-circuit.
         let file = fileOrNothing "uploadedFile" |> fromMaybe (error "no file given")
 
         let options :: StoreFileOptions = def
@@ -52,10 +53,11 @@ instance Controller CompaniesController where
                 , contentDisposition = contentDispositionAttachmentAndFileName
                 }
 
+        -- Store the file, and get the signed URL.
         storedFile <- storeFileWithOptions file options
-
         signedUrl <- createTemporaryDownloadUrl storedFile
 
+        -- Create the UploadedFile record. Set the signed URL, path, content-type etc.
         uploadedFile <- newRecord @UploadedFile |> createRecord
         uploadedFile <- uploadedFile
             |> set #signedUrl signedUrl.url
@@ -68,6 +70,7 @@ instance Controller CompaniesController where
         let company = newRecord @Company
         company
             |> buildCompany
+            -- Reference the newly created UploadedFile record.
             |> set #uploadedFileId uploadedFile.id
             |> ifValid \case
                 Left company -> render NewView { .. }
