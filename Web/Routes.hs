@@ -16,6 +16,9 @@ instance AutoRoute LandingPagesController
 
 instance AutoRoute ImageStyleController
 
-
 instance AutoRoute CompaniesController
+
+instance AutoRoute SessionsController
+
+instance AutoRoute UsersController
 

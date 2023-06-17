@@ -3,21 +3,30 @@ module Web.Controller.ImageStyle where
 import Web.Controller.Prelude
 import IHP.ControllerSupport
 import System.Directory (doesFileExist)
-import qualified Data.Text as T
+import qualified Data.Text as Text
 
+-- Imports for the signed token.
+import Crypto.PubKey.RSA.PKCS15 as RSA
+import Crypto.Hash.Algorithms as Hash.Algorithms
+import Config
+import Data.ByteString.Base64 as Base64
 
 instance Controller ImageStyleController where
-    action RenderImageStyleAction { width, height, originalImagePath } = do
+    action RenderImageStyleAction { width, height, originalImagePath, signed } = do
+        let size = show width <> "x" <> show height
+
+        -- Verify the token, and deny or allow access based on the result.
+        -- Also, deny access if there's `../` in the path, to prevent traversal attacks.
+
+        accessDeniedUnless (rsaSignatureMatches (originalImagePath <> size) signed && not (Text.isInfixOf "../" originalImagePath))
+
         -- Get the original image directory and UUID from the path.
         let (originalImageDirectory, uuid) = extractDirectoryAndUUID originalImagePath
 
-        let size = show width <> "x" <> show height
+
         let imageStylePathDirectory = originalImageDirectory <> "/imageStyles/" <> size
         let imageStylePath = imageStylePathDirectory <> "/" <> uuid
 
-        let storagePrefix = case storage of
-                StaticDirStorage -> "static/"
-                _ -> ""
 
         fileExists <- doesFileExist (cs $ storagePrefix <> imageStylePath)
 
@@ -36,13 +45,13 @@ instance Controller ImageStyleController where
 
                 renderFile (cs $ storagePrefix <> storedFile.path) "application/jpg"
 
-
+-- | Extracts the directory and UUID from a path like "pictures/8ed22caa-11ea-4c45-a05e-91a51e72558d"
 extractDirectoryAndUUID :: (?context :: context, ConfigProvider context) => Text -> (Text, Text)
 extractDirectoryAndUUID inputText =
     case reverse parts of
-        uuid : pathSegments -> (T.intercalate "/" (reverse pathSegments), uuid)
+        uuid : pathSegments -> (Text.intercalate "/" (reverse pathSegments), uuid)
         _ -> ("", "")
     where
         frameworkConfig = ?context.frameworkConfig
-        trimmedText = T.replace (frameworkConfig.baseUrl <> "/") "" inputText
-        parts = T.splitOn "/" trimmedText
+        trimmedText = Text.replace (frameworkConfig.baseUrl <> "/") "" inputText
+        parts = Text.splitOn "/" trimmedText

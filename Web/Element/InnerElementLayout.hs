@@ -23,7 +23,7 @@ buildInnerElementLayout color element =
             ]
 
 
-buildElementLayoutSplitImageAndContent :: Text -> Html  -> Html
+buildElementLayoutSplitImageAndContent :: Text -> Html -> Html
 buildElementLayoutSplitImageAndContent imageUrl items =
     -- We use grid and row/col start to position both the image and the text on the same cell.
     [hsx|
@@ -40,4 +40,4 @@ buildElementLayoutSplitImageAndContent imageUrl items =
         </div>
     |]
     where
-        image = [hsx|<img src={pathTo $ RenderImageStyleAction 400 200 imageUrl} class="w-full h-full" />|]
+        image = [hsx|<img src={imageUrl} class="w-full h-full" />|]

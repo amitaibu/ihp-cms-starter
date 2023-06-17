@@ -29,6 +29,10 @@ static/paragraph_quotes
 Application/Migration
 static/uploaded_files
 
+# JWT
+Config/jwtRS256.key*
+
+# devenv
 .devenv*
 devenv.local.nix
 .direnv
