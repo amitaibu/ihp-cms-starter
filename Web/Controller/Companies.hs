@@ -23,7 +23,7 @@ instance Controller CompaniesController where
         companyWithRecords <- fetchCompanyWithRecords companyId
 
         let uploadedFile = companyWithRecords.uploadedFile
-        uploadedFile <- getTemporaryDownloadUrlFromFile uploadedFile
+        uploadedFile <- refreshTemporaryDownloadUrlFromFile uploadedFile
         let companyWithRecords = companyWithRecords
                 |> set #uploadedFile uploadedFile
 

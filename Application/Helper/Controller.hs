@@ -14,7 +14,7 @@ fetchCompanyWithRecords companyId = do
 
 -- | Use the temporary download URL if the current one is not expired.
 -- Otherwise, create a new temporary download URL and update the record.
-getTemporaryDownloadUrlFromFile ::
+refreshTemporaryDownloadUrlFromFile ::
     ( ?modelContext::ModelContext
     , ?context :: context
     , ConfigProvider context
@@ -26,7 +26,7 @@ getTemporaryDownloadUrlFromFile ::
     , SetField "path" record Text
     , SetField "signedUrl" record Text
     ) => record  -> IO record
-getTemporaryDownloadUrlFromFile record = do
+refreshTemporaryDownloadUrlFromFile record = do
     now <- getCurrentTime
     let diff = diffUTCTime now record.signedUrlExpiredAt
     if diff > 0
