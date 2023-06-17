@@ -23,7 +23,8 @@ instance Controller UsersController where
         user <- fetch userId
 
         -- Empty the password hash.
-        render EditView { user = user |> set #passwordHash "" }
+        let user = user |> set #passwordHash ""
+        render EditView { .. }
 
     action UpdateUserAction { userId } = do
         user <- fetch userId
