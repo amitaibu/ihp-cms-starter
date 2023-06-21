@@ -59,12 +59,12 @@ instance Controller CompaniesController where
 
         -- Create the UploadedFile record. Set the signed URL, path, content-type etc.
         uploadedFile <- newRecord @UploadedFile
-            |> set #signedUrl signedUrl.url
-            |> set #signedUrlExpiredAt signedUrl.expiredAt
-            |> set #path storedFile.path
-            |> set #fileName (cs file.fileName)
-            |> set #contentType (cs $ Wai.fileContentType file)
-            |> createRecord
+                |> set #signedUrl signedUrl.url
+                |> set #signedUrlExpiredAt signedUrl.expiredAt
+                |> set #path storedFile.path
+                |> set #fileName (cs file.fileName)
+                |> set #contentType (cs $ Wai.fileContentType file)
+                |> createRecord
 
         let company = newRecord @Company
         company
