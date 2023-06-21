@@ -58,14 +58,13 @@ instance Controller CompaniesController where
         signedUrl <- createTemporaryDownloadUrl storedFile
 
         -- Create the UploadedFile record. Set the signed URL, path, content-type etc.
-        uploadedFile <- newRecord @UploadedFile |> createRecord
-        uploadedFile <- uploadedFile
+        uploadedFile <- newRecord @UploadedFile
             |> set #signedUrl signedUrl.url
             |> set #signedUrlExpiredAt signedUrl.expiredAt
             |> set #path storedFile.path
             |> set #fileName (cs file.fileName)
             |> set #contentType (cs $ Wai.fileContentType file)
-            |> updateRecord
+            |> createRecord
 
         let company = newRecord @Company
         company
