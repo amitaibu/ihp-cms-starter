@@ -3,12 +3,13 @@
 ## Install 
 
 - Install [IHP](https://ihp.digitallyinduced.com/)
-- Install `devenv` and enable `.envrc`
+- Install [devenv](https://devenv.sh/getting-started/)
 
 ```
 cachix use devenv
 nix-env -if https://github.com/cachix/devenv/tarball/latest
 direnv allow
+npm install
 ```
 
 ## Execute
