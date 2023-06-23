@@ -37,7 +37,8 @@
                 packages = with pkgs; [
                     # Native dependencies, e.g. imagemagick
                     imagemagick
-                    nodejs
+                    # Removed for quicker testing, as we don't need TW on tests.
+                    # nodejs
                 ];
             };
 
