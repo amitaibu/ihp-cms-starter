@@ -43,6 +43,6 @@ jobs:
     - run: |
           mkdir -p ~/.config/nixpkgs
           echo "{ allowBroken = true; }" >> ~/.config/nixpkgs/config.nix
-          nix-shell --run "direnv allow && devenv up"
+          nix-shell --run "devenv up"
           sleep 5 # Wait for app to start
           nix-shell --run "runghc $(make print-ghc-extensions) -i. -ibuild -iConfig Test/Main.hs"
