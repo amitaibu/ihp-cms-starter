@@ -1,4 +1,4 @@
-module Teat.Main where
+module Main where
 
 import Test.Hspec
 import IHP.Prelude
