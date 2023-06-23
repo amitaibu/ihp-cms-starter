@@ -31,6 +31,9 @@
                     wai
                     text
                     hlint
+                    # For testing
+                    hspec
+
                     jwt
                 ];
 
