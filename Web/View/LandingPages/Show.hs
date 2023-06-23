@@ -11,13 +11,10 @@ data ShowView = ShowView { landingPageWithRecords :: LandingPageWithRecords }
 
 instance View ShowView where
     html ShowView { .. } = [hsx|
-        {- Will NOT show -}
+        {header}
 
-        <!-- Will show -->
+        {orderAndRenderParagraphs landingPageWithRecords }
 
-        <div>
-            We still have syntax highlighting.
-        </div>
     |]
         where
             landingPage = landingPageWithRecords.landingPage
