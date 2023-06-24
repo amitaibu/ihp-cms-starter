@@ -41,8 +41,8 @@ jobs:
         name: digitallyinduced
         skipPush: true
     - run: |
-          mkdir -p ~/.config/nixpkgs
-          echo "{ allowBroken = true; }" >> ~/.config/nixpkgs/config.nix
-          nix-shell --run "devenv up"
-          sleep 5 # Wait for app to start
+          # mkdir -p ~/.config/nixpkgs
+          # echo "{ allowBroken = true; }" >> ~/.config/nixpkgs/config.nix
+          nix-shell --run "devenv up &"
+          sleep 15 # Wait for app to start
           nix-shell --run "runghc $(make print-ghc-extensions) -i. -ibuild -iConfig Test/Main.hs"
