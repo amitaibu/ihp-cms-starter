@@ -29,10 +29,6 @@ jobs:
       with:
         name: digitallyinduced
         skipPush: true
-    - uses: cachix/cachix-action@v12
-      with:
-        name: gizra
-        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
     # devenv
     - uses: cachix/cachix-action@v12
       with:
