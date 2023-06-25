@@ -11,9 +11,15 @@ data ShowView = ShowView { landingPageWithRecords :: LandingPageWithRecords }
 
 instance View ShowView where
     html ShowView { .. } = [hsx|
+
+        <div>action: {show $ ShowLandingPageAction landingPage.id}</div>
+        <div>isActiveAction: {isActiveAction $ ShowLandingPageAction landingPage.id}</div>
+
         {header}
 
         {orderAndRenderParagraphs landingPageWithRecords }
+
+
 
     |]
         where
