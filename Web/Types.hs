@@ -77,3 +77,43 @@ data UsersController
     | UpdateUserAction { userId :: !(Id User) }
     | DeleteUserAction { userId :: !(Id User) }
     deriving (Eq, Show, Data)
+
+
+newtype LandingPageWrapper = LandingPageWrapper LandingPage
+
+instance CanCreate LandingPageWrapper where
+    create :: (?modelContext :: ModelContext) => LandingPageWrapper -> IO LandingPageWrapper
+    create (LandingPageWrapper model) = do
+        model <- create model
+        -- Auto create the first paragraph
+        paragraphCta <- newRecord @ParagraphCta
+            |> set #landingPageId model.id
+            |> set #title "Auto created Title"
+            |> set #body "Auto created Body"
+            |> set #refLandingPageId model.id
+            |> set #weight 0
+            |> createRecord
+
+        pure $ LandingPageWrapper model
+
+    createMany [] = pure []
+    createMany models = do
+        let innerModels = fmap (\(LandingPageWrapper model) -> model) models
+        landingPages <- createMany innerModels
+
+        -- Auto create the first paragraph for each model.
+        forEach landingPages (\model -> do
+            newRecord @ParagraphCta
+                |> set #landingPageId model.id
+                |> set #title "Auto created Title"
+                |> set #body "Auto created Body"
+                |> set #refLandingPageId model.id
+                |> set #weight 0
+                |> createRecord
+
+            pure ()
+            )
+
+        pure $ fmap (\model -> LandingPageWrapper model) landingPages
+
+

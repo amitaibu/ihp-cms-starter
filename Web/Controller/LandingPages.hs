@@ -92,7 +92,9 @@ instance Controller LandingPagesController where
             |> ifValid \case
                 Left landingPage -> render NewView { .. }
                 Right landingPage -> do
-                    landingPage <- landingPage |> createRecord
+                    let landingPageWrapper = LandingPageWrapper landingPage
+                    (LandingPageWrapper landingPage) <- landingPageWrapper |> createRecord
+
                     setSuccessMessage "LandingPage created"
                     -- After we create the Landing page, we can start adding Paragraphs to it.
                     redirectTo EditLandingPageAction { landingPageId = landingPage.id }
