@@ -9,6 +9,14 @@ import Web.View.LandingPages.Show
 instance Controller LandingPagesController where
     action LandingPagesAction = do
         landingPages <- query @LandingPage |> fetch
+
+        allLandingPageUuids :: [Only UUID] <- sqlQueryScalar "SELECT landing_pages.id FROM landing_pages" ()
+
+        let landingPagesUuids =
+                allLandingPageUuids
+                    -- Extract the UUIDs, and convert to an ID.
+                    |> map (\(Only uuid) -> Id uuid :: Id LandingPage)
+
         render IndexView { .. }
 
     action NewLandingPageAction = do
