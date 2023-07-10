@@ -8,11 +8,11 @@
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
-        "lastModified": 1685785365,
-        "narHash": "sha256-ITKa6VKggN0tFxpoMTQUk1NgAhQ+S87rH3MSQ2LTPxs=",
+        "lastModified": 1685996198,
+        "narHash": "sha256-MN05XjT2rJZs8FTdZMwNWps8l4hcbEqtKnRuaLLTVkU=",
         "owner": "cachix",
         "repo": "devenv",
-        "rev": "873e7901efcefe8f0000975adc8b3b9b58c41fc4",
+        "rev": "92ae3568a0f463e6c7334e54a21a3b7e4ffb014e",
         "type": "github"
       },
       "original": {
@@ -77,16 +77,16 @@
     "ihp": {
       "flake": false,
       "locked": {
-        "lastModified": 1688227371,
-        "narHash": "sha256-1mz8B8KZ36Q2JfinXCyfDjdRLgFu+R79Y1qTcIOFtng=",
+        "lastModified": 1689011017,
+        "narHash": "sha256-ArHGzWTWrDYEtsSoJjOZgWSWpAYPkZhj7aj/314xJJM=",
         "owner": "digitallyinduced",
         "repo": "ihp",
-        "rev": "45902cce813a378f413f05628defec2e1e493a7d",
+        "rev": "dcff6a33ef27c10ed1f80b45883e98b37c08a02e",
         "type": "github"
       },
       "original": {
         "owner": "digitallyinduced",
-        "ref": "45902cce813a378f413f05628defec2e1e493a7d",
+        "ref": "dcff6a33ef27c10ed1f80b45883e98b37c08a02e",
         "repo": "ihp",
         "type": "github"
       }
