@@ -1,6 +1,6 @@
 {
     inputs = {
-        ihp.url = "github:digitallyinduced/ihp?rev=722a88ba4969f57bb1bf3fd20964302c21aa2cf1";
+        ihp.url = "github:digitallyinduced/ihp";
         nixpkgs.follows = "ihp/nixpkgs";
         flake-parts.follows = "ihp/flake-parts";
         devenv.follows = "ihp/devenv";
@@ -19,8 +19,6 @@
                     projectPath = ./.;
                     packages = with pkgs; [
                         # Native dependencies, e.g. imagemagick
-                        imagemagick
-                        nodejs
                     ];
                     haskellPackages = p: with p; [
                         # Haskell dependencies go here
@@ -30,7 +28,6 @@
                         wai
                         text
                         hlint
-                        jwt
                     ];
                 };
             };
