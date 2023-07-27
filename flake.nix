@@ -34,6 +34,7 @@
                     ];
                 };
 
+                # Start mailhog on `devenv up`.
                 devenv.shells.default = {
                     services.mailhog.enable = true;
                 };
