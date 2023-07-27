@@ -6,13 +6,10 @@
         devenv.follows = "ihp/devenv";
         systems.follows = "ihp/systems";
     };
-
     outputs = inputs@{ ihp, flake-parts, systems, ... }:
         flake-parts.lib.mkFlake { inherit inputs; } {
-
             systems = import systems;
             imports = [ ihp.flakeModules.default ];
-
             perSystem = { pkgs, ... }: {
                 ihp = {
                     enable = true;
@@ -21,6 +18,9 @@
                         # Native dependencies, e.g. imagemagick
                         imagemagick
                         nodejs
+
+                        # Used for local development
+                        mailhog
                     ];
                     haskellPackages = p: with p; [
                         # Haskell dependencies go here
@@ -33,7 +33,11 @@
                         jwt
                     ];
                 };
-            };
 
+                # Start mailhog on `devenv up`.
+                devenv.shells.default = {
+                    services.mailhog.enable = true;
+                };
+            };
         };
 }

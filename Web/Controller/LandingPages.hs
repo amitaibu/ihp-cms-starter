@@ -5,6 +5,7 @@ import Web.View.LandingPages.Index
 import Web.View.LandingPages.New
 import Web.View.LandingPages.Edit
 import Web.View.LandingPages.Show
+import Web.Mail.LandingPages.LandingPageView
 
 instance Controller LandingPagesController where
     action LandingPagesAction = do
@@ -17,6 +18,9 @@ instance Controller LandingPagesController where
 
     action ShowLandingPageAction { landingPageId } = do
         landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
+
+        -- Send mail.
+        sendMail $ LandingPageViewMail landingPageWithRecords.landingPage
 
         render ShowView { .. }
 
