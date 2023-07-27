@@ -19,6 +19,9 @@ instance Controller LandingPagesController where
     action ShowLandingPageAction { landingPageId } = do
         landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
 
+        -- Send mail.
+        sendMail $ LandingPageViewMail landingPageWithRecords.landingPage
+
         render ShowView { .. }
 
     action EditLandingPageAction { landingPageId } = do

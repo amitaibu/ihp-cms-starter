@@ -9,6 +9,7 @@ import Crypto.PubKey.RSA as RSA
 import Control.Exception (catch)
 import qualified Data.ByteString as BS
 import Web.JWT
+import IHP.Mail
 
 data RsaKeys = RsaKeys { publicKey :: RSA.PublicKey, privateKey :: RSA.PrivateKey }
 
@@ -28,6 +29,15 @@ config = do
     case (readRsaSecret privateKeyContent, readRsaPublicKey publicKeyContent) of
         (Just privateKey, Just publicKey) -> option $ RsaKeys publicKey privateKey
         _ -> error "Failed to read RSA keys, please execute from the root of your project: ssh-keygen -t rsa -b 4096 -m PEM -f ./Config/jwtRS256.key && openssl rsa -in ./Config/jwtRS256.key -pubout -outform PEM -out ./Config/jwtRS256.key.pub"
+
+    -- SMTP to work with MailHog.
+    option $
+        SMTP
+            { host = "127.0.0.1" -- On some computers may need `127.0.1.1` instead.
+            , port = 1025
+            , credentials = Nothing
+            , encryption = Unencrypted
+            }
 
 
 readRsaKeyFromFile :: FilePath -> IO BS.ByteString
