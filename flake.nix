@@ -6,13 +6,10 @@
         devenv.follows = "ihp/devenv";
         systems.follows = "ihp/systems";
     };
-
     outputs = inputs@{ ihp, flake-parts, systems, ... }:
         flake-parts.lib.mkFlake { inherit inputs; } {
-
             systems = import systems;
             imports = [ ihp.flakeModules.default ];
-
             perSystem = { pkgs, ... }: {
                 ihp = {
                     enable = true;
@@ -36,7 +33,10 @@
                         jwt
                     ];
                 };
-            };
 
+                devenv.shells.default = {
+                    services.mailhog.enable = true;
+                };
+            };
         };
 }
