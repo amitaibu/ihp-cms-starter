@@ -21,6 +21,9 @@
                         # Native dependencies, e.g. imagemagick
                         imagemagick
                         nodejs
+
+                        # Used for local development
+                        mailhog
                     ];
                     haskellPackages = p: with p; [
                         # Haskell dependencies go here
