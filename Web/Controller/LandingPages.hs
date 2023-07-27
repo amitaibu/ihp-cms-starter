@@ -5,6 +5,7 @@ import Web.View.LandingPages.Index
 import Web.View.LandingPages.New
 import Web.View.LandingPages.Edit
 import Web.View.LandingPages.Show
+import Web.Mail.LandingPages.LandingPageView
 
 instance Controller LandingPagesController where
     action LandingPagesAction = do
