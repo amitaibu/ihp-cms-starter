@@ -47,7 +47,8 @@ CREATE TABLE comments (
     post_id UUID NOT NULL,
     body TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
-    comment_moderation comment_moderation NOT NULL
+    comment_moderation comment_moderation NOT NULL,
+    score INT NOT NULL
 );
 CREATE INDEX comments_post_id_index ON comments (post_id);
 CREATE INDEX comments_created_at_index ON comments (created_at);
