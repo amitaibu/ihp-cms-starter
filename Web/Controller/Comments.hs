@@ -56,18 +56,19 @@ buildComment comment = comment
     |> fillIsNew
     |> fillCurrentUserIsAdmin
     where
-        fillIsNew record
+        fillIsNew record =
+            if isNew record
             -- Record is new, so fill the `postId`.
-            | isNew record = fill @'["postId"] record
+            then fill @'["postId"] record
             -- Otherwise, leave the record as is.
-            | otherwise = record
+            else record
 
-        fillCurrentUserIsAdmin record
-            | currentUserIsAdmin =
-                fill @'["commentModeration", "score"] record
+        fillCurrentUserIsAdmin record =
+            if currentUserIsAdmin
+            then fill @'["commentModeration", "score"] record
                     -- Make sure that star can be only between 1 and 5.
                     |> validateField #score (isInRange (1, 5))
-            | otherwise = record
+            else record
 
 
 currentUserIsAdmin :: (?context :: ControllerContext) => Bool
