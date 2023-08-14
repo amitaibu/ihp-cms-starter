@@ -40,7 +40,7 @@ itShouldAllowNewAndCreate ::
     , Typeable record
     , Record record
     , CanCreate record
-    , SetField "landingPageId" record  (Id' "landing_pages")
+    , SetField "landingPageId" record  (Id LandingPage)
     )
     => record -> (newAction -> Id LandingPage) -> createAction -> SpecWith (MockContext application)
 itShouldAllowNewAndCreate record newAction createAction =
