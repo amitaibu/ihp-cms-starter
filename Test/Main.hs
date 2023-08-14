@@ -31,8 +31,6 @@ tests = aroundAll (withIHPApp WebApplication config) do
         itShouldAllowNewAndCreate ParagraphQuote NewParagraphQuoteAction CreateParagraphQuoteAction
 
 
-
-
 itShouldAllowNewAndCreate ::
     forall record newAction createAction application.
     ( Controller createAction
@@ -44,7 +42,7 @@ itShouldAllowNewAndCreate ::
     , CanCreate record
     , SetField "landingPageId" record  (Id' "landing_pages")
     )
-    => record -> newAction -> createAction -> SpecWith (MockContext application)
+    => record -> (newAction -> Id LandingPage) -> createAction -> SpecWith (MockContext application)
 itShouldAllowNewAndCreate record newAction createAction =
      it "should allow new and create" $ withContext do
 
