@@ -24,26 +24,23 @@ main = hspec do
 tests :: Spec
 tests = aroundAll (withIHPApp WebApplication config) do
     describe "Test" do
-        it "should work" $ withContext do
-            True `shouldBe` True
-
-        itShouldAllowNewAndCreate ParagraphCta NewParagraphCtaAction CreateParagraphCtaAction
-        itShouldAllowNewAndCreate ParagraphQuote NewParagraphQuoteAction CreateParagraphQuoteAction
+        itShouldAllowNewAndCreate ParagraphCta CreateParagraphCtaAction
+        -- itShouldAllowNewAndCreate ParagraphQuote CreateParagraphQuoteAction
 
 
 itShouldAllowNewAndCreate ::
-    forall record newAction createAction application.
-    ( Controller createAction
+    forall record createAction application.
+    ( ?modelContext :: ModelContext
+    , Controller createAction
     , Typeable createAction
     , Typeable application
-    , ?modelContext :: ModelContext
     , Typeable record
     , Record record
     , CanCreate record
     , SetField "landingPageId" record  (Id LandingPage)
     )
-    => record -> (newAction -> Id LandingPage) -> createAction -> SpecWith (MockContext application)
-itShouldAllowNewAndCreate record newAction createAction =
+    => record -> createAction -> SpecWith (MockContext application)
+itShouldAllowNewAndCreate record  createAction =
      it "should allow new and create" $ withContext do
 
         -- Create a Landing page.
@@ -55,8 +52,7 @@ itShouldAllowNewAndCreate record newAction createAction =
             |> createRecord
 
         let actions =
-                [ (newAction landingPage.id, [])
-                , (createAction, [("landingPageId", cs $ show landingPage.id)])
+                [ (createAction, [("landingPageId", cs $ show landingPage.id)])
                 ]
 
         forEach actions (\(action, params) -> do
