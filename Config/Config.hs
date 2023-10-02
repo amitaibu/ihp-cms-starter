@@ -5,7 +5,7 @@ import IHP.Environment
 import IHP.FileStorage.Config
 import IHP.FrameworkConfig ( ConfigBuilder, option )
 import Web.View.CustomCSSFramework
-import Crypto.PubKey.RSA as RSA
+import "cryptonite" Crypto.PubKey.RSA as RSA
 import Control.Exception (catch)
 import qualified Data.ByteString as BS
 import Web.JWT

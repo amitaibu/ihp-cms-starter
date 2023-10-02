@@ -1,3 +1,4 @@
+CREATE TYPE enum_tests AS ENUM ('foo', 'bar', 'baz');
 CREATE FUNCTION set_updated_at_to_now() RETURNS TRIGGER AS $$
 BEGIN
     NEW.updated_at = NOW();
@@ -5,7 +6,6 @@ BEGIN
 END;
 $$ language plpgsql;
 -- Your database schema. Use the Schema Designer at http://localhost:8001/ to add some tables.
-
 CREATE TABLE users (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
     email TEXT NOT NULL,
@@ -13,12 +13,12 @@ CREATE TABLE users (
     locked_at TIMESTAMP WITH TIME ZONE DEFAULT NULL,
     failed_login_attempts INT DEFAULT 0 NOT NULL
 );
-
 CREATE TABLE landing_pages (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() NOT NULL,
-    title TEXT NOT NULL
+    title TEXT NOT NULL,
+    enum_tests enum_tests NOT NULL
 );
 CREATE INDEX landing_pages_created_at_index ON landing_pages (created_at);
 CREATE TRIGGER update_landing_pages_updated_at BEFORE UPDATE ON landing_pages FOR EACH ROW EXECUTE FUNCTION set_updated_at_to_now();
