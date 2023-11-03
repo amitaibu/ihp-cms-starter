@@ -3,7 +3,7 @@ import Web.View.Prelude
 import Web.Element.Types
 import Web.Element.ElementWrap
 import Web.Element.InnerElementLayout
-import Crypto.PubKey.RSA.PKCS15 as RSA
+import "cryptonite" Crypto.PubKey.RSA.PKCS15 as RSA
 import Crypto.Hash.Algorithms as Hash.Algorithms
 import qualified Config
 import IHP.ControllerSupport

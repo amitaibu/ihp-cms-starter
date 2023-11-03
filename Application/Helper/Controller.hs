@@ -4,9 +4,9 @@ import IHP.ControllerPrelude
 import Generated.Types
 import Web.Types
 import Config
-import Crypto.PubKey.RSA as RSA
+import "cryptonite" Crypto.PubKey.RSA as RSA
 import Data.ByteString.Base64 as Base64
-import Crypto.PubKey.RSA.PKCS15 as RSA.PKCS15
+import "cryptonite" Crypto.PubKey.RSA.PKCS15 as RSA.PKCS15
 import Crypto.Hash.Algorithms as Hash.Algorithms
 
 
