@@ -1,8 +1,8 @@
 module Application.Helper.View where
 
 import IHP.ViewPrelude
-import Crypto.PubKey.RSA.PKCS15 as RSA
-import Crypto.Hash.Algorithms as Hash.Algorithms
+import "cryptonite" Crypto.PubKey.RSA.PKCS15 as RSA
+import "cryptonite" Crypto.Hash.Algorithms as Hash.Algorithms
 import Data.ByteString.Base64 as Base64
 import Application.Helper.Controller
 
