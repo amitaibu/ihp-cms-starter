@@ -43,5 +43,6 @@ jobs:
 
     - run: |
           ssh-keygen -t rsa -b 4096 -m PEM -f ./Config/jwtRS256.key -N "" && openssl rsa -in ./Config/jwtRS256.key -pubout -outform PEM -out ./Config/jwtRS256.key.pub
+          nix-shell --run "make build/Generated/Types.hs"
           nix-shell --run "devenv up &"
           nix-shell --run "runghc $(make print-ghc-extensions) -i. -ibuild -iConfig Test/Main.hs"
