@@ -7,7 +7,7 @@ import qualified Data.Text as Text
 
 -- Imports for the signed token.
 import "cryptonite" Crypto.PubKey.RSA.PKCS15 as RSA
-import Crypto.Hash.Algorithms as Hash.Algorithms
+import "cryptonite" Crypto.Hash.Algorithms as Hash.Algorithms
 import Config
 import Data.ByteString.Base64 as Base64
 

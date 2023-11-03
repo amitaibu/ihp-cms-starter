@@ -7,7 +7,7 @@ import Config
 import "cryptonite" Crypto.PubKey.RSA as RSA
 import Data.ByteString.Base64 as Base64
 import "cryptonite" Crypto.PubKey.RSA.PKCS15 as RSA.PKCS15
-import Crypto.Hash.Algorithms as Hash.Algorithms
+import "cryptonite" Crypto.Hash.Algorithms as Hash.Algorithms
 
 
 -- Here you can add functions which are available in all your controllers

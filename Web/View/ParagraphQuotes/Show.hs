@@ -4,7 +4,7 @@ import Web.Element.Types
 import Web.Element.ElementWrap
 import Web.Element.InnerElementLayout
 import "cryptonite" Crypto.PubKey.RSA.PKCS15 as RSA
-import Crypto.Hash.Algorithms as Hash.Algorithms
+import "cryptonite" Crypto.Hash.Algorithms as Hash.Algorithms
 import qualified Config
 import IHP.ControllerSupport
 import Data.ByteString.Base64 as Base64
