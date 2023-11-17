@@ -7,6 +7,15 @@ import Web.View.Projects.New
 instance Controller ProjectsController where
     action ProjectsAction = do
         projects <- query @Project |> fetch
+
+        -- Fetch only specific projects by a pair of values.
+        -- In this case we really fetch all, but show how we pair the values we want to
+        -- query by.
+        let pairs = projects
+                |> fmap (\project -> "(" ++ show project.projectType ++ ", " ++ project.participants ++ ")")
+
+        projectsQuery :: [Project] <- sqlQuery "SELECT * FROM projects WHERE (project_type, participants) IN (VALUES ?)" (Only (In pairs))
+
         render IndexView { .. }
 
     action NewProjectAction = do
