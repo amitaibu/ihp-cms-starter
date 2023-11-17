@@ -17,8 +17,8 @@ instance View NewView where
 
 renderForm :: Project -> Html
 renderForm project = formFor project [hsx|
-    {(textField #projectType)}
-    {(textField #participants)}
+    {(selectField #projectType allProjectTypes)}
+    {(numberField #participants)}
     {submitButton}
-
 |]
+    where allProjectTypes = allEnumValues @ProjectType

@@ -4,6 +4,7 @@ import IHP.Prelude
 import IHP.ModelSupport
 import Generated.Types
 import IHP.LoginSupport.Types
+import IHP.View.Form
 
 -- Custom types
 
@@ -83,3 +84,11 @@ data ProjectsController
     | NewProjectAction
     | CreateProjectAction
     deriving (Eq, Show, Data)
+
+instance CanSelect ProjectType where
+    type SelectValue ProjectType = ProjectType
+    selectValue value = value
+    selectLabel value = case value of
+        ProjectTypeNotStarted -> "Not started"
+        ProjectTypeOngoing -> "Ongoing"
+        ProjectTypeFinished -> "Finished"
