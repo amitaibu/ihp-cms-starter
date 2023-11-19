@@ -42,7 +42,7 @@ CREATE INDEX paragraph_ctas_landing_page_id_index ON paragraph_ctas (landing_pag
 CREATE TABLE projects (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
     project_type project_type NOT NULL,
-    participants TEXT NOT NULL
+    participants INT NOT NULL
 );
 ALTER TABLE paragraph_ctas ADD CONSTRAINT paragraph_ctas_ref_landing_page_id FOREIGN KEY (landing_page_id) REFERENCES landing_pages (id) ON DELETE NO ACTION;
 ALTER TABLE paragraph_ctas ADD CONSTRAINT paragraph_ctas_ref_ref_landing_page_id FOREIGN KEY (ref_landing_page_id) REFERENCES landing_pages (id) ON DELETE NO ACTION;

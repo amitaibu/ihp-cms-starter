@@ -5,6 +5,21 @@ import IHP.ModelSupport
 import Generated.Types
 import IHP.LoginSupport.Types
 import IHP.View.Form
+import Database.PostgreSQL.Simple.ToField
+import Data.ByteString.Builder (byteString, char8)
+
+
+instance ToField (ProjectType, Int) where
+    toField = serializeProjectTypeAndInt
+
+serializeProjectTypeAndInt :: (ProjectType, Int) -> Action
+serializeProjectTypeAndInt (projectType, participants) = Many
+    [ Plain (char8 '(')
+    , toField projectType
+    , Plain (char8 ',')
+    , toField $ show participants
+    , Plain (char8 ')')
+    ]
 
 -- Custom types
 

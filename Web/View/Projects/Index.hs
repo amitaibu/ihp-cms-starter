@@ -3,7 +3,6 @@ import Web.View.Prelude
 
 data IndexView = IndexView
     { projects :: [Project]
-    , projectsQuery :: [Project]
     }
 
 instance View IndexView where
@@ -22,18 +21,6 @@ instance View IndexView where
                     </tr>
                 </thead>
                 <tbody>{forEach projects renderProject}</tbody>
-            </table>
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Project</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>{forEach projectsQuery renderProject}</tbody>
             </table>
 
         </div>

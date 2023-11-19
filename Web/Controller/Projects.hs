@@ -3,35 +3,22 @@ module Web.Controller.Projects where
 import Web.Controller.Prelude
 import Web.View.Projects.Index
 import Web.View.Projects.New
-import Database.PostgreSQL.Simple.ToField
-import Data.ByteString.Builder (byteString, char8)
 
-
-instance ToField (ProjectType, Int) where
-    toField = serializeTuple
-
-
-serializeTuple :: (ProjectType, Int) -> Action
-serializeTuple (projectType, participants) = Many
-    [ Plain (byteString "(")
-    , toField projectType
-    , Plain (char8 ',')
-    , toField $ show participants
-    , Plain (char8 ')')
-    ]
 
 instance Controller ProjectsController where
     action ProjectsAction = do
-        projects <- query @Project |> fetch
+        let values :: [(ProjectType, Int)] = [(ProjectTypeOngoing, 3), (ProjectTypeNotStarted, 2)]
 
+            valuePairToCondition :: (ProjectType, Int) -> (QueryBuilder "projects" -> QueryBuilder "projects")
+            valuePairToCondition (projectType, participants) subQuery =
+                subQuery
+                    |> queryOr
+                        (\qb -> qb |> filterWhere (#projectType, projectType))
+                        (\qb -> qb |> filterWhere (#participants, participants))
 
-        -- let pairs = projects |> fmap (\project -> (project.projectType, project.participants))
-        let pairs = [(ProjectTypeOngoing, 1 :: Int), (ProjectTypeFinished, 2)]
+            conditions = foldl' (\queryBuilder condition -> condition queryBuilder) (query @Project) (map valuePairToCondition values)
 
-        -- Use a parameterized query to handle list of tuples
-        projectsQuery :: [Project] <- sqlQuery "SELECT * FROM projects WHERE (project_type, participants) IN ?" (Only $ In pairs)
-
-
+        projects <- fetch conditions
         render IndexView { .. }
 
     action NewProjectAction = do
