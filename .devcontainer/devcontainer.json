@@ -27,6 +27,13 @@
     },
     "remoteUser": "vscode",
     "customizations": {
+        "codespaces": {
+            "repositories": {
+                "digitallyinduced/ihp": {
+                    "permissions": "write-all"
+                }
+            }
+        },
         "vscode": {
             "settings": {
                 "terminal.integrated.profiles.linux": {
