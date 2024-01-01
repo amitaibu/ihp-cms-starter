@@ -209,17 +209,17 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1700013490,
-        "narHash": "sha256-oQz7ZBrHe6WwYMwnxxUgnYM55CuH5Oxjz6mrLnYbB7U=",
-        "owner": "digitallyinduced",
-        "repo": "ihp",
-        "rev": "d59a65d71943cb506eee3ad6255f017963237359",
-        "type": "github"
+        "lastModified": 1704118513,
+        "narHash": "sha256-FUF+12xP0tCZyPtOV0mFF+qb2kt5hmLf3Xz1mjfpzCQ=",
+        "ref": "refs/heads/filewatcher-debounce",
+        "rev": "a7148744dc0121c793730cfb60b4c5ac5fb41a66",
+        "revCount": 5404,
+        "type": "git",
+        "url": "file:///Users/amitaibu/Sites/ihp-landing-page/IHP"
       },
       "original": {
-        "owner": "digitallyinduced",
-        "repo": "ihp",
-        "type": "github"
+        "type": "git",
+        "url": "file:///Users/amitaibu/Sites/ihp-landing-page/IHP"
       }
     },
     "ihp-boilerplate": {
