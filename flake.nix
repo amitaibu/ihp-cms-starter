@@ -42,7 +42,7 @@
                 modules = [
                     "${nixpkgs}/nixos/modules/virtualisation/amazon-image.nix"
                     ihp.nixosModules.appWithPostgres
-                    ({ ... }: {
+                    ({ pkgs, ... }: {
                         security.acme.defaults.email = "no-reply@tpp-qa.gizra.site";
 
                         services.ihp = {
@@ -51,11 +51,24 @@
                             schema = ./Application/Schema.sql;
                             fixtures = ./Application/Fixtures.sql;
                             sessionSecret = "M$cmzMCEx7xfL-5_q6%9cpve_0BAd5BbDaOtzhv7";
+                            additionalEnvVars = {
+                                JWT_PRIVATE_KEY_PATH = "/root/jwtRS256.key";
+                                JWT_PUBLIC_KEY_PATH = "/root/jwtRS256.key.pub";
+                            };
                         };
 
                         swapDevices = [ { device = "/swapfile"; size = 8192; } ];
 
                         system.stateVersion = "23.05";
+
+                        systemd.services.app.preStart = ''
+                            if [ ! -f /root/jwtRS256.key ]; then
+                                ${pkgs.openssh}/bin/ssh-keygen -t rsa -b 4096 -m PEM -f /root/jwtRS256.key;
+                            fi
+                            if [ ! -f /root/jwtRS256.key.pub ]; then
+                                ${pkgs.openssl}/bin/openssl rsa -in /root/jwtRS256.key -pubout -outform PEM -out /root/jwtRS256.key.pub;
+                            fi
+                        '';
                     })
                 ];
             };
