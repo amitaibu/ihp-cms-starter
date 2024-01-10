@@ -57,7 +57,7 @@
                             };
                         };
 
-                        swapDevices = [ { device = "/swapfile"; size = 8192; } ];
+                        swapDevices = [ { device = "/swapfile"; size = 2000; } ];
 
                         system.stateVersion = "23.05";
 
