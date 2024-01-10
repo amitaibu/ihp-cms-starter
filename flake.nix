@@ -43,6 +43,12 @@
                     "${nixpkgs}/nixos/modules/virtualisation/amazon-image.nix"
                     ihp.nixosModules.appWithPostgres
                     ({ pkgs, ... }: {
+
+                        networking.firewall = {
+                           enable = true;
+                           allowedTCPPorts = [ 22 80 443 ];
+                        };
+
                         security.acme.defaults.email = "no-reply@tpp-qa.gizra.site";
 
                         services.ihp = {
