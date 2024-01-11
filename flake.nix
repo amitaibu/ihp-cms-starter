@@ -46,10 +46,11 @@
 
                         networking.firewall = {
                            enable = true;
-                           allowedTCPPorts = [ 22 80 443 ];
+                           allowedTCPPorts = [ 22 80 443 8000 ];
                         };
 
                         security.acme.defaults.email = "no-reply@tpp-qa.gizra.site";
+                        security.acme.acceptTerms = true;
 
                         services.ihp = {
                             domain = "tpp-qa.gizra.site";
