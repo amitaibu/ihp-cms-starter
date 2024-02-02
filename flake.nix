@@ -42,7 +42,7 @@
                 modules = [
                     "${nixpkgs}/nixos/modules/virtualisation/amazon-image.nix"
                     ihp.nixosModules.appWithPostgres
-                    ({ pkgs, ... }: {
+                    ({ lib, pkgs, ... }: {
 
                         networking.firewall = {
                            enable = true;
@@ -51,8 +51,10 @@
 
                         security.acme.defaults.email = "no-reply@tpp-qa.gizra.site";
                         security.acme.acceptTerms = true;
-                        services.nginx.virtualHosts."tpp-qa.gizra.site".enableACME = false;
-                        services.nginx.virtualHosts."tpp-qa.gizra.site".forceSSL = false;
+                        services.nginx.virtualHosts."tpp-qa.gizra.site" = {
+                          enableACME = lib.mkForce false;
+                          forceSSL = lib.mkForce false;
+                        };
 
                         services.ihp = {
                             domain = "tpp-qa.gizra.site";
