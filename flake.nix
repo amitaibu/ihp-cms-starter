@@ -51,8 +51,8 @@
 
                         security.acme.defaults.email = "no-reply@tpp-qa.gizra.site";
                         security.acme.acceptTerms = true;
-                        systemd.services.nginx.virtualHosts."tpp-qa.gizra.site".enableACME = false;
-                        systemd.services.nginx.virtualHosts."tpp-qa.gizra.site".forceSSL = false;
+                        services.nginx.virtualHosts."tpp-qa.gizra.site".enableACME = false;
+                        services.nginx.virtualHosts."tpp-qa.gizra.site".forceSSL = false;
 
                         services.ihp = {
                             domain = "tpp-qa.gizra.site";
