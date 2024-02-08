@@ -209,15 +209,16 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1706372010,
-        "narHash": "sha256-I6HRoZvk80B9U+hrLi63KvjfAP3KXBbxzfSKfjX1B+U=",
+        "lastModified": 1706882386,
+        "narHash": "sha256-Qm6PbYhtIi0pdndqcjD7bdHspEsuUHZoU+fQkDeuxQk=",
         "owner": "digitallyinduced",
         "repo": "ihp",
-        "rev": "c4ef680f30cef6fa3bb42c98d5c3b2b551b439f9",
+        "rev": "79af947b2ccf55e00e247d5a356aedd4e702ea0a",
         "type": "github"
       },
       "original": {
         "owner": "digitallyinduced",
+        "ref": "deploy-to-nixos-fixes",
         "repo": "ihp",
         "type": "github"
       }
