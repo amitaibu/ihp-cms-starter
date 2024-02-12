@@ -70,10 +70,7 @@
 
                         systemd.services.app.preStart = ''
                             if [ ! -f /root/jwtRS256.key ]; then
-                                ${pkgs.openssh}/bin/ssh-keygen -t rsa -b 4096 -m PEM -f /root/jwtRS256.key;
-                            fi
-                            if [ ! -f /root/jwtRS256.key.pub ]; then
-                                ${pkgs.openssl}/bin/openssl rsa -in /root/jwtRS256.key -pubout -outform PEM -out /root/jwtRS256.key.pub;
+                                ${pkgs.openssh}/bin/openssl genpkey -algorithm RSA -out /root/jwtRS256.key -pkeyopt rsa_keygen_bits:4096;
                             fi
                         '';
                     })
