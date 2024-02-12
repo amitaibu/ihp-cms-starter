@@ -70,7 +70,10 @@
 
                         systemd.services.app.preStart = ''
                             if [ ! -f /root/jwtRS256.key ]; then
-                                ${pkgs.openssl}/bin/openssl genpkey -algorithm RSA -out /root/jwtRS256.key -pkeyopt rsa_keygen_bits:4096;
+                                # Generate the private key
+                                ${pkgs.openssl}/bin/openssl genpkey -algorithm RSA -out /root/jwtRS256.key -pkeyopt rsa_keygen_bits:4096
+                                # Extract the public key from the private key
+                                ${pkgs.openssl}/bin/openssl rsa -pubout -in /root/jwtRS256.key -out /root/jwtRS256.key.pub
                             fi
                         '';
                     })
