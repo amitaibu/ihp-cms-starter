@@ -51,10 +51,6 @@
 
                         security.acme.defaults.email = "no-reply@tpp-qa.gizra.site";
                         security.acme.acceptTerms = true;
-                        services.nginx.virtualHosts."tpp-qa.gizra.site" = {
-                          enableACME = lib.mkForce false;
-                          forceSSL = lib.mkForce false;
-                        };
 
                         services.ihp = {
                             domain = "tpp-qa.gizra.site";
