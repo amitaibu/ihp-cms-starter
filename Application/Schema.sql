@@ -38,6 +38,11 @@ CREATE TABLE paragraph_ctas (
     body TEXT NOT NULL,
     ref_landing_page_id UUID DEFAULT uuid_generate_v4() NOT NULL
 );
+CREATE TABLE posts (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY NOT NULL,
+    title TEXT NOT NULL,
+    body TEXT NOT NULL
+);
 CREATE INDEX paragraph_quotes_landing_page_id_index ON paragraph_quotes (landing_page_id);
 CREATE INDEX paragraph_ctas_landing_page_id_index ON paragraph_ctas (landing_page_id);
 ALTER TABLE paragraph_ctas ADD CONSTRAINT paragraph_ctas_ref_landing_page_id FOREIGN KEY (landing_page_id) REFERENCES landing_pages (id) ON DELETE NO ACTION;

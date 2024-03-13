@@ -47,3 +47,4 @@ rsaSignatureMatches :: (?context :: ControllerContext) =>  Text -> Text -> Bool
 rsaSignatureMatches original signature = case Base64.decode $ cs signature of
     Left msg -> False
     Right decodedSignature -> RSA.PKCS15.verify (Just Hash.Algorithms.SHA256) rsaPublicKey (cs original) decodedSignature
+
