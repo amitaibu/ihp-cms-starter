@@ -1,6 +1,6 @@
 module Web.View.Posts.Index where
 import Web.View.Prelude
-import qualified Data.Aeson
+import Data.Aeson (encode, Value)
 
 data IndexView = IndexView
     { posts :: [Post]
@@ -25,9 +25,10 @@ instance View IndexView where
                 <tbody>{forEach posts renderPost}</tbody>
             </table>
 
-            <script>
-                const posts = {encode postsJson};
-                console.log(posts);
+            {- Pass the encoded JSON to the JS script -}
+            <script data-posts={encode postsJson}>
+                // Parse the encoded JSON.
+                console.log(JSON.parse(document.currentScript.dataset.posts));
             </script>
 
         </div>
