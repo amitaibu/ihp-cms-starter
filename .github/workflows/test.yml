@@ -25,12 +25,12 @@ jobs:
         nix_path: nixpkgs=https://github.com/NixOS/nixpkgs/archive/51bcdc4cdaac48535dabf0ad4642a66774c609ed.tar.gz
 
     - name: Cachix Init
-      uses: cachix/cachix-action@v12
+      uses: cachix/cachix-action@v14
       with:
         name: digitallyinduced
         skipPush: true
     # devenv
-    - uses: cachix/cachix-action@v12
+    - uses: cachix/cachix-action@v14
       with:
         name: devenv
     - name: Install devenv.sh
