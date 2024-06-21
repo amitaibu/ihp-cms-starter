@@ -20,6 +20,12 @@ Install node packages
 npm install
 ```
 
+Create RSA keys, used to create image styles
+
+```
+ssh-keygen -t rsa -b 4096 -m PEM -f ./Config/jwtRS256.key && openssl rsa -in ./Config/jwtRS256.key -pubout -outform PEM -out ./Config/jwtRS256.key.pub
+```
+
 ## Execute
 
 - On one terminal tab: `make tailwind-dev`
