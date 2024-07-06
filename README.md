@@ -1,6 +1,6 @@
 # IHP Landing Page
 
-## Install 
+## Install
 
 - Install [IHP](https://ihp.digitallyinduced.com/)
 - Install devenv:
@@ -28,5 +28,4 @@ ssh-keygen -t rsa -b 4096 -m PEM -f ./Config/jwtRS256.key && openssl rsa -in ./C
 
 ## Execute
 
-- On one terminal tab: `make tailwind-dev`
 - On another terminal tab: `devenv up`
