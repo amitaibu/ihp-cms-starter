@@ -4,7 +4,8 @@ import Web.View.Prelude
 import Web.Element.Types
 import Web.Element.ElementWrap
 import Web.Element.InnerElementLayout
-import Web.Element.ElementBuild (buildButtonPrimary)
+import Web.Element.Cta
+
 
 data ShowView = ShowView { paragraphCta :: ParagraphCta }
 

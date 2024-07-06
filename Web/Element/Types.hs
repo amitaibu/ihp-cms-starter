@@ -7,6 +7,20 @@ data Color = ColorNone | Gray100 | Gray500 deriving (Eq, Show)
 
 data TextSize = TextSizeXs | TextSizeSm | TextSizeBase | TextSizeLg | TextSizeXl | TextSize2xl | TextSize3xl deriving (Eq, Show)
 
+-- Types
+
+data RenderLink = RenderLink
+    { text :: Text
+    , url :: Text
+    }
+    deriving (Show)
+
+data RenderCta = RenderCta
+    { title :: Text
+    , body :: Text
+    , link :: RenderLink
+    }
+    deriving (Show)
 
 -- @todo: Move to Utility.hs?
 getBackgroundColor :: Color -> Text
