@@ -68,7 +68,6 @@ data SessionsController
     | CreateSessionAction
     | DeleteSessionAction
     deriving (Eq, Show, Data)
-
 data UsersController
     = UsersAction
     | NewUserAction

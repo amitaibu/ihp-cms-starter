@@ -42,11 +42,8 @@ instance View ShowView where
 
 orderAndRenderParagraphs :: (?context::ControllerContext) => LandingPageWithRecords -> Html
 orderAndRenderParagraphs landingPageWithRecords =
-    renderParagraphCtas paragraphCtas paragraphCtaRefLandingPages
-        ++ renderParagraphQuotes paragraphQuotes
-            -- Order by weight.
+    ctas ++ quotes
             |> sortOn fst
-            -- Keep only the rendered HTML.
             |> fmap snd
             |> mconcat
     where
@@ -54,33 +51,31 @@ orderAndRenderParagraphs landingPageWithRecords =
         paragraphQuotes = landingPageWithRecords.paragraphQuotes
         paragraphCtaRefLandingPages = landingPageWithRecords.paragraphCtaRefLandingPages
 
+        ctas = paragraphCtas
+            |> fmap (\paragraph ->
+                let
+                    -- Get the referenced Landing page out of the ParagraphCTA, through the `ParagraphCtaRefLandingPageId`
+                    -- property.
+                    refLandingPageButton =
+                            paragraphCtaRefLandingPages
+                                -- Get the referenced Landing page
+                                |> filter (\paragraphCtaRefLandingPage -> paragraphCtaRefLandingPage.id == paragraph.refLandingPageId)
+                                |> head
+                                -- Get the button from the referenced Landing page.
+                                |> maybe "" (\landingPage -> buildButtonPrimary (pathTo $ ShowLandingPageAction landingPage.id) landingPage.title)
 
-renderParagraphCtas :: (?context::ControllerContext) => [ParagraphCta] -> [LandingPage] -> Html
-renderParagraphCtas paragraphCtas paragraphCtaRefLandingPages =
-    paragraphCtas
-        |> fmap (\paragraph ->
-            let
-                -- Get the referenced Landing page out of the ParagraphCTA, through the `ParagraphCtaRefLandingPageId`
-                -- property.
-                refLandingPageButton =
-                        paragraphCtaRefLandingPages
-                            -- Get the referenced Landing page
-                            |> filter (\paragraphCtaRefLandingPage -> paragraphCtaRefLandingPage.id == paragraph.refLandingPageId)
-                            |> head
-                            -- Get the button from the referenced Landing page.
-                            |> maybe "" (\landingPage -> buildButtonPrimary (pathTo $ ShowLandingPageAction landingPage.id) landingPage.title)
+                in
+                ( paragraph.weight
+                , ParagraphCtas.renderParagraph paragraph.title paragraph.body refLandingPageButton
+                )
 
-            in
-            ParagraphCtas.renderParagraph paragraph.title paragraph.body refLandingPageButton
-        )
-        |> mconcat
+            )
 
-renderParagraphQuotes :: [ParagraphQuote] -> Html
-renderParagraphQuotes paragraphQuotes =
-    paragraphQuotes
-        |> fmap (\paragraph ->
-            case paragraph.imageUrl of
-                Just imageUrl -> ParagraphQuotes.renderParagraph paragraph.body paragraph.subtitle imageUrl
-                Nothing -> ""
-        )
-        |> mconcat
+        quotes = paragraphQuotes
+            |> fmap (\paragraph ->
+                ( paragraph.weight
+                , case paragraph.imageUrl of
+                    Just imageUrl -> ParagraphQuotes.renderParagraph paragraph.body paragraph.subtitle imageUrl
+                    Nothing -> ""
+                ))
+
