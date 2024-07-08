@@ -2,8 +2,8 @@ module Web.Element.Cta where
 
 import Web.View.Prelude
 
-import Web.Element.Types
 import Web.Element.ElementWrap
+import Web.Element.Types
 
 
 render :: RenderCta -> Html
@@ -24,7 +24,6 @@ render record@RenderCta {title, body} =
             |> wrapHeaderTag 1
 
         bodyWrapped = body
-            |> preEscapedToHtml
             |> wrapProse
 
 
