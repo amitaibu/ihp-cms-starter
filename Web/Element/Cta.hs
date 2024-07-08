@@ -6,8 +6,8 @@ import Web.Element.Types
 import Web.Element.ElementWrap
 
 
-renderSingle :: RenderCta -> Html
-renderSingle record@RenderCta {title, body} =
+render :: RenderCta -> Html
+render record@RenderCta {title, body} =
     titleWrapped
         ++ bodyWrapped
         -- ++ button
