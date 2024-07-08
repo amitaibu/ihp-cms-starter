@@ -9,6 +9,8 @@ import IHP.Controller.RequestContext
 import Web.Types
 import Web.Routes
 import Application.Helper.View
+import Web.Element.ElementWrap
+import Web.Element.Types
 
 defaultLayout :: UTCTime -> Html -> Html
 defaultLayout currentTime inner = [hsx|
