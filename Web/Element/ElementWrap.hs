@@ -30,8 +30,6 @@ wrapBackgroundColor color paddingType element =
                 Gray900 -> "bg-gray-900"
                 Green600 -> "bg-green-600"
                 Red600 -> "bg-red-600"
-                TppBlue -> "bg-pp-blue"
-                TppPurple -> "bg-pp-purple"
                 Orange100 -> "bg-orange-100"
                 White -> "bg-white"
 
@@ -158,7 +156,6 @@ wrapBottomBorder color element =
             classes
             [ "border-b"
             , ("border-gray-500", color == Gray500)
-            , ("border-pp-purple", color == TppPurple)
             ]
 
 -- Spacing
@@ -365,8 +362,6 @@ wrapTextColor color element =
                 Gray900 -> "text-gray-900"
                 Green600 -> "text-green-600"
                 Red600 -> "text-red-600"
-                TppPurple -> "text-pp-purple"
-                TppBlue -> "text-pp-blue"
                 Orange100 -> "text-orange-100"
                 White -> "text-white"
 
