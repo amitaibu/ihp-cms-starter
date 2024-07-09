@@ -43,6 +43,7 @@
                         text
                         hlint
                         jwt
+                        mmark
                     ];
                 };
 

@@ -5,6 +5,7 @@ import "cryptonite" Crypto.PubKey.RSA.PKCS15 as RSA
 import "cryptonite" Crypto.Hash.Algorithms as Hash.Algorithms
 import Data.ByteString.Base64 as Base64
 import Application.Helper.Controller
+import qualified Text.MMark as MMark
 
 -- Here you can add functions which are available in all your views
 
@@ -15,3 +16,8 @@ signImageUrl imageUrl width height= case RSA.sign Nothing (Just Hash.Algorithms.
     Right signature -> signature |> Base64.encode |> cs
     where
         size = show width <> "x" <> show height
+
+renderMarkdown text = case text |> MMark.parse "" of
+        -- On error, render the text as is.
+        Left error -> cs text
+        Right markdown -> MMark.render markdown |> tshow |> preEscapedToHtml

@@ -24,6 +24,7 @@ render record@RenderCta {title, body} =
             |> wrapHeaderTag 1
 
         bodyWrapped = body
+            |> renderMarkdown
             |> wrapProse
 
 
