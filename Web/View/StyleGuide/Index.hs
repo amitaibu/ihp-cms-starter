@@ -18,7 +18,7 @@ instance View IndexView where
 
             cta = RenderCta
                 { title = "Hello, World!"
-                , body = [hsx|This is a test of <strong>the</strong> emergency broadcast system.|]
+                , body = "This is a test of the __emergency__ broadcast system."
                 , link = RenderLink
                     { text = "Click me!"
                     , url = "/"

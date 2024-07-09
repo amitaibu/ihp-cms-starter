@@ -45,7 +45,7 @@ data RenderLink = RenderLink
 
 data RenderCta = RenderCta
     { title :: Text
-    , body  :: Html
+    , body  :: Text
     , link  :: RenderLink
     }
 
