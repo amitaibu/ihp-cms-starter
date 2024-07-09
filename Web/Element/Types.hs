@@ -49,6 +49,12 @@ data RenderCta = RenderCta
     , link  :: RenderLink
     }
 
+data RenderQuote = RenderQuote
+    { body :: Text
+    , subtitle  :: Text
+    , imageUrl :: Text
+    }
+
 
 -- @todo: Move to Utility.hs?
 getBackgroundColor :: Color -> Text
