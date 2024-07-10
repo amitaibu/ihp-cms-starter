@@ -11,8 +11,8 @@ data IndexView = IndexView { }
 instance View IndexView where
     html IndexView { .. } =
         [ breadcrumb
-        , renderTitleAndElement "CTA" cta
-        , renderTitleAndElement "Quote" quote
+        , renderTitleAndElementNoContainer "CTA" cta
+        , renderTitleAndElementWideContainer "Quote" quote
         ]
         |> mconcat
         where
@@ -33,19 +33,23 @@ instance View IndexView where
             quote = RenderQuote
                 { body = "The quick brown fox jumps over the lazy dog."
                 , subtitle = "An old proverb."
-                , imageUrl = "https://example.com/image.jpg"
+                -- @todo: shellHook this image on flake.nix
+                , imageUrl = "/paragraph_quotes/imageUrl/2ebe6e30-7db6-40b6-a019-69875caed42e"
                 }
                 |> Web.Element.Quote.render
 
+renderTitleAndElementNoContainer :: Text -> Html -> Html
+renderTitleAndElementNoContainer title element =
+    renderTitleAndElementHelper title Nothing element Nothing
 
-renderTitleAndElement :: Text -> Html -> Html
-renderTitleAndElement title element =
-    renderTitleAndElementHelper title Nothing element
+renderTitleAndElementWideContainer :: Text -> Html -> Html
+renderTitleAndElementWideContainer title element =
+    renderTitleAndElementHelper title Nothing element (Just "container-wide")
 
-renderTitleAndElementHelper :: Text -> Maybe Text -> Html -> Html
-renderTitleAndElementHelper title maybeUrl element = [hsx|
+renderTitleAndElementHelper :: Text -> Maybe Text -> Html -> Maybe Text -> Html
+renderTitleAndElementHelper title maybeUrl element maybeContainerClass  = [hsx|
         { header }
-        <dd class="container-wide mb-8">
+        <dd class={"mb-8 " ++ maybeContainerClass}>
             { element }
         </dd>
     |]
