@@ -12,7 +12,7 @@ render record@RenderQuote {body, subtitle, imageUrl} =
         ++ bodyWrapped
         ++ titleWrapped
         |> wrapVerticalSpacing AlignNone
-        |> buildElementLayoutSplitImageAndContent (pathTo $ RenderImageStyleAction 400 200 imageUrl signed)
+        |> renderImageAndContent (pathTo $ RenderImageStyleAction 400 200 imageUrl signed)
     where
         -- Sign the image URL to prevent tampering.
         signed = signImageUrl imageUrl 400 200
@@ -25,8 +25,8 @@ render record@RenderQuote {body, subtitle, imageUrl} =
             |> wrapTextResponsiveFontSize TextSizeSm
 
 
-buildElementLayoutSplitImageAndContent :: Text -> Html -> Html
-buildElementLayoutSplitImageAndContent imageUrl items =
+renderImageAndContent :: Text -> Html -> Html
+renderImageAndContent imageUrl items =
     -- We use grid and row/col start to position both the image and the text on the same cell.
     [hsx|
         <div class="flex flex-col sm:grid sm:grid-rows-1 md:grid-cols-2 gap-2 md:gap-8 lg:gap-10 overflow-hidden bg-gray-50">
