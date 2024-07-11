@@ -88,7 +88,7 @@ footer currentTime =
     © {currentYear} Company, All rights reserved.
 |]
     |> wrapVerticalSpacing AlignCenter
-    |> wrapBackgroundColor BlueGray100 BackgroundColorPaddingSection
+    |> wrapBackgroundColor Gray300 BackgroundColorPaddingSection
     |> \element -> [hsx|<div class="font-display mt-10">{element}</div>|]
   where
     icons =

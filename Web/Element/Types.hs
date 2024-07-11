@@ -9,7 +9,6 @@ data FontWeight = FontWeightLight | FontWeightNormal | FontWeightBold deriving (
 
 data Color
     = ColorTransparent
-    | BlueGray100
     | Blue100
     | Gray100
     | Gray300
@@ -61,7 +60,6 @@ getBackgroundColor :: Color -> Text
 getBackgroundColor color =
     case color of
         ColorTransparent -> "bg-transparent"
-        BlueGray100      -> "bg-blue-gray-100"
         Blue100          -> "bg-blue-100"
         Gray100          -> "bg-gray-100"
         Gray300          -> "bg-gray-300"

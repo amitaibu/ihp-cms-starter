@@ -23,7 +23,6 @@ wrapBackgroundColor color paddingType element =
         className =
             case color of
                 ColorTransparent -> "bg-transparent"
-                BlueGray100 -> "bg-blue-gray-100"
                 Blue100 -> "bg-blue-100"
                 Gray300 -> "bg-gray-300"
                 Gray500 -> "bg-gray-500"
@@ -355,7 +354,6 @@ wrapTextColor color element =
         className :: Text =
             case color of
                 ColorTransparent -> "text-transparent"
-                BlueGray100 -> "text-blue-gray-100"
                 Blue100 -> "text-blue-200"
                 Gray300 -> "text-gray-300"
                 Gray500 -> "text-gray-500"
