@@ -52,8 +52,7 @@ instance View IndexView where
             quote = RenderQuote
                 { body = "The quick brown fox jumps over the lazy dog."
                 , subtitle = "An old proverb."
-                -- @todo: shellHook this image on flake.nix
-                , imageUrl = "/paragraph_quotes/imageUrl/2ebe6e30-7db6-40b6-a019-69875caed42e"
+                , imageUrl = "/paragraph_quotes/imageUrl/84fa7d47-002d-4fe5-a86a-df51cc4ec10f"
                 }
                 |> Web.Element.Quote.render
 
