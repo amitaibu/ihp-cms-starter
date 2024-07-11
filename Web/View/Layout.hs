@@ -51,7 +51,7 @@ stylesheets = [hsx|
 scripts :: Html
 scripts = [hsx|
         {when isDevelopment devScripts}
-        <script src={assetPath "/vendor/jquery-3.6.0.slim.min.js"}></script>
+        <script src={assetPath "/vendor/jquery-3.6.0.min.js"}></script>
         <script src={assetPath "/vendor/timeago.js"}></script>
         <script src={assetPath "/vendor/flatpickr.js"}></script>
         <script src={assetPath "/vendor/morphdom-umd.min.js"}></script>

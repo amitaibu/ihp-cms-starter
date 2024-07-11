@@ -11,14 +11,33 @@ data IndexView = IndexView { }
 instance View IndexView where
     html IndexView { .. } =
         [ breadcrumb
-        , renderTitleAndElementNoContainer "CTA" cta
-        , renderTitleAndElementWideContainer "Quote" quote
+        , elementsAccordion
+
+        -- Include the JavaScript for the accordion.
+        , jsScript
         ]
         |> mconcat
         where
             breadcrumb = renderBreadcrumb
                 [ breadcrumbLink "Style Guide" StyleGuideAction
                 ]
+
+            elementsAccordion = [hsx|
+                <dl class="accordion">
+                    { elements }
+                </dl>
+            |]
+
+            jsScript = [hsx|
+                <script src={assetPath "/styleGuide.js"}></script>
+            |]
+
+            -- All the elements to be displayed in the Style Guide.
+            elements =
+                [ renderTitleAndElementNoContainer "CTA" cta
+                , renderTitleAndElementWideContainer "Quote" quote
+                ]
+                |> mconcat
 
             cta = RenderCta
                 { title = "Hello, World!"
