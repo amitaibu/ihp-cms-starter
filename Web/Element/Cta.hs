@@ -21,7 +21,9 @@ render record@RenderCta {title, body} =
             ]
 
         titleWrapped = cs title
-            |> wrapHeaderTag 1
+            |> wrapTextResponsiveFontSize TextSize3xl
+            |> wrapTextCenter
+            |> wrapTextFontWeight FontWeightBold
 
         bodyWrapped = body
             |> renderMarkdown

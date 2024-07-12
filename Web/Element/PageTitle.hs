@@ -12,5 +12,6 @@ render text =
     text
         |> cs
         |> wrapHeaderTag 1
+        |> wrapProse
 
 
