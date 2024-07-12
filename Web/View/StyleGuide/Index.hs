@@ -1,7 +1,7 @@
 module Web.View.StyleGuide.Index where
-import Web.View.Prelude
-import Web.Element.Types
 import Data.Text
+import Web.Element.Types
+import Web.View.Prelude
 
 import Web.Element.Cta
 import Web.Element.Quote
@@ -35,7 +35,7 @@ instance View IndexView where
             -- All the elements to be displayed in the Style Guide.
             elements =
                 [ renderTitleAndElementNoContainer "CTA" cta
-                , renderTitleAndElementWideContainer "Quote" quote
+                , renderTitleAndElementNoContainer "Quote" quote
                 ]
                 |> mconcat
 
@@ -50,8 +50,8 @@ instance View IndexView where
                 |> Web.Element.Cta.render
 
             quote = RenderQuote
-                { body = "The quick brown fox jumps over the lazy dog."
-                , subtitle = "An old proverb."
+                { body = "The quick brown fox jumps over the lazy dog"
+                , subtitle = "An old proverb"
                 , imageUrl = "/styleGuideImages/kitten-with-wings.jpg"
                 }
                 |> Web.Element.Quote.render
