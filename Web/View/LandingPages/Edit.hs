@@ -1,9 +1,10 @@
 module Web.View.LandingPages.Edit where
-import Web.View.Prelude
 import Web.Controller.Prelude
-import Web.Element.Types
-import Web.Element.ElementBuild
+import Web.Element.Button
 import Web.Element.ElementWrap
+import Web.Element.Link
+import Web.Element.Types
+import Web.View.Prelude
 
 data EditView = EditView { landingPageWithRecords :: LandingPageWithRecords }
 
@@ -12,11 +13,11 @@ instance View EditView where
         {body}
     |]
         where
-            body = [hsx|
-                {header}
-
-                {renderForm landingPage paragraphCtas paragraphQuotes}
-            |]
+            body =
+                [ header
+                , renderForm landingPage paragraphCtas paragraphQuotes
+                ]
+                |> mconcat
                 |> wrapVerticalSpacing AlignNone
                 |> wrapContainerWide
 
@@ -29,19 +30,20 @@ instance View EditView where
                 , breadcrumbText "Edit LandingPage"
                 ]
 
-            header = [hsx|
-                    {breadcrumb}
-                    {titleAndEdit}
-                |]
-                    |> wrapVerticalSpacing AlignNone
+            header =
+                [ breadcrumb
+                , titleAndEdit
+                ]
+                |> mconcat
+                |> wrapVerticalSpacing AlignNone
 
 
             titleAndEdit =
                 [ [hsx|Edit {landingPage.title}|] |> wrapHeaderTag 1
-                , buildLink (ShowLandingPageAction landingPage.id) "Show"
+                , renderLinkAction (ShowLandingPageAction landingPage.id) "Show"
                 ]
-                    |> mconcat
-                    |> wrapHorizontalSpacingTiny AlignBaseline
+                |> mconcat
+                |> wrapHorizontalSpacingTiny AlignBaseline
 
 renderForm :: LandingPage -> [ParagraphCta] -> [ParagraphQuote] -> Html
 renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
@@ -81,8 +83,8 @@ renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
                 |> wrapVerticalSpacing AlignNone
 
         paragraphButtons =
-            [   buildButton (pathTo $ NewParagraphCtaAction landingPage.id) "New CTA"
-            ,   buildButton (pathTo $ NewParagraphQuoteAction landingPage.id) "New Quote"
+            [   renderButton (pathTo $ NewParagraphCtaAction landingPage.id) "New CTA"
+            ,   renderButton (pathTo $ NewParagraphQuoteAction landingPage.id) "New Quote"
             ]
                 |> mconcat
                 |> wrapHorizontalSpacing AlignCenter
@@ -123,8 +125,8 @@ orderAndRenderParagraphs paragraphCtas paragraphQuotes =
                         |> wrapHorizontalSpacingTiny AlignCenter
 
                 operations =
-                    [   buildLink (editAction id) "Edit"
-                    ,   buildLinkDeleteAction (deleteAction id)
+                    [   renderLinkAction (editAction id) "Edit"
+                    ,   renderLinkDeleteAction (deleteAction id)
                     ]
                         |> mconcat
                         |> wrapHorizontalSpacingTiny AlignNone

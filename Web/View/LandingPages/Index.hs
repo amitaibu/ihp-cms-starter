@@ -1,8 +1,9 @@
 module Web.View.LandingPages.Index where
-import Web.View.Prelude
-import Web.Element.Types
-import Web.Element.ElementBuild
+import Web.Element.Button
 import Web.Element.ElementWrap
+import Web.Element.Link
+import Web.Element.Types
+import Web.View.Prelude
 
 data IndexView = IndexView { landingPages :: [LandingPage]  }
 
@@ -19,7 +20,7 @@ instance View IndexView where
         where
             header =
                 [ [hsx|Landing pages Index|] |> wrapHeaderTag 1
-                , buildButton (pathTo NewLandingPageAction) "New Landing page"
+                , renderButton (pathTo NewLandingPageAction) "New Landing page"
                 ]
                     |> mconcat
                     |> wrapHorizontalSpacing AlignNone
@@ -42,9 +43,9 @@ renderLandingPage landingPage = [hsx|
                 |> mconcat
                 |> wrapHorizontalSpacingTiny AlignBaseline
         operations =
-            [ buildLink (ShowLandingPageAction landingPage.id) "Show"
-            , buildLink (EditLandingPageAction landingPage.id) "Edit"
-            , buildLinkDeleteAction (DeleteLandingPageAction landingPage.id)
+            [ renderLinkAction (ShowLandingPageAction landingPage.id) "Show"
+            , renderLinkAction (EditLandingPageAction landingPage.id) "Edit"
+            , renderLinkDeleteAction (DeleteLandingPageAction landingPage.id)
             ]
                 |> mconcat
                 |> wrapHorizontalSpacingTiny AlignCenter

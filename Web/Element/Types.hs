@@ -49,8 +49,8 @@ data RenderCta = RenderCta
     }
 
 data RenderQuote = RenderQuote
-    { body :: Text
-    , subtitle  :: Text
+    { body     :: Text
+    , subtitle :: Text
     , imageUrl :: Text
     }
 
