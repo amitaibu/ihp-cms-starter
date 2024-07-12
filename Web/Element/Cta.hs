@@ -2,15 +2,16 @@ module Web.Element.Cta where
 
 import Web.View.Prelude
 
+import Web.Element.Button
 import Web.Element.ElementWrap
 import Web.Element.Types
 
 
 render :: RenderCta -> Html
-render record@RenderCta {title, body} =
+render record@RenderCta {title, body, button} =
     titleWrapped
         ++ bodyWrapped
-        -- ++ button
+        ++ Web.Element.Button.render button
         |> wrapVerticalSpacing AlignCenter
         |> \e -> [hsx|<div class={classes'}>{e}</div>|]
         |> wrapContainerNarrow

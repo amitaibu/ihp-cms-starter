@@ -47,9 +47,10 @@ instance View IndexView where
             cta = RenderCta
                 { title = "Hello, World!"
                 , body = "This is a test of the __emergency__ broadcast system."
-                , link = RenderLink
+                , button = RenderButton
                     { text = "Click me!"
                     , url = "/"
+                    , isPrimary = False
                     }
                 }
                 |> Web.Element.Cta.render

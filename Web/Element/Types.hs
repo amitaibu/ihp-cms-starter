@@ -49,9 +49,9 @@ data RenderLink = RenderLink
     }
 
 data RenderCta = RenderCta
-    { title :: Text
-    , body  :: Text
-    , link  :: RenderLink
+    { title  :: Text
+    , body   :: Text
+    , button :: RenderButton
     }
 
 data RenderQuote = RenderQuote
