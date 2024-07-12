@@ -1,4 +1,5 @@
 module Web.Element.Quote where
+
 import Web.View.Prelude
 
 import Application.Helper.Icons

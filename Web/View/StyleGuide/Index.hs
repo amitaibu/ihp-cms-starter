@@ -4,6 +4,7 @@ import Web.Element.Types
 import Web.View.Prelude
 
 import Web.Element.Cta
+import Web.Element.PageTitle
 import Web.Element.Quote
 
 data IndexView = IndexView { }
@@ -34,10 +35,14 @@ instance View IndexView where
 
             -- All the elements to be displayed in the Style Guide.
             elements =
-                [ renderTitleAndElementNoContainer "CTA" cta
+                [ renderTitleAndElementWideContainer "Page Title" pageTitle
+                , renderTitleAndElementNoContainer "CTA" cta
                 , renderTitleAndElementNoContainer "Quote" quote
                 ]
                 |> mconcat
+
+            pageTitle = "The source has extended, but not everyone fears it"
+                |> Web.Element.PageTitle.render
 
             cta = RenderCta
                 { title = "Hello, World!"
@@ -52,7 +57,7 @@ instance View IndexView where
             quote = RenderQuote
                 { body = "The quick brown fox jumps over the lazy dog"
                 , subtitle = "An old proverb"
-                , imageUrl = "/styleGuideImages/kitten-with-wings.jpg"
+                , imageUrl = "/styleGuideImages/8f8827de-e5d4-4ee7-b0a3-abae36274338"
                 }
                 |> Web.Element.Quote.render
 

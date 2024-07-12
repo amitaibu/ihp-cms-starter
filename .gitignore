@@ -26,6 +26,9 @@ static/app.css
 static/articles
 static/paragraph_quotes
 
+# @todo: Fix the creation of duplicates
+static/styleGuideImages/imageStyles
+
 Application/Migration
 
 # JWT
