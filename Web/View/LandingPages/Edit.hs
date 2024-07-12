@@ -83,8 +83,8 @@ renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
                 |> wrapVerticalSpacing AlignNone
 
         paragraphButtons =
-            [   renderButton (pathTo $ NewParagraphCtaAction landingPage.id) "New CTA"
-            ,   renderButton (pathTo $ NewParagraphQuoteAction landingPage.id) "New Quote"
+            [   renderButtonAction (NewParagraphCtaAction landingPage.id) "New CTA"
+            ,   renderButtonAction (NewParagraphQuoteAction landingPage.id) "New Quote"
             ]
                 |> mconcat
                 |> wrapHorizontalSpacing AlignCenter

@@ -17,7 +17,7 @@ render record@RenderLink {text, url}  =
             ]
 
 
--- Link
+-- Link to Action.
 
 {-| Build a link, by getting the action and text.
 -}

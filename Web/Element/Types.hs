@@ -37,6 +37,12 @@ data Width = WidthLg | WidthXl | Width2xl | Width3xl deriving (Eq, Show)
 
 -- Render types
 
+data RenderButton = RenderButton
+    { text      :: Text
+    , url       :: Text
+    , isPrimary :: Bool
+    }
+
 data RenderLink = RenderLink
     { text :: Text
     , url  :: Text

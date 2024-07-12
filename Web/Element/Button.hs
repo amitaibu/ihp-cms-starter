@@ -4,16 +4,23 @@ import Web.Controller.Prelude
 import Web.Element.Types
 import Web.View.Prelude
 
--- Button
+-- RenderButton
 
-renderButton :: Text -> Text ->  Html
-renderButton url text  =
-    renderButtonHelper url text False
+render :: RenderButton ->  Html
+render record@RenderButton {text, url, isPrimary}  =
+    renderButtonHelper url text isPrimary
 
 
-renderButtonPrimary :: Text -> Text ->  Html
-renderButtonPrimary url text  =
-    renderButtonHelper url text True
+-- Button to Action
+
+renderButtonAction :: (HasPath controller) => controller -> Text ->  Html
+renderButtonAction action text  =
+    renderButtonHelper (pathTo action) text False
+
+
+renderButtonPrimaryAction :: (HasPath controller) => controller -> Text ->  Html
+renderButtonPrimaryAction action text  =
+    renderButtonHelper (pathTo action) text True
 
 
 renderButtonHelper :: Text -> Text ->  Bool -> Html
