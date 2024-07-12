@@ -52,7 +52,7 @@ instance View IndexView where
             quote = RenderQuote
                 { body = "The quick brown fox jumps over the lazy dog."
                 , subtitle = "An old proverb."
-                , imageUrl = "/paragraph_quotes/imageUrl/84fa7d47-002d-4fe5-a86a-df51cc4ec10f"
+                , imageUrl = "/styleGuideImages/kitten-with-wings.jpg"
                 }
                 |> Web.Element.Quote.render
 

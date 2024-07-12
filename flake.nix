@@ -51,25 +51,6 @@
                     # Custom processes that don't appear in https://devenv.sh/reference/options/
                     processes = {
                         tailwind.exec = "tailwindcss -c tailwind/tailwind.config.js -i ./tailwind/app.css -o static/app.css --watch=always";
-
-                        # @todo: Move to a better place?
-                        initDevEnv.exec = ''
-                            UUID="84fa7d47-002d-4fe5-a86a-df51cc4ec10f"
-                            SOURCE_FILE="/static/styleGuideImages/$UUID"
-                            TARGET_DIR="/paragraph_quotes/imageUrl"
-                            TARGET_FILE="$TARGET_DIR/$UUID"
-
-                            # Create the target directory if it doesn't exist
-                            mkdir -p "$TARGET_DIR"
-
-                            # Check if the file exists, if not, copy it
-                            if [ ! -f "$TARGET_FILE" ]; then
-                                cp "$SOURCE_FILE" "$TARGET_FILE"
-                                echo "File copied to $TARGET_FILE"
-                            else
-                                echo "File already exists at $TARGET_FILE"
-                            fi
-                        '';
                     };
 
                     # This is needed so when running tests in GitHub actions, we can execute `devenv up &` without an error.
