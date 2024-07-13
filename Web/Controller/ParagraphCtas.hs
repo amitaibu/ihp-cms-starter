@@ -1,14 +1,10 @@
 module Web.Controller.ParagraphCtas where
 
 import Web.Controller.Prelude
-import Web.View.ParagraphCtas.Index
 import Web.View.ParagraphCtas.New
 import Web.View.ParagraphCtas.Edit
 
 instance Controller ParagraphCtasController where
-    action ParagraphCtaAction = do
-        paragraphCtas <- query @ParagraphCta |> fetch
-        render IndexView { .. }
 
     action NewParagraphCtaAction { landingPageId } = do
         weight <- getParagraphsCount landingPageId

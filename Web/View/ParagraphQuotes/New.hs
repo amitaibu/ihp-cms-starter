@@ -13,7 +13,6 @@ instance View NewView where
     |]
         where
             breadcrumb = renderBreadcrumb
-                [ breadcrumbLink "ParagraphQuotes" ParagraphQuotesAction
-                , breadcrumbText "New ParagraphQuote"
+                [ breadcrumbText "New Quote"
                 ]
 

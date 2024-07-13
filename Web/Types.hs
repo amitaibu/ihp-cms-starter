@@ -28,25 +28,6 @@ instance CanSelect LandingPage where
 
 data WebApplication = WebApplication deriving (Eq, Show)
 
-data ParagraphQuotesController
-    = ParagraphQuotesAction
-    | NewParagraphQuoteAction { landingPageId :: !(Id LandingPage) }
-    | ShowParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
-    | CreateParagraphQuoteAction
-    | EditParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
-    | UpdateParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
-    | DeleteParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
-    deriving (Eq, Show, Data)
-
-data ParagraphCtasController
-    = ParagraphCtaAction
-    | NewParagraphCtaAction { landingPageId :: !(Id LandingPage) }
-    | CreateParagraphCtaAction
-    | EditParagraphCtaAction { paragraphCtaId :: !(Id ParagraphCta) }
-    | UpdateParagraphCtaAction { paragraphCtaId :: !(Id ParagraphCta) }
-    | DeleteParagraphCtaAction { paragraphCtaId :: !(Id ParagraphCta) }
-    deriving (Eq, Show, Data)
-
 data LandingPagesController
     = LandingPagesAction
     | NewLandingPageAction
@@ -55,6 +36,22 @@ data LandingPagesController
     | EditLandingPageAction { landingPageId :: !(Id LandingPage) }
     | UpdateLandingPageAction { landingPageId :: !(Id LandingPage) }
     | DeleteLandingPageAction { landingPageId :: !(Id LandingPage) }
+    deriving (Eq, Show, Data)
+
+data ParagraphCtasController
+    = NewParagraphCtaAction { landingPageId :: !(Id LandingPage) }
+    | CreateParagraphCtaAction
+    | EditParagraphCtaAction { paragraphCtaId :: !(Id ParagraphCta) }
+    | UpdateParagraphCtaAction { paragraphCtaId :: !(Id ParagraphCta) }
+    | DeleteParagraphCtaAction { paragraphCtaId :: !(Id ParagraphCta) }
+    deriving (Eq, Show, Data)
+
+data ParagraphQuotesController
+    = NewParagraphQuoteAction { landingPageId :: !(Id LandingPage) }
+    | CreateParagraphQuoteAction
+    | EditParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
+    | UpdateParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
+    | DeleteParagraphQuoteAction { paragraphQuoteId :: !(Id ParagraphQuote) }
     deriving (Eq, Show, Data)
 
 

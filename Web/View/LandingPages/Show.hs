@@ -6,7 +6,6 @@ import Web.Element.Link
 import Web.Element.Types
 import Web.Element.Quote
 import Web.Types
-import qualified Web.View.ParagraphQuotes.Show as ParagraphQuotes
 import Web.View.Prelude
 
 data ShowView = ShowView { landingPageWithRecords :: LandingPageWithRecords }

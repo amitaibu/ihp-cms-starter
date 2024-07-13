@@ -16,8 +16,7 @@ instance View NewView where
     |]
         where
             breadcrumb = renderBreadcrumb
-                [ breadcrumbLink "ParagraphCta" ParagraphCtaAction
-                , breadcrumbText "New ParagraphCta"
+                [ breadcrumbText "New Cta"
                 ]
 
 renderForm :: ParagraphCta -> [LandingPage] -> Html

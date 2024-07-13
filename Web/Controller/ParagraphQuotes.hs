@@ -1,16 +1,10 @@
 module Web.Controller.ParagraphQuotes where
 
 import Web.Controller.Prelude
-import Web.View.ParagraphQuotes.Index
 import Web.View.ParagraphQuotes.New
 import Web.View.ParagraphQuotes.Edit
-import Web.View.ParagraphQuotes.Show
 
 instance Controller ParagraphQuotesController where
-    action ParagraphQuotesAction = do
-        paragraphQuotes <- query @ParagraphQuote |> fetch
-        render IndexView { .. }
-
     action NewParagraphQuoteAction { landingPageId } = do
         weight <- getParagraphsCount landingPageId
         let paragraphQuote = newRecord
@@ -18,10 +12,6 @@ instance Controller ParagraphQuotesController where
                 |> set #weight weight
 
         render NewView { .. }
-
-    action ShowParagraphQuoteAction { paragraphQuoteId } = do
-        paragraphQuote <- fetch paragraphQuoteId
-        render ShowView { .. }
 
     action EditParagraphQuoteAction { paragraphQuoteId } = do
         paragraphQuote <- fetch paragraphQuoteId
