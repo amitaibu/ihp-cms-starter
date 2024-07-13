@@ -28,7 +28,7 @@ defaultLayout currentTime inner = [hsx|
         <div class="flex flex-col min-h-screen">
             <div class="flex-1">
                 <div class="font-body text-black flex flex-col gap-y-8 md:gap-y-10">
-                    {renderFlashMessages}
+                    {renderFlashMessages |> wrapContainerWide}
                     {inner}
                 </div>
             </div>
