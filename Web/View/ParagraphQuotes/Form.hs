@@ -3,6 +3,7 @@ module Web.View.ParagraphQuotes.Form where
 import Web.View.Prelude
 import Web.Element.Types
 import Web.Element.ElementWrap
+import Web.Element.SubmitButton
 
 {-| When editing the form, the image input field isn't required.
 That is, the image itself is required, but since we've already uploaded one,
@@ -27,7 +28,7 @@ renderForm paragraphQuote isImageRequired formStatus = formFor paragraphQuote [h
                     <img id="imageUrlPreview" src={paragraphQuote.imageUrl} class="w-20 h-20" />
                 </div>
 
-                {submitButton}
+                {renderSubmitButtonwithFormStatus submitButton formStatus}
             |]
             |> wrapVerticalSpacing AlignNone
             |> wrapContainerWide

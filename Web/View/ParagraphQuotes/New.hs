@@ -3,13 +3,16 @@ import Web.View.Prelude
 import Web.View.ParagraphQuotes.Form
 
 
-data NewView = NewView { paragraphQuote :: ParagraphQuote }
+data NewView = NewView
+    { paragraphQuote :: ParagraphQuote
+    , formStatus :: FormStatus
+    }
 
 instance View NewView where
     html NewView { .. } = [hsx|
         {breadcrumb}
         <h1>New ParagraphQuote</h1>
-        {renderForm paragraphQuote False}
+        {renderForm paragraphQuote True formStatus}
     |]
         where
             breadcrumb = renderBreadcrumb
