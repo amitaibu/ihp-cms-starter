@@ -4,6 +4,7 @@ import Web.Element.Cta
 import Web.Element.ElementWrap
 import Web.Element.Link
 import Web.Element.Types
+import Web.Element.Quote
 import Web.Types
 import qualified Web.View.ParagraphQuotes.Show as ParagraphQuotes
 import Web.View.Prelude
@@ -44,14 +45,13 @@ instance View ShowView where
 orderAndRenderParagraphs :: (?context::ControllerContext) => LandingPageWithRecords -> Html
 orderAndRenderParagraphs landingPageWithRecords =
     ctas ++ quotes
-            |> sortOn fst
-            |> fmap snd
-            |> mconcat
+        -- Order by weight.
+        |> sortOn fst
+        |> fmap snd
+        |> mconcat
     where
-        paragraphCtas = landingPageWithRecords.paragraphCtas
-        paragraphQuotes = landingPageWithRecords.paragraphQuotes
 
-        ctas = paragraphCtas
+        ctas = landingPageWithRecords.paragraphCtas
             |> fmap (\paragraph ->
                 ( paragraph.weight
                 , RenderCta
@@ -68,11 +68,17 @@ orderAndRenderParagraphs landingPageWithRecords =
 
             )
 
-        quotes = paragraphQuotes
+        quotes = landingPageWithRecords.paragraphQuotes
             |> fmap (\paragraph ->
                 ( paragraph.weight
-                , case paragraph.imageUrl of
-                    Just imageUrl -> ParagraphQuotes.renderParagraph paragraph.body paragraph.subtitle imageUrl
-                    Nothing -> ""
+                , renderParagraphQuotes paragraph
                 ))
 
+renderParagraphQuotes :: ParagraphQuote -> Html
+renderParagraphQuotes paragraphQuote =
+    RenderQuote
+        { body = paragraphQuote.body
+        , subtitle = paragraphQuote.subtitle
+        , imageUrl = paragraphQuote.imageUrl |> fromMaybe ""
+        }
+        |> Web.Element.Quote.render
