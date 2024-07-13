@@ -9,6 +9,8 @@ import "cryptonite" Crypto.PubKey.RSA as RSA
 import Control.Exception (catch)
 import qualified Data.ByteString as BS
 import Web.JWT
+import qualified IHP.Log as Log
+import IHP.Log.Types
 
 data RsaKeys = RsaKeys { publicKey :: RSA.PublicKey, privateKey :: RSA.PrivateKey }
 
@@ -28,6 +30,13 @@ config = do
     case (readRsaSecret privateKeyContent, readRsaPublicKey publicKeyContent) of
         (Just privateKey, Just publicKey) -> option $ RsaKeys publicKey privateKey
         _ -> error "Failed to read RSA keys, please execute from the root of your project: ssh-keygen -t rsa -b 4096 -m PEM -f ./Config/jwtRS256.key && openssl rsa -in ./Config/jwtRS256.key -pubout -outform PEM -out ./Config/jwtRS256.key.pub"
+
+    -- Less verbose logs.
+    logger <- liftIO $ newLogger def
+      { level = Error
+      , formatter = withTimeFormatter
+      }
+    option logger
 
 
 readRsaKeyFromFile :: FilePath -> IO BS.ByteString

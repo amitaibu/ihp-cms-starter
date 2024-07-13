@@ -5,7 +5,7 @@ import Web.View.ParagraphQuotes.New
 import Web.View.ParagraphQuotes.Edit
 
 instance Controller ParagraphQuotesController where
-    action NewParagraphQuoteAction { landingPageId } = do
+    action NewParagraphQuoteAction { .. } = do
         weight <- getParagraphsCount landingPageId
         let paragraphQuote = newRecord
                 |> set #landingPageId landingPageId

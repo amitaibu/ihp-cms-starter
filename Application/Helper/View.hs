@@ -11,13 +11,15 @@ import qualified Text.MMark as MMark
 
 -- | Sign the image URL to prevent tampering.
 signImageUrl :: (?context::ControllerContext) => Text -> Int -> Int -> Text
-signImageUrl imageUrl width height= case RSA.sign Nothing (Just Hash.Algorithms.SHA256) rsaPrivateKey (cs $ imageUrl <> size) of
-    Left msg -> error $ "Cannot sign image URL, private key is invalid:" <> show msg
-    Right signature -> signature |> Base64.encode |> cs
-    where
-        size = show width <> "x" <> show height
+signImageUrl imageUrl width height=
+    case RSA.sign Nothing (Just Hash.Algorithms.SHA256) rsaPrivateKey (cs $ imageUrl <> size) of
+        Left msg -> error $ "Cannot sign image URL, private key is invalid:" <> show msg
+        Right signature -> signature |> Base64.encode |> cs
+        where
+            size = show width ++ "x" ++ show height
 
-renderMarkdown text = case text |> MMark.parse "" of
+renderMarkdown text =
+    case text |> MMark.parse "" of
         -- On error, render the text as is.
         Left error -> cs text
         Right markdown -> MMark.render markdown |> tshow |> preEscapedToHtml
