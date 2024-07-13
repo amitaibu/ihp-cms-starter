@@ -32,7 +32,6 @@ renderParagraphCta :: ParagraphCta -> Html
 renderParagraphCta paragraphCta = [hsx|
     <tr>
         <td>{paragraphCta.title}</td>
-        <td><a href={ShowParagraphCtaAction paragraphCta.id}>Show</a></td>
         <td><a href={EditParagraphCtaAction paragraphCta.id} class="text-muted">Edit</a></td>
         <td><a href={DeleteParagraphCtaAction paragraphCta.id} class="js-delete text-muted">Delete</a></td>
     </tr>

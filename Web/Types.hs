@@ -35,7 +35,6 @@ data ParagraphQuotesController
 data ParagraphCtasController
     = ParagraphCtaAction
     | NewParagraphCtaAction { landingPageId :: !(Id LandingPage) }
-    | ShowParagraphCtaAction { paragraphCtaId :: !(Id ParagraphCta) }
     | CreateParagraphCtaAction
     | EditParagraphCtaAction { paragraphCtaId :: !(Id ParagraphCta) }
     | UpdateParagraphCtaAction { paragraphCtaId :: !(Id ParagraphCta) }

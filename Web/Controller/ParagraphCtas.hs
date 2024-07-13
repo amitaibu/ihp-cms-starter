@@ -4,7 +4,6 @@ import Web.Controller.Prelude
 import Web.View.ParagraphCtas.Index
 import Web.View.ParagraphCtas.New
 import Web.View.ParagraphCtas.Edit
-import Web.View.ParagraphCtas.Show
 
 instance Controller ParagraphCtasController where
     action ParagraphCtaAction = do
@@ -22,10 +21,6 @@ instance Controller ParagraphCtasController where
         landingPages <- query @LandingPage |> fetch
 
         render NewView { .. }
-
-    action ShowParagraphCtaAction { paragraphCtaId } = do
-        paragraphCta <- fetch paragraphCtaId
-        render ShowView { .. }
 
     action EditParagraphCtaAction { paragraphCtaId } = do
         paragraphCta <- fetch paragraphCtaId

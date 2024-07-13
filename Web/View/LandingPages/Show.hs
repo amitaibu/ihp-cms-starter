@@ -1,9 +1,10 @@
 module Web.View.LandingPages.Show where
+
+import Web.Element.Cta
 import Web.Element.ElementWrap
 import Web.Element.Link
 import Web.Element.Types
 import Web.Types
-import qualified Web.View.ParagraphCtas.Show as ParagraphCtas
 import qualified Web.View.ParagraphQuotes.Show as ParagraphQuotes
 import Web.View.Prelude
 
@@ -51,27 +52,22 @@ orderAndRenderParagraphs landingPageWithRecords =
         paragraphQuotes = landingPageWithRecords.paragraphQuotes
         paragraphCtaRefLandingPages = landingPageWithRecords.paragraphCtaRefLandingPages
 
-        -- @todos:
-        ctas = []
-        -- ctas = paragraphCtas
-        --     |> fmap (\paragraph ->
-        --         let
-        --             -- Get the referenced Landing page out of the ParagraphCTA, through the `ParagraphCtaRefLandingPageId`
-        --             -- property.
-        --             refLandingPageButton =
-        --                     paragraphCtaRefLandingPages
-        --                         -- Get the referenced Landing page
-        --                         |> filter (\paragraphCtaRefLandingPage -> paragraphCtaRefLandingPage.id == paragraph.refLandingPageId)
-        --                         |> head
-        --                         -- Get the button from the referenced Landing page.
-        --                         |> maybe "" (\landingPage -> buildButtonPrimary (pathTo $ ShowLandingPageAction landingPage.id) landingPage.title)
+        ctas = paragraphCtas
+            |> fmap (\paragraph ->
+                ( paragraph.weight
+                , RenderCta
+                    { title = paragraph.title
+                    , body = paragraph.body
+                    , button = RenderButton
+                        { text = "Read More"
+                        , url = pathTo $ ShowLandingPageAction paragraph.landingPageId
+                        , isPrimary = False
+                        }
+                    }
+                    |> Web.Element.Cta.render
+                )
 
-        --         in
-        --         ( paragraph.weight
-        --         , ParagraphCtas.renderParagraph paragraph.title paragraph.body refLandingPageButton
-        --         )
-
-        --     )
+            )
 
         quotes = paragraphQuotes
             |> fmap (\paragraph ->
