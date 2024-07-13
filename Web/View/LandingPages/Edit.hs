@@ -6,28 +6,28 @@ import Web.Element.Link
 import Web.Element.Types
 import Web.View.Prelude
 
-data EditView = EditView { landingPageWithRecords :: LandingPageWithRecords }
+data EditView = EditView
+    { landingPageWithRecords :: LandingPageWithRecords
+    , formStatus :: FormStatus
+    }
+
 
 instance View EditView where
-    html EditView { .. } = [hsx|
-        {body}
-    |]
+    html EditView { .. } =
+        [ header
+        , renderForm landingPage paragraphCtas paragraphQuotes
+        ]
+        |> mconcat
+        |> wrapVerticalSpacing AlignNone
+        |> wrapContainerWide
         where
-            body =
-                [ header
-                , renderForm landingPage paragraphCtas paragraphQuotes
-                ]
-                |> mconcat
-                |> wrapVerticalSpacing AlignNone
-                |> wrapContainerWide
-
             landingPage = landingPageWithRecords.landingPage
             paragraphCtas = landingPageWithRecords.paragraphCtas
             paragraphQuotes = landingPageWithRecords.paragraphQuotes
 
             breadcrumb = renderBreadcrumb
-                [ breadcrumbLink "LandingPages" LandingPagesAction
-                , breadcrumbText "Edit LandingPage"
+                [ breadcrumbLink "Landing Pages" LandingPagesAction
+                , breadcrumbText "Edit Landing Page"
                 ]
 
             header =
