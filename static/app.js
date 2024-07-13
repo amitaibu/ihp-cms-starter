@@ -69,7 +69,7 @@ const initDisableSubmitButtonIfFormNotChanged = function () {
                 .toggleClass('disabled', !changed)
                 .toggleClass('enabled', changed);
 
-            $this.find('.save-indicator').remove();
+            $this.find('.form-status-wrapper').remove();
         });
     });
 

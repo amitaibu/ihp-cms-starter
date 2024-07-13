@@ -19,6 +19,16 @@ data LandingPageWithRecords = LandingPageWithRecords
     , paragraphQuotes :: ![ParagraphQuote]
     } deriving (Show)
 
+{-| With the `FormStatus` we can show a message to the user after submitting a form,
+indicating if the form was successful or not.
+-}
+data FormStatus
+    = FormStatusNotSubmitted
+    | FormStatusSuccess
+    | FormStatusError deriving (Eq, Show)
+
+-- Instances
+
 instance CanSelect LandingPage where
     type SelectValue LandingPage = Id LandingPage
     selectValue landingPage = landingPage.id
