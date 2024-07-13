@@ -6,9 +6,13 @@
 
     .container-wide {
         @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-20;
-      }
+    }
 
-      .container-narrow {
+    .container-narrow {
         @apply max-w-3xl mx-auto px-4 md:px-10 lg:px-8 xl:px-20;
-      }
+    }
+
+    .btn {
+        @apply flex flex-row gap-x-2 enabled:bg-blue-500 enabled:text-white disabled:bg-gray-100 disabled:text-gray-500 enabled:hover:text-gray-200 enabled:hover:bg-blue-500 py-2 px-4 rounded;
+    }
 }

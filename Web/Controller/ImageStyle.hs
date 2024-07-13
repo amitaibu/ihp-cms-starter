@@ -10,7 +10,7 @@ import "cryptonite" Crypto.PubKey.RSA.PKCS15 as RSA
 import "cryptonite" Crypto.Hash.Algorithms as Hash.Algorithms
 import Config
 import Data.ByteString.Base64 as Base64
-import qualified Data.UUID as UUID (fromString)
+import qualified Data.UUID as UUID (fromText)
 
 instance Controller ImageStyleController where
     action RenderImageStyleAction { width, height, originalImagePath, signed } = do
@@ -38,7 +38,7 @@ instance Controller ImageStyleController where
                 let options :: StoreFileOptions = def
                         { directory = imageStylePathDirectory
                         , preprocess = applyImageMagick "jpg" ["-resize", cs size <> "^", "-gravity", "center", "-extent", cs size, "-quality", "85%", "-strip"]
-                        , fileName = UUID.fromString (cs uuid)
+                        , fileName = UUID.fromText uuid
                         }
 
                 storedFile <- storeFileFromPath (cs $ storagePrefix <> originalImageDirectory <> "/" <> uuid) options

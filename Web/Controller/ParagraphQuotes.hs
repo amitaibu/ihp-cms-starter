@@ -11,26 +11,34 @@ instance Controller ParagraphQuotesController where
                 |> set #landingPageId landingPageId
                 |> set #weight weight
 
+        let formStatus = FormStatusNotSubmitted
+
         render NewView { .. }
 
     action EditParagraphQuoteAction { paragraphQuoteId } = do
         paragraphQuote <- fetch paragraphQuoteId
+        -- Get from the session, if the form was submitted successfully.
+        formStatus <- getAndClearFormStatus
         render EditView { .. }
 
     action UpdateParagraphQuoteAction { paragraphQuoteId } = do
         let uploadImage = uploadToStorageWithOptions $ def
                 { preprocess = applyImageMagick "jpg" ["-resize", "1024x1024^", "-gravity", "north", "-extent", "1024x1024", "-quality", "85%", "-strip"] }
 
+        formStatus <- getAndClearFormStatus
 
         paragraphQuote <- fetch paragraphQuoteId
         paragraphQuote
             |> uploadImage #imageUrl
             >>= buildParagraphQuote
             >>= ifValid \case
-                Left paragraphQuote -> render EditView { .. }
+                Left paragraphQuote -> do
+                    setFormStatus FormStatusError
+                    render EditView { .. }
                 Right paragraphQuote -> do
                     paragraphQuote <- paragraphQuote |> updateRecord
                     setSuccessMessage "Quote updated"
+                    -- We don't setFormStatus, since we redirect to a new page.
                     redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
     action CreateParagraphQuoteAction = do
@@ -38,15 +46,19 @@ instance Controller ParagraphQuotesController where
                 { preprocess = applyImageMagick "jpg" ["-resize", "1024x1024^", "-gravity", "north", "-extent", "1024x1024", "-quality", "85%", "-strip"] }
 
         let paragraphQuote = newRecord @ParagraphQuote
+        let formStatus = FormStatusNotSubmitted
 
         paragraphQuote
             |> uploadImage #imageUrl
             >>= buildParagraphQuote
             >>= ifValid \case
-                Left paragraphQuote -> render NewView { .. }
+                Left paragraphQuote -> do
+                    setFormStatus FormStatusError
+                    render NewView { .. }
                 Right paragraphQuote -> do
                     paragraphQuote <- paragraphQuote |> createRecord
                     setSuccessMessage "Quote created"
+                    -- We don't setFormStatus, since we redirect to a new page.
                     redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
     action DeleteParagraphQuoteAction { paragraphQuoteId } = do

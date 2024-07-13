@@ -42,3 +42,15 @@ rsaSignatureMatches :: (?context :: ControllerContext) =>  Text -> Text -> Bool
 rsaSignatureMatches original signature = case Base64.decode $ cs signature of
     Left msg -> False
     Right decodedSignature -> RSA.PKCS15.verify (Just Hash.Algorithms.SHA256) rsaPublicKey (cs original) decodedSignature
+
+setFormStatus :: (?context :: ControllerContext) => FormStatus -> IO ()
+setFormStatus formStatus = setSession "formStatus" (show formStatus)
+
+-- | Get the form status from the session and clear it.
+getAndClearFormStatus :: (?context :: ControllerContext) => IO FormStatus
+getAndClearFormStatus = do
+    maybeFormStatus <- getSessionAndClear @Text "formStatus"
+    pure $ case maybeFormStatus of
+        Just "FormStatusSuccess" -> FormStatusSuccess
+        Just "FormStatusError" -> FormStatusError
+        _ -> FormStatusNotSubmitted

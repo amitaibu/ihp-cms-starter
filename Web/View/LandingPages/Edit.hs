@@ -3,31 +3,32 @@ import Web.Controller.Prelude
 import Web.Element.Button
 import Web.Element.ElementWrap
 import Web.Element.Link
+import Web.Element.SubmitButton
 import Web.Element.Types
 import Web.View.Prelude
 
-data EditView = EditView { landingPageWithRecords :: LandingPageWithRecords }
+data EditView = EditView
+    { landingPageWithRecords :: LandingPageWithRecords
+    , formStatus :: FormStatus
+    }
+
 
 instance View EditView where
-    html EditView { .. } = [hsx|
-        {body}
-    |]
+    html EditView { .. } =
+        [ header
+        , renderForm landingPage paragraphCtas paragraphQuotes formStatus
+        ]
+        |> mconcat
+        |> wrapVerticalSpacing AlignNone
+        |> wrapContainerWide
         where
-            body =
-                [ header
-                , renderForm landingPage paragraphCtas paragraphQuotes
-                ]
-                |> mconcat
-                |> wrapVerticalSpacing AlignNone
-                |> wrapContainerWide
-
             landingPage = landingPageWithRecords.landingPage
             paragraphCtas = landingPageWithRecords.paragraphCtas
             paragraphQuotes = landingPageWithRecords.paragraphQuotes
 
             breadcrumb = renderBreadcrumb
-                [ breadcrumbLink "LandingPages" LandingPagesAction
-                , breadcrumbText "Edit LandingPage"
+                [ breadcrumbLink "Landing Pages" LandingPagesAction
+                , breadcrumbText "Edit Landing Page"
                 ]
 
             header =
@@ -45,11 +46,8 @@ instance View EditView where
                 |> mconcat
                 |> wrapHorizontalSpacingTiny AlignBaseline
 
-renderForm :: LandingPage -> [ParagraphCta] -> [ParagraphQuote] -> Html
-renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
-    {body}
-|]
-
+renderForm :: LandingPage -> [ParagraphCta] -> [ParagraphQuote] -> FormStatus -> Html
+renderForm landingPage paragraphCtas paragraphQuotes formStatus = formFor landingPage body
     where
         body :: (?formContext :: FormContext LandingPage) => Html
         body = [hsx|
@@ -59,13 +57,16 @@ renderForm landingPage paragraphCtas paragraphQuotes = formFor landingPage [hsx|
                 {paragraphs}
             </div>
 
-            {submitButton {label = "Save Landing page"}}
+            { renderSubmitButtonwithFormStatus
+                (submitButton {label = "Save Landing page"})
+                formStatus
+            }
         |]
             |> wrapVerticalSpacing AlignNone
 
         paragraphs =
-            [   addParagraphs
-            ,   [hsx|
+            [ addParagraphs
+            , [hsx|
                     <ul class="js-sortable">
                         {orderAndRenderParagraphs paragraphCtas paragraphQuotes}
                     </ul>

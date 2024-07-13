@@ -13,6 +13,7 @@ instance Controller LandingPagesController where
 
     action NewLandingPageAction = do
         let landingPage = newRecord
+        setFormStatus FormStatusNotSubmitted
         render NewView { .. }
 
     action ShowLandingPageAction { landingPageId } = do
@@ -22,6 +23,8 @@ instance Controller LandingPagesController where
 
     action EditLandingPageAction { landingPageId } = do
         landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
+
+        formStatus <- getAndClearFormStatus
 
         render EditView { .. }
 
@@ -41,7 +44,9 @@ instance Controller LandingPagesController where
                             |> set #meta landingPage'.meta
                             |> set #title landingPage'.title
 
-                    render EditView { landingPageWithRecords = landingPageWithRecords {landingPage = landingPageWithMeta}}
+                    let formStatus = FormStatusError
+
+                    render EditView { landingPageWithRecords = landingPageWithRecords {landingPage = landingPageWithMeta}, formStatus = formStatus }
 
                 Right landingPage -> do
                     landingPage <- landingPage |> updateRecord
@@ -83,6 +88,7 @@ instance Controller LandingPagesController where
                                     pure ()
 
                     setSuccessMessage "LandingPage updated"
+                    setFormStatus FormStatusSuccess
                     redirectTo EditLandingPageAction { .. }
 
     action CreateLandingPageAction = do
@@ -90,10 +96,13 @@ instance Controller LandingPagesController where
         landingPage
             |> buildLandingPage
             |> ifValid \case
-                Left landingPage -> render NewView { .. }
+                Left landingPage -> do
+                    setFormStatus FormStatusError
+                    render NewView { .. }
                 Right landingPage -> do
                     landingPage <- landingPage |> createRecord
                     setSuccessMessage "LandingPage created"
+                    setFormStatus FormStatusSuccess
                     -- After we create the Landing page, we can start adding Paragraphs to it.
                     redirectTo EditLandingPageAction { landingPageId = landingPage.id }
 

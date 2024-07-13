@@ -6,6 +6,7 @@ import "cryptonite" Crypto.Hash.Algorithms as Hash.Algorithms
 import Data.ByteString.Base64 as Base64
 import Application.Helper.Controller
 import qualified Text.MMark as MMark
+import Web.Types
 
 -- Here you can add functions which are available in all your views
 
@@ -23,3 +24,4 @@ renderMarkdown text =
         -- On error, render the text as is.
         Left error -> cs text
         Right markdown -> MMark.render markdown |> tshow |> preEscapedToHtml
+
