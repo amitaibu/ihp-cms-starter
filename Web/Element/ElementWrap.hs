@@ -24,6 +24,7 @@ wrapBackgroundColor color paddingType element =
             case color of
                 ColorTransparent -> "bg-transparent"
                 Blue100          -> "bg-blue-100"
+                Gray100          -> "bg-gray-100"
                 Gray300          -> "bg-gray-300"
                 Gray500          -> "bg-gray-500"
                 Gray900          -> "bg-gray-900"
@@ -355,6 +356,7 @@ wrapTextColor color element =
             case color of
                 ColorTransparent -> "text-transparent"
                 Blue100          -> "text-blue-200"
+                Gray100          -> "text-gray-100"
                 Gray300          -> "text-gray-300"
                 Gray500          -> "text-gray-500"
                 Gray900          -> "text-gray-900"
