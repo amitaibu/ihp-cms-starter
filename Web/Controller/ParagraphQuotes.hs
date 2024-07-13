@@ -40,7 +40,7 @@ instance Controller ParagraphQuotesController where
                 Left paragraphQuote -> render EditView { .. }
                 Right paragraphQuote -> do
                     paragraphQuote <- paragraphQuote |> updateRecord
-                    setSuccessMessage "ParagraphQuote updated"
+                    setSuccessMessage "Quote updated"
                     redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
     action CreateParagraphQuoteAction = do
@@ -56,13 +56,13 @@ instance Controller ParagraphQuotesController where
                 Left paragraphQuote -> render NewView { .. }
                 Right paragraphQuote -> do
                     paragraphQuote <- paragraphQuote |> createRecord
-                    setSuccessMessage "ParagraphQuote created"
+                    setSuccessMessage "Quote created"
                     redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
     action DeleteParagraphQuoteAction { paragraphQuoteId } = do
         paragraphQuote <- fetch paragraphQuoteId
         deleteRecord paragraphQuote
-        setSuccessMessage "ParagraphQuote deleted"
+        setSuccessMessage "Quote deleted"
         redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
 buildParagraphQuote paragraphQuote = paragraphQuote
