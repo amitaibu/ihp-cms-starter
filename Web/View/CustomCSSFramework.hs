@@ -203,7 +203,8 @@ customTailwind = def
             |]
 
 
-        styledSubmitButtonClass = "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        -- We set the style of the submit button on app.css.
+        styledSubmitButtonClass = "btn"
 
         styledFormFieldHelp _ FormField { helpText = "" } = mempty
         styledFormFieldHelp _ FormField { helpText } = [hsx|<p class="text-gray-600 text-xs italic">{helpText}</p>|]
