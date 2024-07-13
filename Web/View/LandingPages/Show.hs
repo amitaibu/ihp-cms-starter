@@ -54,28 +54,32 @@ orderAndRenderParagraphs landingPageWithRecords =
         ctas = landingPageWithRecords.paragraphCtas
             |> fmap (\paragraph ->
                 ( paragraph.weight
-                , RenderCta
-                    { title = paragraph.title
-                    , body = paragraph.body
-                    , button = RenderButton
-                        { text = "Read More"
-                        , url = pathTo $ ShowLandingPageAction paragraph.landingPageId
-                        , isPrimary = False
-                        }
-                    }
-                    |> Web.Element.Cta.render
+                , renderParagraphCta paragraph
                 )
-
             )
 
         quotes = landingPageWithRecords.paragraphQuotes
             |> fmap (\paragraph ->
                 ( paragraph.weight
-                , renderParagraphQuotes paragraph
-                ))
+                , renderParagraphQuote paragraph
+                )
+            )
 
-renderParagraphQuotes :: ParagraphQuote -> Html
-renderParagraphQuotes paragraphQuote =
+renderParagraphCta :: ParagraphCta -> Html
+renderParagraphCta paragraphCta =
+    RenderCta
+        { title = paragraphCta.title
+        , body = paragraphCta.body
+        , button = RenderButton
+            { text = "Read More"
+            , url = pathTo $ ShowLandingPageAction paragraphCta.landingPageId
+            , isPrimary = False
+            }
+        }
+        |> Web.Element.Cta.render
+
+renderParagraphQuote :: ParagraphQuote -> Html
+renderParagraphQuote paragraphQuote =
     RenderQuote
         { body = paragraphQuote.body
         , subtitle = paragraphQuote.subtitle
