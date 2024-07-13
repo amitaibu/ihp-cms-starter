@@ -38,7 +38,7 @@ instance Controller ParagraphQuotesController where
                 Right paragraphQuote -> do
                     paragraphQuote <- paragraphQuote |> updateRecord
                     setSuccessMessage "Quote updated"
-                    setFormStatus FormStatusSuccess
+                    -- We don't setFormStatus, since we redirect to a new page.
                     redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
     action CreateParagraphQuoteAction = do
@@ -58,7 +58,7 @@ instance Controller ParagraphQuotesController where
                 Right paragraphQuote -> do
                     paragraphQuote <- paragraphQuote |> createRecord
                     setSuccessMessage "Quote created"
-                    setFormStatus FormStatusSuccess
+                    -- We don't setFormStatus, since we redirect to a new page.
                     redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
 
     action DeleteParagraphQuoteAction { paragraphQuoteId } = do
