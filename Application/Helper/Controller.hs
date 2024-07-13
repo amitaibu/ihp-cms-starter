@@ -18,11 +18,6 @@ fetchLandingPageWithRecords landingPageId = do
     landingPage <- fetch landingPageId
     paragraphCtas <- fetch landingPage.paragraphCtasRefLandingPages
 
-    -- Landing pages referenced by ParagraphCta.refLandingPageId
-    paragraphCtaRefLandingPages <- query @LandingPage
-        |> filterWhereIn (#id, map (get #refLandingPageId) paragraphCtas)
-        |> fetch
-
     paragraphQuotes <- fetch landingPage.paragraphQuotes
 
     return $ LandingPageWithRecords { .. }

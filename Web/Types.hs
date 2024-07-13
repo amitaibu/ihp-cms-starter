@@ -4,6 +4,8 @@ import IHP.Prelude
 import IHP.ModelSupport
 import Generated.Types
 import IHP.LoginSupport.Types
+import IHP.View.Form
+
 
 -- Custom types
 
@@ -15,8 +17,12 @@ data LandingPageWithRecords = LandingPageWithRecords
     { landingPage :: !LandingPage
     , paragraphCtas :: ![ParagraphCta]
     , paragraphQuotes :: ![ParagraphQuote]
-    , paragraphCtaRefLandingPages :: ![LandingPage]
     } deriving (Show)
+
+instance CanSelect LandingPage where
+    type SelectValue LandingPage = Id LandingPage
+    selectValue landingPage = landingPage.id
+    selectLabel landingPage = landingPage.title
 
 --
 

@@ -50,7 +50,6 @@ orderAndRenderParagraphs landingPageWithRecords =
     where
         paragraphCtas = landingPageWithRecords.paragraphCtas
         paragraphQuotes = landingPageWithRecords.paragraphQuotes
-        paragraphCtaRefLandingPages = landingPageWithRecords.paragraphCtaRefLandingPages
 
         ctas = paragraphCtas
             |> fmap (\paragraph ->
