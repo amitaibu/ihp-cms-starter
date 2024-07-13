@@ -6,6 +6,7 @@ import Web.View.Layout (defaultLayout)
 
 
 -- Controller Imports
+import Web.Controller.StyleGuide
 import Web.Controller.Users
 import Web.Controller.ImageStyle
 import Web.Controller.LandingPages
@@ -19,6 +20,7 @@ instance FrontController WebApplication where
     controllers =
         [ startPage LandingPagesAction
         -- Generator Marker
+        , parseRoute @StyleGuideController
         , parseRoute @UsersController
         , parseRoute @ImageStyleController
         , parseRoute @LandingPagesController
@@ -29,6 +31,7 @@ instance FrontController WebApplication where
 
 instance InitControllerContext WebApplication where
     initContext = do
-        setLayout defaultLayout
+        currentTime <- getCurrentTime
+        setLayout (defaultLayout currentTime)
         initAutoRefresh
         initAuthentication @User

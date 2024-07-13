@@ -17,8 +17,7 @@ instance View EditView where
     |]
         where
             breadcrumb = renderBreadcrumb
-                [ breadcrumbLink "ParagraphCta" ParagraphCtaAction
-                , breadcrumbText "Edit ParagraphCta"
+                [ breadcrumbText "Edit Cta"
                 ]
 
 renderForm :: ParagraphCta -> [LandingPage] -> Html
@@ -38,8 +37,3 @@ renderForm paragraphCta landingPages = formFor paragraphCta [hsx|
                 |]
                 |> wrapVerticalSpacing AlignNone
                 |> wrapContainerWide
-
-instance CanSelect LandingPage where
-    type SelectValue LandingPage = Id LandingPage
-    selectValue landingPage = landingPage.id
-    selectLabel landingPage = landingPage.title

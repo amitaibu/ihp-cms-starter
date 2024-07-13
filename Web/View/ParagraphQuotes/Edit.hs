@@ -12,6 +12,5 @@ instance View EditView where
     |]
         where
             breadcrumb = renderBreadcrumb
-                [ breadcrumbLink "ParagraphQuotes" ParagraphQuotesAction
-                , breadcrumbText "Edit ParagraphQuote"
+                [ breadcrumbText "Edit Quote"
                 ]

@@ -1,28 +1,28 @@
 module Web.View.LandingPages.Index where
-import Web.View.Prelude
-import Web.Element.Types
-import Web.Element.ElementBuild
+import Web.Element.Button
 import Web.Element.ElementWrap
+import Web.Element.Link
+import Web.Element.Types
+import Web.View.Prelude
 
 data IndexView = IndexView { landingPages :: [LandingPage]  }
 
 instance View IndexView where
-    html IndexView { .. } = [hsx|
-        {breadcrumb}
-
-        {header}
-        {body}
-
-    |]
+    html IndexView { .. } =
+        [ breadcrumb
+        , header
+        , body
+        ]
+        |> mconcat
         |> wrapVerticalSpacing AlignNone
         |> wrapContainerWide
         where
             header =
-                [ [hsx|Landing pages Index|] |> wrapHeaderTag 1
-                , buildButton (pathTo NewLandingPageAction) "New Landing page"
+                [ [hsx|"Landing pages Index"|] |> wrapHeaderTag 1
+                , renderButtonAction (NewLandingPageAction) "New Landing page"
                 ]
-                    |> mconcat
-                    |> wrapHorizontalSpacing AlignNone
+                |> mconcat
+                |> wrapHorizontalSpacing AlignNone
 
             body = forEach landingPages renderLandingPage |> wrapListOl
 
@@ -31,20 +31,17 @@ instance View IndexView where
                 ]
 
 renderLandingPage :: LandingPage -> Html
-renderLandingPage landingPage = [hsx|
-    {body}
-|]
+renderLandingPage landingPage =
+        [ cs landingPage.title
+        , operations
+        ]
+        |> mconcat
+        |> wrapHorizontalSpacingTiny AlignBaseline
     where
-        body =
-            [ cs landingPage.title
-            , operations
-            ]
-                |> mconcat
-                |> wrapHorizontalSpacingTiny AlignBaseline
         operations =
-            [ buildLink (ShowLandingPageAction landingPage.id) "Show"
-            , buildLink (EditLandingPageAction landingPage.id) "Edit"
-            , buildLinkDeleteAction (DeleteLandingPageAction landingPage.id)
+            [ renderLinkAction (ShowLandingPageAction landingPage.id) "Show"
+            , renderLinkAction (EditLandingPageAction landingPage.id) "Edit"
+            , renderLinkDeleteAction (DeleteLandingPageAction landingPage.id)
             ]
-                |> mconcat
-                |> wrapHorizontalSpacingTiny AlignCenter
+            |> mconcat
+            |> wrapHorizontalSpacingTiny AlignCenter

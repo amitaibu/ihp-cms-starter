@@ -23,6 +23,7 @@ buildInnerElementLayout color element =
             ]
 
 
+-- @todo: Remove
 buildElementLayoutSplitImageAndContent :: Text -> Html -> Html
 buildElementLayoutSplitImageAndContent imageUrl items =
     -- We use grid and row/col start to position both the image and the text on the same cell.
