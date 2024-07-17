@@ -60,6 +60,12 @@ data RenderQuote = RenderQuote
     , imageUrl :: Text
     }
 
+data RenderHeroImage = RenderHeroImage
+    { title    :: Text
+    , subtitle :: Text
+    , imageUrl :: Text
+    }
+
 
 -- @todo: Move to Utility.hs?
 getBackgroundColor :: Color -> Text

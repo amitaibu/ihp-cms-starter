@@ -67,6 +67,7 @@ instance Controller LandingPagesController where
                             -- Iterate over all paragraphs, and update the weight.
                             forEach landingPageWithRecords.paragraphCtas updateParagraph
                             forEach landingPageWithRecords.paragraphQuotes updateParagraph
+                            forEach landingPageWithRecords.paragraphHeroImages updateParagraph
 
                             where
                                 updateParagraph :: forall record.

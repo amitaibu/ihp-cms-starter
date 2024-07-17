@@ -5,6 +5,7 @@ import Web.Element.ElementWrap
 import Web.Element.Link
 import Web.Element.Types
 import Web.Element.Quote
+import Web.Element.HeroImage
 import Web.Types
 import Web.View.Prelude
 
@@ -43,7 +44,7 @@ instance View ShowView where
 
 orderAndRenderParagraphs :: (?context::ControllerContext) => LandingPageWithRecords -> Html
 orderAndRenderParagraphs landingPageWithRecords =
-    ctas ++ quotes
+    ctas ++ quotes ++ heroImages
         -- Order by weight.
         |> sortOn fst
         |> fmap snd
@@ -61,6 +62,13 @@ orderAndRenderParagraphs landingPageWithRecords =
             |> fmap (\paragraph ->
                 ( paragraph.weight
                 , renderParagraphQuote paragraph
+                )
+            )
+
+        heroImages = landingPageWithRecords.paragraphHeroImages
+            |> fmap (\paragraph ->
+                ( paragraph.weight
+                , renderParagraphHeroImage paragraph
                 )
             )
 
@@ -85,3 +93,12 @@ renderParagraphQuote paragraphQuote =
         , imageUrl = paragraphQuote.imageUrl |> fromMaybe ""
         }
         |> Web.Element.Quote.render
+
+renderParagraphHeroImage :: ParagraphHeroImage -> Html
+renderParagraphHeroImage paragraphHeroImage =
+    RenderHeroImage
+        { title = paragraphHeroImage.title
+        , subtitle = paragraphHeroImage.subtitle |> fromMaybe ""
+        , imageUrl = paragraphHeroImage.imageUrl |> fromMaybe ""
+        }
+        |> Web.Element.HeroImage.render

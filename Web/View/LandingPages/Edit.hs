@@ -16,7 +16,7 @@ data EditView = EditView
 instance View EditView where
     html EditView { .. } =
         [ header
-        , renderForm landingPage paragraphCtas paragraphQuotes formStatus
+        , renderForm landingPage paragraphCtas paragraphQuotes paragraphHeroImages formStatus
         ]
         |> mconcat
         |> wrapVerticalSpacing AlignNone
@@ -25,6 +25,7 @@ instance View EditView where
             landingPage = landingPageWithRecords.landingPage
             paragraphCtas = landingPageWithRecords.paragraphCtas
             paragraphQuotes = landingPageWithRecords.paragraphQuotes
+            paragraphHeroImages = landingPageWithRecords.paragraphHeroImages
 
             breadcrumb = renderBreadcrumb
                 [ breadcrumbLink "Landing Pages" LandingPagesAction
@@ -46,8 +47,8 @@ instance View EditView where
                 |> mconcat
                 |> wrapHorizontalSpacingTiny AlignBaseline
 
-renderForm :: LandingPage -> [ParagraphCta] -> [ParagraphQuote] -> FormStatus -> Html
-renderForm landingPage paragraphCtas paragraphQuotes formStatus = formFor landingPage body
+renderForm :: LandingPage -> [ParagraphCta] -> [ParagraphQuote] -> [ParagraphHeroImage] -> FormStatus -> Html
+renderForm landingPage paragraphCtas paragraphQuotes paragraphHeroImages formStatus = formFor landingPage body
     where
         body :: (?formContext :: FormContext LandingPage) => Html
         body = [hsx|
@@ -68,7 +69,7 @@ renderForm landingPage paragraphCtas paragraphQuotes formStatus = formFor landin
             [ addParagraphs
             , [hsx|
                     <ul class="js-sortable">
-                        {orderAndRenderParagraphs paragraphCtas paragraphQuotes}
+                        {orderAndRenderParagraphs paragraphCtas paragraphQuotes paragraphHeroImages}
                     </ul>
                 |]
             ]
@@ -86,14 +87,16 @@ renderForm landingPage paragraphCtas paragraphQuotes formStatus = formFor landin
         paragraphButtons =
             [   renderButtonAction (NewParagraphCtaAction landingPage.id) "New CTA"
             ,   renderButtonAction (NewParagraphQuoteAction landingPage.id) "New Quote"
+            ,   renderButtonAction (NewParagraphHeroImageAction landingPage.id) "New Hero Image"
             ]
                 |> mconcat
                 |> wrapHorizontalSpacing AlignCenter
 
-orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> Html
-orderAndRenderParagraphs paragraphCtas paragraphQuotes =
+orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> [ParagraphHeroImage] -> Html
+orderAndRenderParagraphs paragraphCtas paragraphQuotes paragraphHeroImages =
     ctas
         ++ quotes
+        ++ heroImages
         |> sortOn fst
         |> fmap snd
         |> mconcat
@@ -104,6 +107,9 @@ orderAndRenderParagraphs paragraphCtas paragraphQuotes =
 
         quotes = paragraphQuotes
             |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphQuoteAction DeleteParagraphQuoteAction paragraph.id paragraph.subtitle ("Quote" :: Text)))
+            
+        heroImages = paragraphHeroImages
+            |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphHeroImageAction DeleteParagraphHeroImageAction paragraph.id paragraph.title ("Hero Image" :: Text)))
 
 
 
@@ -136,7 +142,7 @@ orderAndRenderParagraphs paragraphCtas paragraphQuotes =
 
         sortableHandle =
             if
-                length ctas + length quotes > 1
+                length ctas + length quotes + length heroImages > 1
             then
                 [hsx|
                     <div class="sortable-handle">
