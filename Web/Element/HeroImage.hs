@@ -5,38 +5,47 @@ import Web.View.Prelude
 import Application.Helper.Icons
 import Web.Element.ElementWrap
 import Web.Element.Types
-
+import Web.Element.Button
 
 render :: RenderHeroImage -> Html
-render record@RenderHeroImage {title, subtitle, imageUrl} =
+render record@RenderHeroImage {title, subtitle, button, imageUrl} =
      titleWrapped
         ++ subTitleWrapped
-        |> wrapVerticalSpacing AlignNone
-        |> renderImageAndContent (pathTo $ RenderImageStyleAction 400 200 imageUrl signed)
+        ++ buttonHtml
+        |> wrapVerticalSpacingBig AlignNone
+        |> renderImageAndContent (pathTo $ RenderImageStyleAction 1536 466 imageUrl signed)
     where
         -- Sign the image URL to prevent tampering.
-        signed = signImageUrl imageUrl 400 200
+        signed = signImageUrl imageUrl 1536 466
 
-        titleWrapped = cs subtitle
+        titleWrapped = cs title
+            |> wrapHeaderTag 1
+            |> wrapTextFontWeight FontWeightBold
             |> wrapTextResponsiveFontSize TextSizeSm
 
         subTitleWrapped = cs subtitle
-            |> wrapTextResponsiveFontSize TextSizeSm
+            |> wrapTextFontWeight FontWeightMedium
+            |> wrapTextResponsiveFontSize TextSizeXl
+
+        buttonHtml = case button of
+            Just btn -> Web.Element.Button.render btn
+            Nothing -> mempty
 
 
 renderImageAndContent :: Text -> Html -> Html
 renderImageAndContent imageUrl items =
-    -- We use grid and row/col start to position both the image and the text on the same cell.
     [hsx|
-        <div class="flex flex-col sm:grid sm:grid-rows-1 md:grid-cols-2 gap-2 md:gap-8 lg:gap-10 overflow-hidden bg-gray-50">
+        <div class="grid grid-rows-1">
+            <figure class="row-start-1 col-start-1 child-object-cover">
+                {image}
+            </figure>
 
-            <div class="w-full grid grid-rows-1">
-                <figure class="row-start-1 col-start-1 child-object-cover h-full">
-                    {image}
-                </figure>
-            </div>
-            <div class="pt-5 pb-8 px-5 lg:py-8 lg:max-w-lg my-auto">
-                {items}
+            <div class="row-start-1 col-start-1 z-10 flex flex-col justify-center">
+                <div class="container-wide w-full">
+                    <div class="max-w-prose my-6 md:my-8 p-6 md:p-8 lg:p-10 bg-white/90 flex flex-col gap-3 md:gap-4 lg:gap-5 rounded-lg">
+                        {items}
+                    </div>
+                </div>
             </div>
         </div>
     |]

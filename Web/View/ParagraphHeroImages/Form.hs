@@ -20,7 +20,8 @@ renderForm paragraphHeroImage isImageRequired formStatus = formFor paragraphHero
         visibleForm paragraphHeroImage =
             [hsx|
                 {(textField #title) {required = True}}
-                {(textField #subtitle) {required = True}}
+                {(textField #subtitle)}
+                {(textField #link)}
 
                 <div class="flex flex-row">
                     {(fileField #imageUrl) {required = isImageRequired, additionalAttributes = [("accept", "image/*"), ("data-preview", "#imageUrlPreview")]}}
@@ -28,7 +29,7 @@ renderForm paragraphHeroImage isImageRequired formStatus = formFor paragraphHero
                     <img id="imageUrlPreview" src={paragraphHeroImage.imageUrl} class="w-20 h-20" />
                 </div>
 
-                {renderSubmitButtonwithFormStatus submitButton formStatus}
+                {renderSubmitButtonwithFormStatus (submitButton {label = "Save Hero Image"}) formStatus}
             |]
             |> wrapVerticalSpacing AlignNone
             |> wrapContainerWide

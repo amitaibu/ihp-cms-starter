@@ -68,7 +68,7 @@ instance Controller ParagraphHeroImagesController where
         redirectTo EditLandingPageAction { landingPageId = paragraphHeroImage.landingPageId }
 
 buildParagraphHeroImage paragraphHeroImage = paragraphHeroImage
-    |> fill @["landingPageId", "weight", "title", "subtitle"]
+    |> fill @["landingPageId", "weight", "title", "subtitle", "link"]
     |> validateField #title nonEmpty
     |> validateField #imageUrl nonEmpty
     |> return

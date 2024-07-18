@@ -96,9 +96,20 @@ renderParagraphQuote paragraphQuote =
 
 renderParagraphHeroImage :: ParagraphHeroImage -> Html
 renderParagraphHeroImage paragraphHeroImage =
+    let
+        button = case paragraphHeroImage.link of
+            Just linkText ->
+                Just RenderButton
+                    { text = "Read More"
+                    , url = linkText
+                    , isPrimary = True
+                    }
+            _ -> Nothing
+    in
     RenderHeroImage
         { title = paragraphHeroImage.title
         , subtitle = paragraphHeroImage.subtitle |> fromMaybe ""
         , imageUrl = paragraphHeroImage.imageUrl |> fromMaybe ""
+        , button = button
         }
         |> Web.Element.HeroImage.render
