@@ -19,9 +19,9 @@ fetchLandingPageWithRecords landingPageId = do
 
     paragraphCtas <- fetch landingPage.paragraphCtasRefLandingPages
 
-    paragraphQuotes <- fetch landingPage.paragraphQuotes
-
     paragraphHeroImages <- fetch landingPage.paragraphHeroImages
+
+    paragraphQuotes <- fetch landingPage.paragraphQuotes
 
     return $ LandingPageWithRecords { .. }
 
@@ -30,8 +30,8 @@ getParagraphsCount landingPageId = do
     landingPageWithRecords <- fetchLandingPageWithRecords landingPageId
 
     pure $ length landingPageWithRecords.paragraphCtas
-                    + length landingPageWithRecords.paragraphQuotes
                     + length landingPageWithRecords.paragraphHeroImages
+                    + length landingPageWithRecords.paragraphQuotes
                     + 1
 
 -- | The RSA public key, can be used to verify image style URLs that were signed.

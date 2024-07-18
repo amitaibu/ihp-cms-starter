@@ -22,44 +22,10 @@ instance Controller ParagraphHeroImagesController where
         render EditView { .. }
 
     action UpdateParagraphHeroImageAction { paragraphHeroImageId } = do
-        let uploadImage = uploadToStorageWithOptions $ def
-                { preprocess = applyImageMagick "jpg" ["-resize", "1024x1024^", "-gravity", "north", "-extent", "1024x1024", "-quality", "85%", "-strip"] }
-
-        formStatus <- getAndClearFormStatus
-
-        paragraphHeroImage <- fetch paragraphHeroImageId
-        paragraphHeroImage
-            |> uploadImage #imageUrl
-            >>= buildParagraphHeroImage
-            >>= ifValid \case
-                Left paragraphHeroImage -> do
-                    setFormStatus FormStatusError
-                    render EditView { .. }
-                Right paragraphHeroImage -> do
-                    paragraphHeroImage <- paragraphHeroImage |> updateRecord
-                    setSuccessMessage "Hero Image updated"
-                    -- We don't setFormStatus, since we redirect to a new page.
-                    redirectTo EditLandingPageAction { landingPageId = paragraphHeroImage.landingPageId }
+        createOrUpdateParagraphHeroImageAction (Just paragraphHeroImageId)
 
     action CreateParagraphHeroImageAction = do
-        let uploadImage = uploadToStorageWithOptions $ def
-                { preprocess = applyImageMagick "jpg" ["-resize", "1024x1024^", "-gravity", "north", "-extent", "1024x1024", "-quality", "85%", "-strip"] }
-
-        let paragraphHeroImage = newRecord @ParagraphHeroImage
-        let formStatus = FormStatusNotSubmitted
-
-        paragraphHeroImage
-            |> uploadImage #imageUrl
-            >>= buildParagraphHeroImage
-            >>= ifValid \case
-                Left paragraphHeroImage -> do
-                    setFormStatus FormStatusError
-                    render NewView { .. }
-                Right paragraphHeroImage -> do
-                    paragraphHeroImage <- paragraphHeroImage |> createRecord
-                    setSuccessMessage "Hero Image created"
-                    -- We don't setFormStatus, since we redirect to a new page.
-                    redirectTo EditLandingPageAction { landingPageId = paragraphHeroImage.landingPageId }
+        createOrUpdateParagraphHeroImageAction Nothing
 
     action DeleteParagraphHeroImageAction { paragraphHeroImageId } = do
         paragraphHeroImage <- fetch paragraphHeroImageId
@@ -71,5 +37,32 @@ buildParagraphHeroImage paragraphHeroImage = paragraphHeroImage
     |> fill @["landingPageId", "weight", "title", "subtitle", "link"]
     |> validateField #title nonEmpty
     |> validateField #imageUrl nonEmpty
-    |> return
+    |> pure
 
+createOrUpdateParagraphHeroImageAction :: (?modelContext :: ModelContext, ?context :: ControllerContext) => Maybe (Id ParagraphHeroImage) -> IO ()
+createOrUpdateParagraphHeroImageAction maybeParagraphHeroImageId = do
+    let uploadImage = uploadToStorageWithOptions $ def
+            { preprocess = applyImageMagick "jpg" ["-resize", "1024x1024^", "-gravity", "north", "-extent", "1024x1024", "-quality", "85%", "-strip"] }
+
+    formStatus <- getAndClearFormStatus
+
+    paragraphHeroImage <- case maybeParagraphHeroImageId of
+        Just id -> fetch id
+        Nothing -> pure $ newRecord @ParagraphHeroImage
+
+    paragraphHeroImage
+        |> uploadImage #imageUrl
+        >>= buildParagraphHeroImage
+        >>= ifValid \case
+            Left paragraphHeroImage -> do
+                setFormStatus FormStatusError
+                if isJust maybeParagraphHeroImageId
+                    then render EditView { .. }
+                    else render NewView { .. }
+            Right paragraphHeroImage -> do
+                paragraphHeroImage <- case maybeParagraphHeroImageId of
+                    Just _  -> paragraphHeroImage |> updateRecord
+                    Nothing -> paragraphHeroImage |> createRecord
+                setSuccessMessage "Hero Image saved"
+                -- We don't setFormStatus, since we redirect to a new page.
+                redirectTo EditLandingPageAction { landingPageId = paragraphHeroImage.landingPageId }

@@ -11,7 +11,7 @@ instance View EditView where
     html EditView { .. } = [hsx|
         {breadcrumb}
         <h1>Edit Paragraph Hero Image</h1>
-        {renderForm paragraphHeroImage True formStatus}
+        {renderForm paragraphHeroImage False formStatus}
     |]
         where
             breadcrumb = renderBreadcrumb

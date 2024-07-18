@@ -13,6 +13,7 @@ render record@RenderHeroImage {title, subtitle, button, imageUrl} =
         ++ subTitleWrapped
         ++ buttonHtml
         |> wrapVerticalSpacingBig AlignNone
+        -- 1536x466 - size of the image.
         |> renderImageAndContent (pathTo $ RenderImageStyleAction 1536 466 imageUrl signed)
     where
         -- Sign the image URL to prevent tampering.
@@ -29,7 +30,7 @@ render record@RenderHeroImage {title, subtitle, button, imageUrl} =
 
         buttonHtml = case button of
             Just btn -> Web.Element.Button.render btn
-            Nothing -> mempty
+            Nothing -> ""
 
 
 renderImageAndContent :: Text -> Html -> Html
