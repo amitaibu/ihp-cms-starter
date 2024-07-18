@@ -33,6 +33,3 @@ renderForm paragraphHeroImage isImageRequired formStatus = formFor paragraphHero
             |]
             |> wrapVerticalSpacing AlignNone
             |> wrapContainerWide
-
-
-
