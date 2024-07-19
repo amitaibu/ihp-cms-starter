@@ -2,10 +2,10 @@ module Web.View.LandingPages.Show where
 
 import Web.Element.Cta
 import Web.Element.ElementWrap
+import Web.Element.HeroImage
 import Web.Element.Link
 import Web.Element.Types
 import Web.Element.Quote
-import Web.Element.HeroImage
 import Web.Types
 import Web.View.Prelude
 
@@ -44,7 +44,7 @@ instance View ShowView where
 
 orderAndRenderParagraphs :: (?context::ControllerContext) => LandingPageWithRecords -> Html
 orderAndRenderParagraphs landingPageWithRecords =
-    ctas ++ quotes ++ heroImages
+    ctas ++ heroImages ++ quotes
         -- Order by weight.
         |> sortOn fst
         |> fmap snd
@@ -58,17 +58,17 @@ orderAndRenderParagraphs landingPageWithRecords =
                 )
             )
 
-        quotes = landingPageWithRecords.paragraphQuotes
-            |> fmap (\paragraph ->
-                ( paragraph.weight
-                , renderParagraphQuote paragraph
-                )
-            )
-
         heroImages = landingPageWithRecords.paragraphHeroImages
             |> fmap (\paragraph ->
                 ( paragraph.weight
                 , renderParagraphHeroImage paragraph
+                )
+            )
+
+        quotes = landingPageWithRecords.paragraphQuotes
+            |> fmap (\paragraph ->
+                ( paragraph.weight
+                , renderParagraphQuote paragraph
                 )
             )
 
@@ -96,20 +96,19 @@ renderParagraphQuote paragraphQuote =
 
 renderParagraphHeroImage :: ParagraphHeroImage -> Html
 renderParagraphHeroImage paragraphHeroImage =
-    let
-        button = case paragraphHeroImage.link of
-            Just linkText ->
-                Just RenderButton
-                    { text = "Read More"
-                    , url = linkText
-                    , isPrimary = True
-                    }
-            _ -> Nothing
-    in
     RenderHeroImage
         { title = paragraphHeroImage.title
         , subtitle = paragraphHeroImage.subtitle |> fromMaybe ""
         , imageUrl = paragraphHeroImage.imageUrl |> fromMaybe ""
-        , button = button
+        , maybeButton = maybeButton
         }
         |> Web.Element.HeroImage.render
+        where
+            maybeButton = case paragraphHeroImage.link of
+                Just linkText ->
+                    Just RenderButton
+                        { text = "Read More"
+                        , url = linkText
+                        , isPrimary = True
+                        }
+                _ -> Nothing

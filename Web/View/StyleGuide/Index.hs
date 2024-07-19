@@ -4,9 +4,9 @@ import Web.Element.Types
 import Web.View.Prelude
 
 import Web.Element.Cta
+import Web.Element.HeroImage
 import Web.Element.PageTitle
 import Web.Element.Quote
-import Web.Element.HeroImage
 
 data IndexView = IndexView { }
 
@@ -68,7 +68,7 @@ instance View IndexView where
                 { title = "This is title"
                 , subtitle = "This is subtitle"
                 , imageUrl = "/styleGuideImages/8f8827de-e5d4-4ee7-b0a3-abae36274338"
-                , button = Just RenderButton
+                , maybeButton = Just RenderButton
                     { text = "Read more"
                     , url = "/"
                     , isPrimary = True

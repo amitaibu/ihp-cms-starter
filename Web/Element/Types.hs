@@ -64,7 +64,7 @@ data RenderHeroImage = RenderHeroImage
     { title    :: Text
     , subtitle :: Text
     , imageUrl :: Text
-    , button :: Maybe RenderButton
+    , maybeButton :: Maybe RenderButton
     }
 
 

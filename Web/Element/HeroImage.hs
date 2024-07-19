@@ -2,18 +2,16 @@ module Web.Element.HeroImage where
 
 import Web.View.Prelude
 
-import Application.Helper.Icons
 import Web.Element.ElementWrap
 import Web.Element.Types
 import Web.Element.Button
 
 render :: RenderHeroImage -> Html
-render record@RenderHeroImage {title, subtitle, button, imageUrl} =
+render record@RenderHeroImage {title, subtitle, maybeButton, imageUrl} =
      titleWrapped
         ++ subTitleWrapped
         ++ buttonHtml
         |> wrapVerticalSpacingBig AlignNone
-        -- 1536x466 - size of the image.
         |> renderImageAndContent (pathTo $ RenderImageStyleAction 1536 466 imageUrl signed)
     where
         -- Sign the image URL to prevent tampering.
@@ -28,7 +26,7 @@ render record@RenderHeroImage {title, subtitle, button, imageUrl} =
             |> wrapTextFontWeight FontWeightMedium
             |> wrapTextResponsiveFontSize TextSizeXl
 
-        buttonHtml = case button of
+        buttonHtml = case maybeButton of
             Just btn -> Web.Element.Button.render btn
             Nothing -> ""
 

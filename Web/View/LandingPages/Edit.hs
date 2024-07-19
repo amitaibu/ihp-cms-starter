@@ -24,8 +24,8 @@ instance View EditView where
         where
             landingPage = landingPageWithRecords.landingPage
             paragraphCtas = landingPageWithRecords.paragraphCtas
-            paragraphQuotes = landingPageWithRecords.paragraphQuotes
             paragraphHeroImages = landingPageWithRecords.paragraphHeroImages
+            paragraphQuotes = landingPageWithRecords.paragraphQuotes
 
             breadcrumb = renderBreadcrumb
                 [ breadcrumbLink "Landing Pages" LandingPagesAction
@@ -95,8 +95,8 @@ renderForm landingPage paragraphCtas paragraphQuotes paragraphHeroImages formSta
 orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> [ParagraphHeroImage] -> Html
 orderAndRenderParagraphs paragraphCtas paragraphQuotes paragraphHeroImages =
     ctas
-        ++ quotes
         ++ heroImages
+        ++ quotes
         |> sortOn fst
         |> fmap snd
         |> mconcat
@@ -105,14 +105,12 @@ orderAndRenderParagraphs paragraphCtas paragraphQuotes paragraphHeroImages =
         ctas = paragraphCtas
             |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphCtaAction DeleteParagraphCtaAction paragraph.id paragraph.title ("CTA" :: Text)))
 
-        quotes = paragraphQuotes
-            |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphQuoteAction DeleteParagraphQuoteAction paragraph.id paragraph.subtitle ("Quote" :: Text)))
-            
         heroImages = paragraphHeroImages
             |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphHeroImageAction DeleteParagraphHeroImageAction paragraph.id paragraph.title ("Hero Image" :: Text)))
 
-
-
+        quotes = paragraphQuotes
+            |> fmap (\paragraph -> (paragraph.weight, paragraphTitleAndOps EditParagraphQuoteAction DeleteParagraphQuoteAction paragraph.id paragraph.subtitle ("Quote" :: Text)))
+            
         -- Show the paragraph title and the operations to perform on it.
         paragraphTitleAndOps :: (Show (PrimaryKey record), HasPath controller) => (Id' record -> controller) -> (Id' record -> controller) -> Id' record -> Text -> Text -> Html
         paragraphTitleAndOps editAction deleteAction id title type_  =
@@ -142,7 +140,7 @@ orderAndRenderParagraphs paragraphCtas paragraphQuotes paragraphHeroImages =
 
         sortableHandle =
             if
-                length ctas + length quotes + length heroImages > 1
+                length ctas + length heroImages + length quotes > 1
             then
                 [hsx|
                     <div class="sortable-handle">
