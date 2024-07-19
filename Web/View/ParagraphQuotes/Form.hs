@@ -28,7 +28,7 @@ renderForm paragraphQuote isImageRequired formStatus = formFor paragraphQuote [h
                     <img id="imageUrlPreview" src={paragraphQuote.imageUrl} class="w-20 h-20" />
                 </div>
 
-                {renderSubmitButtonwithFormStatus submitButton formStatus}
+                {renderSubmitButtonwithFormStatus (submitButton {label = "Save Quote"}) formStatus}
             |]
             |> wrapVerticalSpacing AlignNone
             |> wrapContainerWide

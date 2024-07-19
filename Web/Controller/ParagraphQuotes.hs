@@ -22,44 +22,10 @@ instance Controller ParagraphQuotesController where
         render EditView { .. }
 
     action UpdateParagraphQuoteAction { paragraphQuoteId } = do
-        let uploadImage = uploadToStorageWithOptions $ def
-                { preprocess = applyImageMagick "jpg" ["-resize", "1024x1024^", "-gravity", "north", "-extent", "1024x1024", "-quality", "85%", "-strip"] }
-
-        formStatus <- getAndClearFormStatus
-
-        paragraphQuote <- fetch paragraphQuoteId
-        paragraphQuote
-            |> uploadImage #imageUrl
-            >>= buildParagraphQuote
-            >>= ifValid \case
-                Left paragraphQuote -> do
-                    setFormStatus FormStatusError
-                    render EditView { .. }
-                Right paragraphQuote -> do
-                    paragraphQuote <- paragraphQuote |> updateRecord
-                    setSuccessMessage "Quote updated"
-                    -- We don't setFormStatus, since we redirect to a new page.
-                    redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
+        createOrUpdateParagraphQuoteAction (Just paragraphQuoteId)
 
     action CreateParagraphQuoteAction = do
-        let uploadImage = uploadToStorageWithOptions $ def
-                { preprocess = applyImageMagick "jpg" ["-resize", "1024x1024^", "-gravity", "north", "-extent", "1024x1024", "-quality", "85%", "-strip"] }
-
-        let paragraphQuote = newRecord @ParagraphQuote
-        let formStatus = FormStatusNotSubmitted
-
-        paragraphQuote
-            |> uploadImage #imageUrl
-            >>= buildParagraphQuote
-            >>= ifValid \case
-                Left paragraphQuote -> do
-                    setFormStatus FormStatusError
-                    render NewView { .. }
-                Right paragraphQuote -> do
-                    paragraphQuote <- paragraphQuote |> createRecord
-                    setSuccessMessage "Quote created"
-                    -- We don't setFormStatus, since we redirect to a new page.
-                    redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
+        createOrUpdateParagraphQuoteAction Nothing
 
     action DeleteParagraphQuoteAction { paragraphQuoteId } = do
         paragraphQuote <- fetch paragraphQuoteId
@@ -74,3 +40,30 @@ buildParagraphQuote paragraphQuote = paragraphQuote
     |> validateField #imageUrl nonEmpty
     |> return
 
+createOrUpdateParagraphQuoteAction :: (?modelContext :: ModelContext, ?context :: ControllerContext) => Maybe (Id ParagraphQuote) -> IO ()
+createOrUpdateParagraphQuoteAction maybeParagraphQuoteId = do
+    let uploadImage = uploadToStorageWithOptions $ def
+            { preprocess = applyImageMagick "jpg" ["-resize", "1024x1024^", "-gravity", "north", "-extent", "1024x1024", "-quality", "85%", "-strip"] }
+
+    formStatus <- getAndClearFormStatus
+
+    paragraphQuote <- case maybeParagraphQuoteId of
+        Just id -> fetch id
+        Nothing -> pure $ newRecord @ParagraphQuote
+
+    paragraphQuote
+        |> uploadImage #imageUrl
+        >>= buildParagraphQuote
+        >>= ifValid \case
+            Left paragraphQuote -> do
+                setFormStatus FormStatusError
+                if isJust maybeParagraphQuoteId
+                    then render EditView { .. }
+                    else render NewView { .. }
+            Right paragraphQuote -> do
+                paragraphQuote <- case maybeParagraphQuoteId of
+                    Just _  -> paragraphQuote |> updateRecord
+                    Nothing -> paragraphQuote |> createRecord
+                setSuccessMessage "Hero Image saved"
+                -- We don't setFormStatus, since we redirect to a new page.
+                redirectTo EditLandingPageAction { landingPageId = paragraphQuote.landingPageId }
