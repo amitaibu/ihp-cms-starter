@@ -12,11 +12,13 @@ instance Controller ParagraphQuotesController where
                 |> set #weight weight
 
         let formStatus = FormStatusNotSubmitted
+        landingPage <- fetch paragraphQuote.landingPageId
 
         render NewView { .. }
 
     action EditParagraphQuoteAction { paragraphQuoteId } = do
         paragraphQuote <- fetch paragraphQuoteId
+        landingPage <- fetch paragraphQuote.landingPageId
         -- Get from the session, if the form was submitted successfully.
         formStatus <- getAndClearFormStatus
         render EditView { .. }
@@ -57,6 +59,7 @@ createOrUpdateParagraphQuoteAction maybeParagraphQuoteId = do
         >>= ifValid \case
             Left paragraphQuote -> do
                 setFormStatus FormStatusError
+                landingPage <- fetch paragraphQuote.landingPageId
                 if isJust maybeParagraphQuoteId
                     then render EditView { .. }
                     else render NewView { .. }

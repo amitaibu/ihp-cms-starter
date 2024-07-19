@@ -5,6 +5,7 @@ import Web.View.ParagraphHeroImages.Form
 data EditView = EditView
     { paragraphHeroImage :: ParagraphHeroImage
     , formStatus :: FormStatus
+    , landingPage :: LandingPage
     }
 
 instance View EditView where
@@ -15,5 +16,7 @@ instance View EditView where
     |]
         where
             breadcrumb = renderBreadcrumb
-                [ breadcrumbText "Edit Hero Image"
+                [ breadcrumbText "Landing Page"
+                , breadcrumbLink (cs landingPage.title) (EditLandingPageAction landingPage.id)
+                , breadcrumbText "Edit Hero Image"
                 ]
