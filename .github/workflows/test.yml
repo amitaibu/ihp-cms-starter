@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Test
 
 # Controls when the workflow will run
@@ -20,29 +18,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: cachix/install-nix-action@v20
+    - uses: cachix/install-nix-action@v27
       with:
         nix_path: nixpkgs=https://github.com/NixOS/nixpkgs/archive/51bcdc4cdaac48535dabf0ad4642a66774c609ed.tar.gz
 
+    # Use the cachix cache for faster builds.
     - name: Cachix Init
-      uses: cachix/cachix-action@v12
+      uses: cachix/cachix-action@v15
       with:
         name: digitallyinduced
         skipPush: true
-    # devenv
-    - uses: cachix/cachix-action@v12
-      with:
-        name: devenv
-    - name: Install devenv.sh
-      run: nix profile install github:cachix/devenv/latest
-      shell: sh
-    # direnv
-    - uses: HatsuneMiku3939/direnv-action@v1
+
+    # Install direnv, which also `direnv allow`s the project.
+    - uses: HatsuneMiku3939/direnv-action@v1.0.7
       with:
         direnvVersion: 2.32.3
 
-    - run: |
+    - name: Run project and tests
+      run: |
+          # Generate RSA keys.
           ssh-keygen -t rsa -b 4096 -m PEM -f ./Config/jwtRS256.key -N "" && openssl rsa -in ./Config/jwtRS256.key -pubout -outform PEM -out ./Config/jwtRS256.key.pub
+          # Build generated files.
           nix-shell --run "make build/Generated/Types.hs"
+
+          # Start the project in the background.
           nix-shell --run "devenv up &"
+
+          # Execute the tests.
           nix-shell --run "runghc $(make print-ghc-extensions) -i. -ibuild -iConfig Test/Main.hs"
