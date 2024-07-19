@@ -7,10 +7,10 @@ import Web.Element.Types
 import Web.Element.Button
 
 render :: RenderHeroImage -> Html
-render record@RenderHeroImage {title, subtitle, maybeButton, imageUrl} =
+render record@RenderHeroImage {title, maybeSubtitle, maybeButton, imageUrl} =
      titleWrapped
         ++ subTitleWrapped
-        ++ buttonHtml
+        ++ renderedButton
         |> wrapVerticalSpacingBig AlignNone
         |> renderImageAndContent (pathTo $ RenderImageStyleAction 1536 466 imageUrl signed)
     where
@@ -22,13 +22,14 @@ render record@RenderHeroImage {title, subtitle, maybeButton, imageUrl} =
             |> wrapTextFontWeight FontWeightBold
             |> wrapTextResponsiveFontSize TextSizeSm
 
-        subTitleWrapped = cs subtitle
-            |> wrapTextFontWeight FontWeightMedium
-            |> wrapTextResponsiveFontSize TextSizeXl
+        subTitleWrapped = maybeSubtitle 
+            |> fmap (\subtitle -> cs subtitle 
+                |> wrapTextFontWeight FontWeightMedium 
+                |> wrapTextResponsiveFontSize TextSizeXl
+            ) 
+            |> fromMaybe ""
 
-        buttonHtml = case maybeButton of
-            Just btn -> Web.Element.Button.render btn
-            Nothing -> ""
+        renderedButton = maybeButton |> fmap Web.Element.Button.render |> fromMaybe ""
 
 
 renderImageAndContent :: Text -> Html -> Html

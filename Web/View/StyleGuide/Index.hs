@@ -66,7 +66,7 @@ instance View IndexView where
 
             heroImage = RenderHeroImage
                 { title = "This is title"
-                , subtitle = "This is subtitle"
+                , maybeSubtitle = "This is subtitle"
                 , imageUrl = "/styleGuideImages/8f8827de-e5d4-4ee7-b0a3-abae36274338"
                 , maybeButton = Just RenderButton
                     { text = "Read more"

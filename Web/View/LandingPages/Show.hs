@@ -98,17 +98,16 @@ renderParagraphHeroImage :: ParagraphHeroImage -> Html
 renderParagraphHeroImage paragraphHeroImage =
     RenderHeroImage
         { title = paragraphHeroImage.title
-        , subtitle = paragraphHeroImage.subtitle |> fromMaybe ""
+        , maybeSubtitle = paragraphHeroImage.subtitle
         , imageUrl = paragraphHeroImage.imageUrl |> fromMaybe ""
         , maybeButton = maybeButton
         }
         |> Web.Element.HeroImage.render
         where
-            maybeButton = case paragraphHeroImage.link of
-                Just linkText ->
-                    Just RenderButton
-                        { text = "Read More"
-                        , url = linkText
-                        , isPrimary = True
-                        }
-                _ -> Nothing
+            maybeButton = paragraphHeroImage.link |> fmap (\linkText ->
+                RenderButton
+                    { text = "Read More"
+                    , url = linkText
+                    , isPrimary = True
+                    }
+                )

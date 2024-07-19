@@ -61,10 +61,10 @@ data RenderQuote = RenderQuote
     }
 
 data RenderHeroImage = RenderHeroImage
-    { title    :: Text
-    , subtitle :: Text
-    , imageUrl :: Text
-    , maybeButton :: Maybe RenderButton
+    { title         :: Text
+    , maybeSubtitle :: Maybe Text
+    , imageUrl      :: Text
+    , maybeButton   :: Maybe RenderButton
     }
 
 
