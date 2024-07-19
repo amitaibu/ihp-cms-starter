@@ -7,6 +7,7 @@ import Web.Element.ElementWrap
 data EditView = EditView
     { paragraphCta :: ParagraphCta
     , landingPages :: [LandingPage]
+    , landingPage :: LandingPage
     }
 
 instance View EditView where
@@ -17,7 +18,9 @@ instance View EditView where
     |]
         where
             breadcrumb = renderBreadcrumb
-                [ breadcrumbText "Edit Cta"
+                [ breadcrumbText "Landing Page"
+                , breadcrumbLink (cs landingPage.title) (EditLandingPageAction landingPage.id)
+                , breadcrumbText "Edit CTA"
                 ]
 
 renderForm :: ParagraphCta -> [LandingPage] -> Html

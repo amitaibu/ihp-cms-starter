@@ -12,6 +12,7 @@ instance Controller ParagraphHeroImagesController where
                 |> set #weight weight
 
         let formStatus = FormStatusNotSubmitted
+        landingPage <- fetch paragraphHeroImage.landingPageId
 
         render NewView { .. }
 
@@ -19,6 +20,8 @@ instance Controller ParagraphHeroImagesController where
         paragraphHeroImage <- fetch paragraphHeroImageId
         -- Get from the session, if the form was submitted successfully.
         formStatus <- getAndClearFormStatus
+        landingPage <- fetch paragraphHeroImage.landingPageId
+
         render EditView { .. }
 
     action UpdateParagraphHeroImageAction { paragraphHeroImageId } = do
@@ -56,6 +59,7 @@ createOrUpdateParagraphHeroImageAction maybeParagraphHeroImageId = do
         >>= ifValid \case
             Left paragraphHeroImage -> do
                 setFormStatus FormStatusError
+                landingPage <- fetch paragraphHeroImage.landingPageId
                 if isJust maybeParagraphHeroImageId
                     then render EditView { .. }
                     else render NewView { .. }
