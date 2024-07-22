@@ -50,7 +50,10 @@
                         text
                         hlint
                         jwt
+                        # Markdown
                         mmark
+                        # Elasticsearch
+                        bloodhound
                     ];
                 };
 
@@ -67,7 +70,7 @@
                     };
 
                     # This is needed so when running tests in GitHub actions, we can execute `devenv up &` without an error.
-                    process.implementation = "overmind";
+                    # process.implementation = "overmind";
                 };
             };
         };

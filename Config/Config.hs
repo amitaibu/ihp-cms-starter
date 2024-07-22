@@ -5,12 +5,14 @@ import IHP.Environment
 import IHP.FileStorage.Config
 import IHP.FrameworkConfig ( ConfigBuilder, option )
 import Web.View.CustomCSSFramework
+import IHP.EnvVar
 import "cryptonite" Crypto.PubKey.RSA as RSA
 import Control.Exception (catch)
 import qualified Data.ByteString as BS
 import Web.JWT
 import qualified IHP.Log as Log
 import IHP.Log.Types
+import Database.Bloodhound (Server(..))
 
 data RsaKeys = RsaKeys { publicKey :: RSA.PublicKey, privateKey :: RSA.PrivateKey }
 
@@ -30,6 +32,15 @@ config = do
     case (readRsaSecret privateKeyContent, readRsaPublicKey publicKeyContent) of
         (Just privateKey, Just publicKey) -> option $ RsaKeys publicKey privateKey
         _ -> error "Failed to read RSA keys, please execute from the root of your project: ssh-keygen -t rsa -b 4096 -m PEM -f ./Config/jwtRS256.key && openssl rsa -in ./Config/jwtRS256.key -pubout -outform PEM -out ./Config/jwtRS256.key.pub"
+
+    -- Elasticsearch configuration
+    esHost <- env @Text "ELASTICSEARCH_HOST"
+    esPort <- env @Int "ELASTICSEARCH_PORT"
+    let esServer = Server $ esHost <> ":" <> show esPort
+
+    liftIO $ putStrLn $ "Elasticsearch Server: " <> show esServer
+
+    option esServer
 
     -- Less verbose logs.
     logger <- liftIO $ newLogger def
