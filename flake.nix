@@ -54,6 +54,7 @@
                         mmark
                         # Elasticsearch
                         bloodhound
+                        hspec
                     ];
                 };
 
