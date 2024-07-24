@@ -421,11 +421,11 @@
         "systems": "systems_6"
       },
       "locked": {
-        "lastModified": 1719169242,
-        "narHash": "sha256-gaF8AWDdKnJXErjfxJ3CUPFzo4ReWdb1V2CxKv8nxJA=",
+        "lastModified": 1721598516,
+        "narHash": "sha256-QC4cjxra227+9cQMDEqmuSs7q8mSubAAIn1cIMD+7jc=",
         "owner": "digitallyinduced",
         "repo": "ihp",
-        "rev": "31ae4c859b0001ef581a15a9b546939b326e0ee3",
+        "rev": "c4b899367ad4fa788eafc48693e3c55d0094c467",
         "type": "github"
       },
       "original": {
@@ -997,6 +997,7 @@
       "original": {
         "owner": "NixOS",
         "repo": "nixpkgs",
+        "rev": "54b4bb956f9891b872904abdb632cea85a033ff2",
         "type": "github"
       }
     },

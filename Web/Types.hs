@@ -102,4 +102,5 @@ data NewsController
     | EditNewsAction { newsId :: !(Id News) }
     | UpdateNewsAction { newsId :: !(Id News) }
     | DeleteNewsAction { newsId :: !(Id News) }
+    | SearchNewsAction
     deriving (Eq, Show, Data)

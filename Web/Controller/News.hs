@@ -1,6 +1,11 @@
 module Web.Controller.News where
 
 import Web.Controller.Prelude
+import Web.Controller.Prelude
+import Web.View.News.Index
+import Web.View.News.New
+import Web.View.News.Edit
+import Web.View.News.Show
 import Application.Helper.Elasticsearch
 
 instance Controller NewsController where
@@ -51,9 +56,7 @@ instance Controller NewsController where
         redirectTo NewsAction
 
     action SearchNewsAction = do
-        query <- param @Text "query"
-        searchResults <- searchNewsHandler query
-        render SearchView { news = searchResults }
+        undefined
 
 buildNews news = news
     |> fill @["title", "body"]
