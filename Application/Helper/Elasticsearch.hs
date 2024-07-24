@@ -72,7 +72,7 @@ searchNews queryText = do
         (esServer, esManager) = getAppConfig @(Server, Manager)
         indexName = IndexName "news"
         -- @todo: Search all fields
-        query = QueryMatchQuery $ mkMatchQuery (FieldName "body") (QueryString queryText)
+        query = QueryMultiMatchQuery $ mkMultiMatchQuery [(FieldName "title"), (FieldName "body")]  (QueryString queryText)
 
         unDocId :: DocId -> Text
         unDocId (DocId t) = t
