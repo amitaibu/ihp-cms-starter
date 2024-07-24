@@ -71,7 +71,10 @@
                     };
 
                     # This is needed so when running tests in GitHub actions, we can execute `devenv up &` without an error.
-                    # process.implementation = "overmind";
+                    # Conditionally set process.implementation based on the presence of GITHUB_ACTIONS
+                    process = pkgs.lib.mkIf (builtins.getEnv "GITHUB_ACTIONS" != "") {
+                        implementation = "overmind";
+                    };
                 };
             };
         };
