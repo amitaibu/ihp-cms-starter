@@ -21,8 +21,7 @@ instance ToJSON News where
 indexNews :: (?context :: ControllerContext) => News -> IO ()
 indexNews news = do
     let
-        esServer = getAppConfig @Server
-        esManager = getAppConfig @Manager
+        (esServer, esManager) = getAppConfig @(Server, Manager)
         indexName = IndexName "news"
         docId = DocId (show news.id)
         document = toJSON news

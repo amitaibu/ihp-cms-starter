@@ -17,7 +17,8 @@ instance View NewView where
 
 renderForm :: News -> Html
 renderForm news = formFor news [hsx|
-    
+    {(textField #title)}
+    {(textareaField #body)}
     {submitButton}
 
 |]
