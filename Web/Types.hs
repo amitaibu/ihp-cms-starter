@@ -93,3 +93,14 @@ data UsersController
 data StyleGuideController
     = StyleGuideAction
     deriving (Eq, Show, Data)
+
+data NewsController
+    = NewsAction
+    | NewNewsAction
+    | ShowNewsAction { newsId :: !(Id News) }
+    | CreateNewsAction
+    | EditNewsAction { newsId :: !(Id News) }
+    | UpdateNewsAction { newsId :: !(Id News) }
+    | DeleteNewsAction { newsId :: !(Id News) }
+    | SearchNewsAction
+    deriving (Eq, Show, Data)

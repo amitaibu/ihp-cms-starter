@@ -13,9 +13,16 @@
             systems = import systems;
             imports = [ ihp.flakeModules.default ];
 
-            perSystem = { pkgs, ... }: {
+            perSystem = { pkgs, system, ... }: {
+                # Allow unfree packages
+                _module.args.pkgs = import inputs.nixpkgs {
+                    inherit system;
+                    config.allowUnfree = true;
+                };
+
                 ihp = {
                     enable = true;
+
                     projectPath = ./.;
                     packages = with pkgs; [
                         # Native dependencies, e.g. imagemagick
@@ -43,7 +50,10 @@
                         text
                         hlint
                         jwt
+                        # Markdown
                         mmark
+                        # Elasticsearch
+                        bloodhound
                         hspec
                     ];
                 };
@@ -54,10 +64,18 @@
                         tailwind.exec = "tailwindcss -c tailwind/tailwind.config.js -i ./tailwind/app.css -o static/app.css --watch=always";
                     };
 
+                    # Enable Elasticsearch service
+                    services.elasticsearch = {
+                        enable = true;
+                        package = pkgs.elasticsearch7;
+                    };
+
                     # This is needed so when running tests in GitHub actions, we can execute `devenv up &` without an error.
-                    process.implementation = "overmind";
+                    # Conditionally set process.implementation based on the presence of GITHUB_ACTIONS
+                    process = pkgs.lib.mkIf (builtins.getEnv "GITHUB_ACTIONS" != "") {
+                        implementation = "overmind";
+                    };
                 };
             };
-
         };
 }

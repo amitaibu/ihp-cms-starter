@@ -23,3 +23,6 @@ instance AutoRoute UsersController
 
 instance AutoRoute StyleGuideController
 
+
+instance AutoRoute NewsController
+
