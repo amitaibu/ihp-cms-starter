@@ -44,6 +44,7 @@
                         hlint
                         jwt
                         mmark
+                        hspec
                     ];
                 };
 

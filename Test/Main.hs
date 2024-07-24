@@ -16,9 +16,11 @@ import Network.Wai
 import IHP.ControllerPrelude
 import IHP.ViewPrelude
 
+import Test.UsersSpec
+
 main :: IO ()
 main = hspec do
-    tests
+    Test.UsersSpec.tests
 
 tests :: Spec
 tests = aroundAll (withIHPApp WebApplication config) do
