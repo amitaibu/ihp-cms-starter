@@ -1,3 +1,5 @@
+![workflow](https://github.com/amitaibu/ihp-cms-starter/actions/workflows/test.yml/badge.svg)
+
 # IHP Landing Page
 
 ## Install
