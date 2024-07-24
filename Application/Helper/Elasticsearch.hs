@@ -28,7 +28,7 @@ initES = do
     return $ mkBHEnv server manager
 
 -- Index a news item in Elasticsearch
-indexNews :: (?modelContext :: ModelContext, ?context :: ControllerContext) => News -> IO (Either BHError IndexResponse)
+indexNews :: (?modelContext :: ModelContext, ?context :: ControllerContext) => News -> IO (Either BHError Value)
 indexNews news = do
     bhenv <- initES
     let indexName = IndexName "news_index"
