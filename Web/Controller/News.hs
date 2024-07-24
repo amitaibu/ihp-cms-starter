@@ -1,10 +1,7 @@
 module Web.Controller.News where
 
 import Web.Controller.Prelude
-import Web.View.News.Index
-import Web.View.News.New
-import Web.View.News.Edit
-import Web.View.News.Show
+import Application.Helper.Elasticsearch
 
 instance Controller NewsController where
     action NewsAction = do
@@ -15,15 +12,15 @@ instance Controller NewsController where
         let news = newRecord
         render NewView { .. }
 
-    action ShowNewsAction { newsId } = do
+    action ShowNewsAction { .. } = do
         news <- fetch newsId
         render ShowView { .. }
 
-    action EditNewsAction { newsId } = do
+    action EditNewsAction { .. } = do
         news <- fetch newsId
         render EditView { .. }
 
-    action UpdateNewsAction { newsId } = do
+    action UpdateNewsAction { .. } = do
         news <- fetch newsId
         news
             |> buildNews
@@ -31,17 +28,19 @@ instance Controller NewsController where
                 Left news -> render EditView { .. }
                 Right news -> do
                     news <- news |> updateRecord
+                    indexNews news  -- Index updated news in Elasticsearch
                     setSuccessMessage "News updated"
-                    redirectTo EditNewsAction { .. }
+                    redirectTo NewsAction
 
     action CreateNewsAction = do
         let news = newRecord @News
         news
             |> buildNews
             |> ifValid \case
-                Left news -> render NewView { .. } 
+                Left news -> render NewView { .. }
                 Right news -> do
                     news <- news |> createRecord
+                    indexNews news  -- Index new news in Elasticsearch
                     setSuccessMessage "News created"
                     redirectTo NewsAction
 
@@ -51,5 +50,10 @@ instance Controller NewsController where
         setSuccessMessage "News deleted"
         redirectTo NewsAction
 
+    action SearchNewsAction = do
+        query <- param @Text "query"
+        searchResults <- searchNewsHandler query
+        render SearchView { news = searchResults }
+
 buildNews news = news
-    |> fill @'[]
+    |> fill @["title", "body"]
