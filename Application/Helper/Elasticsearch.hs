@@ -31,3 +31,16 @@ indexNews news = do
     response <- runBH (mkBHEnv esServer esManager) $ indexDocument indexName settings document docId
     -- _ <- getResponse response
     pure ()
+
+-- Delete a news item from Elasticsearch
+deleteIndexNews :: (?context :: ControllerContext) => Id News -> IO ()
+deleteIndexNews newsId = do
+    let
+        (esServer, esManager) = getAppConfig @(Server, Manager)
+        indexName = IndexName "news"
+        docId = DocId (show newsId)
+
+    -- Execute the delete request
+    response <- runBH (mkBHEnv esServer esManager) $ deleteDocument indexName docId
+    -- _ <- getResponse response
+    pure ()

@@ -52,6 +52,7 @@ instance Controller NewsController where
     action DeleteNewsAction { newsId } = do
         news <- fetch newsId
         deleteRecord news
+        deleteIndexNews newsId
         setSuccessMessage "News deleted"
         redirectTo NewsAction
 
