@@ -64,7 +64,7 @@ searchNews queryText = do
 
             let newsIds :: [Id News] = map (textToId . unDocId . hitDocId) $ hits $ searchHits searchResult
             liftIO $ putStrLn $ "newsIds: " ++ show newsIds
-            return []
+            return newsIds
 
     -- Parse result and extract the News ids. The News IDs is the Doc
     pure []
