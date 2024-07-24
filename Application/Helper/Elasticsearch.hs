@@ -1,6 +1,7 @@
 module Application.Helper.Elasticsearch where
 
 import IHP.Prelude
+import IHP.ModelSupport
 import Database.Bloodhound
 import Network.HTTP.Client (Manager, Response(..))
 import Control.Lens ((^.))
@@ -8,6 +9,7 @@ import qualified Data.ByteString.Lazy as LBS
 import Data.Aeson (ToJSON, FromJSON, Value, toJSON, parseJSON, withObject, (.:), decode, object, (.=), eitherDecode)
 import IHP.ControllerSupport
 import qualified Data.Text as T
+import Prelude (read)
 
 import Generated.Types
 
@@ -49,12 +51,30 @@ deleteIndexNews newsId = do
 searchNews :: (?context :: ControllerContext) => Text -> IO [Id News]
 searchNews queryText = do
     -- Execute the search request
-    result <- runBH (mkBHEnv esServer esManager) $ searchByIndex indexName (mkSearch (Just query) Nothing)
+    response <- runBH (mkBHEnv esServer esManager) $ searchByIndex indexName (mkSearch (Just query) Nothing)
+    -- Parse the response
+    result <- parseEsResponse response
+    case result of
+        Left esError -> do
+            -- Handle the error (log it, return empty list, or throw an exception)
+            liftIO $ putStrLn $ "Error occurred: " ++ show esError
+            return []
+        Right (searchResult :: SearchResult Value) -> do
+            -- Extract the News IDs from the search result
+
+            let newsIds :: [Id News] = map (textToId . unDocId . hitDocId) $ hits $ searchHits searchResult
+            liftIO $ putStrLn $ "newsIds: " ++ show newsIds
+            return []
+
     -- Parse result and extract the News ids. The News IDs is the Doc
     pure []
     where
         (esServer, esManager) = getAppConfig @(Server, Manager)
         indexName = IndexName "news"
-        query = QueryMatchQuery $ mkMatchQuery (FieldName "_all") (QueryString queryText)
+        -- @todo: Search all fields
+        query = QueryMatchQuery $ mkMatchQuery (FieldName "body") (QueryString queryText)
+
+        unDocId :: DocId -> Text
+        unDocId (DocId t) = t
 
 

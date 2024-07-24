@@ -11,6 +11,7 @@ import Application.Helper.Elasticsearch
 instance Controller NewsController where
     action NewsAction = do
         news <- query @News |> fetch
+        searchNews "bar"
         render IndexView { .. }
 
     action NewNewsAction = do
