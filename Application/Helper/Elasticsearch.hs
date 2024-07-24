@@ -2,19 +2,17 @@ module Application.Helper.Elasticsearch where
 
 import IHP.Prelude
 import Database.Bloodhound
-import Network.HTTP.Client (Manager)
+import Network.HTTP.Client (Manager, Response(..))
+import Control.Lens ((^.))
 import qualified Data.ByteString.Lazy as LBS
-import Data.Aeson (ToJSON, toJSON, object, (.=))
+import Data.Aeson (ToJSON, FromJSON, Value, toJSON, parseJSON, withObject, (.:), decode, object, (.=), eitherDecode)
 import IHP.ControllerSupport
-
-
-
+import qualified Data.Text as T
 
 import Generated.Types
 
-
 instance ToJSON News where
-    toJSON News  {..} =
+    toJSON News {..} =
         object ["title" .= title, "body" .= body]
 
 -- Index a news item in Elasticsearch
@@ -29,7 +27,6 @@ indexNews news = do
 
     -- Execute the index request
     response <- runBH (mkBHEnv esServer esManager) $ indexDocument indexName settings document docId
-    -- _ <- getResponse response
     pure ()
 
 -- Delete a news item from Elasticsearch
@@ -42,5 +39,16 @@ deleteIndexNews newsId = do
 
     -- Execute the delete request
     response <- runBH (mkBHEnv esServer esManager) $ deleteDocument indexName docId
-    -- _ <- getResponse response
     pure ()
+
+-- Search for news items in Elasticsearch
+searchNews :: (?context :: ControllerContext) => Text -> IO [Id News]
+searchNews queryText = do
+    -- Execute the search request
+    result <- runBH (mkBHEnv esServer esManager) $ searchByIndex indexName (mkSearch (Just query) Nothing)
+    -- @todo: decode result and extract the News ids
+    pure []
+    where
+        (esServer, esManager) = getAppConfig @(Server, Manager)
+        indexName = IndexName "news"
+        query = QueryMatchQuery $ mkMatchQuery (FieldName "_all") (QueryString queryText)

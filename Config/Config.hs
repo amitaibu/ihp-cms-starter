@@ -13,7 +13,6 @@ import Web.JWT
 import qualified IHP.Log as Log
 import IHP.Log.Types
 import Database.Bloodhound (Server(..))
-import Network.HTTP.Client (Manager, newManager, defaultManagerSettings)
 
 data RsaKeys = RsaKeys { publicKey :: RSA.PublicKey, privateKey :: RSA.PrivateKey }
 
@@ -37,12 +36,11 @@ config = do
     -- Elasticsearch configuration
     esHost <- env @Text "ELASTICSEARCH_HOST"
     esPort <- env @Int "ELASTICSEARCH_PORT"
-    let esServer = Server $ esHost ++ ":" ++ show esPort
+    let esServer = Server $ esHost <> ":" <> show esPort
 
-    -- Create a manager (you might want to do this in a more appropriate place)
-    esManager <- liftIO $ newManager defaultManagerSettings
+    liftIO $ putStrLn $ "Elasticsearch Server: " <> show esServer
 
-    option $ (esServer, esManager)
+    option esServer
 
     -- Less verbose logs.
     logger <- liftIO $ newLogger def
