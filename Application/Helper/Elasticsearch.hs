@@ -14,7 +14,8 @@ import Generated.Types
 instance ToJSON News where
     toJSON News {..} =
         object
-            [ "title" .= title
+            [ "type" .= ("news" :: Text)
+            , "title" .= title
             , "body" .= body
             ]
 
@@ -49,8 +50,7 @@ searchNews :: (?context :: ControllerContext) => Text -> IO [Id News]
 searchNews queryText = do
     -- Execute the search request
     result <- runBH (mkBHEnv esServer esManager) $ searchByIndex indexName (mkSearch (Just query) Nothing)
-    -- Parse result and extract the News ids. The News IDs is the Doc ID.
-
+    -- Parse result and extract the News ids. The News IDs is the Doc
     pure []
     where
         (esServer, esManager) = getAppConfig @(Server, Manager)
