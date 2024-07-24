@@ -13,7 +13,11 @@ import Generated.Types
 
 instance ToJSON News where
     toJSON News {..} =
-        object ["title" .= title, "body" .= body]
+        object
+            [ "id" .= id
+            , "title" .= title
+            , "body" .= body
+            ]
 
 -- Index a news item in Elasticsearch
 indexNews :: (?context :: ControllerContext) => News -> IO ()
@@ -46,9 +50,11 @@ searchNews :: (?context :: ControllerContext) => Text -> IO [Id News]
 searchNews queryText = do
     -- Execute the search request
     result <- runBH (mkBHEnv esServer esManager) $ searchByIndex indexName (mkSearch (Just query) Nothing)
-    -- @todo: decode result and extract the News ids
+    -- Parse result and extract the News ids. The News IDs are in the "id" field of the search result.
     pure []
     where
         (esServer, esManager) = getAppConfig @(Server, Manager)
         indexName = IndexName "news"
         query = QueryMatchQuery $ mkMatchQuery (FieldName "_all") (QueryString queryText)
+
+
