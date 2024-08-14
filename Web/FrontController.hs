@@ -6,6 +6,7 @@ import Web.View.Layout (defaultLayout)
 
 
 -- Controller Imports
+import Web.Controller.Posts
 import Web.Controller.StyleGuide
 import Web.Controller.Users
 import Web.Controller.ImageStyle
@@ -20,6 +21,7 @@ instance FrontController WebApplication where
     controllers =
         [ startPage LandingPagesAction
         -- Generator Marker
+        , parseRoute @PostsController
         , parseRoute @StyleGuideController
         , parseRoute @UsersController
         , parseRoute @ImageStyleController
