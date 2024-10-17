@@ -9,8 +9,8 @@ import Web.Element.Button
 render :: RenderHeroImage -> Html
 render record@RenderHeroImage {title, maybeSubtitle, maybeButton, imageUrl} =
     [ titleWrapped
-    , subTitleWrapped
-    , renderedButton
+    , maybeSubTitleWrapped
+    , maybeRenderedButton
     ]
     |> catMaybes
     |> mconcat
@@ -26,13 +26,13 @@ render record@RenderHeroImage {title, maybeSubtitle, maybeButton, imageUrl} =
             |> wrapTextResponsiveFontSize TextSizeSm
             |> Just
 
-        subTitleWrapped = maybeSubtitle 
+        maybeSubTitleWrapped = maybeSubtitle 
             |> fmap (\subtitle -> cs subtitle 
                 |> wrapTextFontWeight FontWeightMedium 
                 |> wrapTextResponsiveFontSize TextSizeXl
             ) 
 
-        renderedButton = maybeButton |> fmap Web.Element.Button.render
+        maybeRenderedButton = maybeButton |> fmap Web.Element.Button.render
 
 renderImageAndContent :: Text -> Html -> Html
 renderImageAndContent imageUrl items =
