@@ -8,11 +8,14 @@ import Web.Element.Button
 
 render :: RenderHeroImage -> Html
 render record@RenderHeroImage {title, maybeSubtitle, maybeButton, imageUrl} =
-     titleWrapped
-        ++ subTitleWrapped
-        ++ renderedButton
-        |> wrapVerticalSpacingBig AlignNone
-        |> renderImageAndContent (pathTo $ RenderImageStyleAction 1536 466 imageUrl signed)
+    [ titleWrapped
+    , subTitleWrapped
+    , renderedButton
+    ]
+    |> catMaybes
+    |> mconcat
+    |> wrapVerticalSpacingBig AlignNone
+    |> renderImageAndContent (pathTo $ RenderImageStyleAction 1536 466 imageUrl signed)
     where
         -- Sign the image URL to prevent tampering.
         signed = signImageUrl imageUrl 1536 466
@@ -21,16 +24,15 @@ render record@RenderHeroImage {title, maybeSubtitle, maybeButton, imageUrl} =
             |> wrapHeaderTag 1
             |> wrapTextFontWeight FontWeightBold
             |> wrapTextResponsiveFontSize TextSizeSm
+            |> Just
 
         subTitleWrapped = maybeSubtitle 
             |> fmap (\subtitle -> cs subtitle 
                 |> wrapTextFontWeight FontWeightMedium 
                 |> wrapTextResponsiveFontSize TextSizeXl
             ) 
-            |> fromMaybe ""
 
-        renderedButton = maybeButton |> fmap Web.Element.Button.render |> fromMaybe ""
-
+        renderedButton = maybeButton |> fmap Web.Element.Button.render
 
 renderImageAndContent :: Text -> Html -> Html
 renderImageAndContent imageUrl items =
