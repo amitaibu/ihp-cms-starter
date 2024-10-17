@@ -26,11 +26,11 @@ render record@RenderHeroImage {title, maybeSubtitle, maybeButton, imageUrl} =
             |> wrapTextResponsiveFontSize TextSizeSm
             |> Just
 
-        maybeSubTitleWrapped = maybeSubtitle 
-            |> fmap (\subtitle -> cs subtitle 
+        maybeSubTitleWrapped = case maybeSubtitle of
+            Just subtitle | not (null subtitle) -> Just $ cs subtitle 
                 |> wrapTextFontWeight FontWeightMedium 
                 |> wrapTextResponsiveFontSize TextSizeXl
-            ) 
+            _ -> Nothing
 
         maybeRenderedButton = maybeButton |> fmap Web.Element.Button.render
 

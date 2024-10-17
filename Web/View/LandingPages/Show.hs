@@ -104,10 +104,10 @@ renderParagraphHeroImage paragraphHeroImage =
         }
         |> Web.Element.HeroImage.render
         where
-            maybeButton = paragraphHeroImage.link |> fmap (\linkText ->
-                RenderButton
+            maybeButton = case paragraphHeroImage.link of
+                Just link | not (null link) -> Just $ RenderButton
                     { text = "Read More"
-                    , url = linkText
+                    , url = link
                     , isPrimary = True
                     }
-                )
+                _ -> Nothing
