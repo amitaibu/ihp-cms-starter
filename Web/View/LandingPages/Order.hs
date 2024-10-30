@@ -52,13 +52,13 @@ orderAndRenderParagraphs landingPageWithRecords =
         ctas = landingPageWithRecords.paragraphCtas
             |> fmap (\paragraph ->
                 ( paragraph.weight
-                , paragraph.title
+                , cs paragraph.title
                 )
             )
 
         quotes = landingPageWithRecords.paragraphQuotes
             |> fmap (\paragraph ->
                 ( paragraph.weight
-                , paragraph.body
+                , cs paragraph.body
                 )
             )
