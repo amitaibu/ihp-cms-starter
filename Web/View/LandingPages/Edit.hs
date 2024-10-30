@@ -66,11 +66,13 @@ renderForm landingPage paragraphCtas paragraphQuotes formStatus = formFor landin
 
         paragraphs =
             [ addParagraphs
-            , orderAndRenderParagraphs paragraphCtas paragraphQuotes
+            , orderAndRenderParagraphs paragraphCtas paragraphQuotes |> wrapListOl
             , renderLinkAction (ShowOrderLandingPageParagraphsAction landingPage.id) "Re-Order"
             ]
                 |> mconcat
                 |> wrapVerticalSpacing AlignNone
+
+
 
 
         addParagraphs =
@@ -108,7 +110,7 @@ orderAndRenderParagraphs paragraphCtas paragraphQuotes =
         paragraphTitleAndOps :: (Show (PrimaryKey record), HasPath controller) => (Id' record -> controller) -> (Id' record -> controller) -> Id' record -> Text -> Text -> Html
         paragraphTitleAndOps editAction deleteAction id title type_  =
             [hsx|
-                <li>{body}</li>
+                <li class="">{body}</li>
             |]
             where
                 body =
