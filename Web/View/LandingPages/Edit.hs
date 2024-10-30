@@ -57,7 +57,7 @@ renderForm landingPage paragraphCtas paragraphQuotes formStatus = formFor landin
                 {paragraphs}
             </div>
 
-            { renderSubmitButtonwithFormStatus
+            { renderSubmitButtonWithFormStatus
                 (submitButton {label = "Save Landing page"})
                 formStatus
             }
