@@ -4,7 +4,7 @@ import Web.Controller.Prelude
 import Web.View.LandingPages.Index
 import Web.View.LandingPages.New
 import Web.View.LandingPages.Edit
-import nWeb.View.LandingPages.Order
+import Web.View.LandingPages.Order
 import Web.View.LandingPages.Show
 
 instance Controller LandingPagesController where
