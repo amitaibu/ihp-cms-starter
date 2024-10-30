@@ -16,15 +16,13 @@ data EditView = EditView
 instance View EditView where
     html EditView { .. } =
         [ header
-        , renderForm landingPage paragraphCtas paragraphQuotes formStatus
+        , renderForm landingPageWithRecords formStatus
         ]
         |> mconcat
         |> wrapVerticalSpacing AlignNone
         |> wrapContainerWide
         where
             landingPage = landingPageWithRecords.landingPage
-            paragraphCtas = landingPageWithRecords.paragraphCtas
-            paragraphQuotes = landingPageWithRecords.paragraphQuotes
 
             breadcrumb = renderBreadcrumb
                 [ breadcrumbLink "Landing Pages" LandingPagesAction
@@ -46,34 +44,32 @@ instance View EditView where
                 |> mconcat
                 |> wrapHorizontalSpacingTiny AlignBaseline
 
-renderForm :: LandingPage -> [ParagraphCta] -> [ParagraphQuote] -> FormStatus -> Html
-renderForm landingPage paragraphCtas paragraphQuotes formStatus = formFor landingPage body
+renderForm :: LandingPageWithRecords -> FormStatus -> Html
+renderForm landingPageWithRecords formStatus = formFor landingPage body
     where
+        landingPage = landingPageWithRecords.landingPage
+        paragraphCtas = landingPageWithRecords.paragraphCtas
+        paragraphQuotes = landingPageWithRecords.paragraphQuotes
+
         body :: (?formContext :: FormContext LandingPage) => Html
-        body = [hsx|
-            {(textField #title)}
+        body =
+            [ [hsx|{(textField #title)}|]
+            , paragraphs |> wrapBorder RoundedCornerNone
 
-            <div class="border p-4">
-                {paragraphs}
-            </div>
-
-            { renderSubmitButtonWithFormStatus
+            , renderSubmitButtonWithFormStatus
                 (submitButton {label = "Save Landing page"})
                 formStatus
-            }
-        |]
+            ]
+            |> mconcat
             |> wrapVerticalSpacing AlignNone
 
         paragraphs =
             [ addParagraphs
             , orderAndRenderParagraphs paragraphCtas paragraphQuotes |> wrapListOl
-            , renderLinkAction (ShowOrderLandingPageParagraphsAction landingPage.id) "Re-Order"
+            , reOrderLink
             ]
                 |> mconcat
                 |> wrapVerticalSpacing AlignNone
-
-
-
 
         addParagraphs =
             [   cs ("Paragraphs" :: Text) |> wrapHeaderTag 3
@@ -88,6 +84,16 @@ renderForm landingPage paragraphCtas paragraphQuotes formStatus = formFor landin
             ]
                 |> mconcat
                 |> wrapHorizontalSpacing AlignCenter
+
+        reOrderLink = if countParagraphs landingPageWithRecords > 1
+            then renderLinkAction (ShowOrderLandingPageParagraphsAction landingPage.id) "Re-Order"
+            else ""
+
+
+countParagraphs :: LandingPageWithRecords -> Int
+countParagraphs LandingPageWithRecords { paragraphCtas, paragraphQuotes } =
+    length paragraphCtas + length paragraphQuotes
+
 
 orderAndRenderParagraphs :: [ParagraphCta] -> [ParagraphQuote] -> Html
 orderAndRenderParagraphs paragraphCtas paragraphQuotes =
