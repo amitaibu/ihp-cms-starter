@@ -11,11 +11,13 @@ import Web.View.Prelude
 data OrderParagraphsView = OrderParagraphsView { landingPageWithRecords :: LandingPageWithRecords }
 
 instance View OrderParagraphsView where
-    html OrderParagraphsView { .. } = [hsx|
-        {header}
-
-        {orderAndRenderParagraphs landingPageWithRecords }
-    |]
+    html OrderParagraphsView { .. } =
+        [ header
+        , orderAndRenderParagraphs landingPageWithRecords
+        ]
+        |> mconcat
+        |> wrapVerticalSpacing AlignNone
+        |> wrapContainerWide
         where
             landingPage = landingPageWithRecords.landingPage
 
@@ -24,17 +26,18 @@ instance View OrderParagraphsView where
                             , breadcrumbText "Show LandingPage"
                             ]
 
-            header = [hsx|
-                    {breadcrumb}
-                    {titleAndEdit}
-                |]
-                    |> wrapVerticalSpacing AlignNone
-                    |> wrapContainerWide
+            header =
+                [ breadcrumb
+                , titleAndEdit
+                ]
+                |> mconcat
+                |> wrapVerticalSpacing AlignNone
+                |> wrapContainerWide
 
 
             titleAndEdit =
-                [ cs landingPage.title |> wrapHeaderTag 1
-                , renderLinkAction (EditLandingPageAction landingPage.id) "Edit"
+                [ cs ("Re-Order Paragraphs" :: Text) |> wrapHeaderTag 1
+                , renderLinkAction (EditLandingPageAction landingPage.id) "back"
                 ]
                     |> mconcat
                     |> wrapHorizontalSpacingTiny AlignBaseline
@@ -46,7 +49,9 @@ orderAndRenderParagraphs landingPageWithRecords =
         -- Order by weight.
         |> sortOn fst
         |> fmap snd
+        |> fmap wrapListLi
         |> mconcat
+        |> wrapListOl
     where
 
         ctas = landingPageWithRecords.paragraphCtas
