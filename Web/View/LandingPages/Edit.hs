@@ -67,6 +67,7 @@ renderForm landingPage paragraphCtas paragraphQuotes formStatus = formFor landin
         paragraphs =
             [ addParagraphs
             , orderAndRenderParagraphs paragraphCtas paragraphQuotes
+            , renderLinkAction (ShowOrderLandingPageParagraphsAction landingPage.id) "Re-Order"
             ]
                 |> mconcat
                 |> wrapVerticalSpacing AlignNone
