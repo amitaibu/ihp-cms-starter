@@ -66,11 +66,7 @@ renderForm landingPage paragraphCtas paragraphQuotes formStatus = formFor landin
 
         paragraphs =
             [ addParagraphs
-            , [hsx|
-                    <ul class="js-sortable">
-                        {orderAndRenderParagraphs paragraphCtas paragraphQuotes}
-                    </ul>
-                |]
+            , orderAndRenderParagraphs paragraphCtas paragraphQuotes
             ]
                 |> mconcat
                 |> wrapVerticalSpacing AlignNone
@@ -116,10 +112,6 @@ orderAndRenderParagraphs paragraphCtas paragraphQuotes =
             where
                 body =
                     [hsx|
-                        {sortableHandle}
-
-                        <input type="hidden" name="paragraphId" value={show id} />
-
                         {title} <span class="text-sm text-gray-600">({type_})</span>
                         {operations}
                     |]
@@ -134,18 +126,4 @@ orderAndRenderParagraphs paragraphCtas paragraphQuotes =
 
 
 
-        sortableHandle =
-            if
-                length ctas + length quotes > 1
-            then
-                [hsx|
-                    <div class="sortable-handle">
-                        <div class="sortable-handle">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-gray-200 hover:text-gray-500">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
-                            </svg>
-                        </div>
-                    </div>
-                |]
-            else
-                mempty
+
