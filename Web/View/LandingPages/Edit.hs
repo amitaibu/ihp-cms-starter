@@ -54,7 +54,7 @@ renderForm landingPageWithRecords formStatus = formFor landingPage body
         body :: (?formContext :: FormContext LandingPage) => Html
         body =
             [ [hsx|{(textField #title)}|]
-            , paragraphs |> wrapBorder RoundedCornerNone
+            , paragraphs |> wrapHorizontalPadding |> wrapBorder RoundedCornerNone
 
             , renderSubmitButtonWithFormStatus
                 (submitButton {label = "Save Landing page"})
