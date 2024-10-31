@@ -5,6 +5,7 @@ import Web.Element.ElementWrap
 import Web.Element.Link
 import Web.Element.Types
 import Web.Element.Quote
+import Web.Element.ElementWrap
 import Web.Types
 import Web.View.Prelude
 
@@ -49,9 +50,9 @@ orderAndRenderParagraphs landingPageWithRecords =
         -- Order by weight.
         |> sortOn fst
         |> fmap snd
-        |> fmap wrapListLi
+        |> fmap wrapSortableListLi
         |> mconcat
-        |> wrapListOl
+        |> wrapSortableList
     where
 
         ctas = landingPageWithRecords.paragraphCtas
